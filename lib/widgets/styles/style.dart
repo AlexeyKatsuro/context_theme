@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 part 'style_element.dart';
 
@@ -9,19 +10,15 @@ abstract class WidgetTheme<S extends Style> extends InheritedWidget {
   /// Initializes [key] for subclasses.
   const WidgetTheme({super.key, required this.createStyle, required super.child});
 
-  static S styleOf<S extends Style, W extends WidgetTheme<S>>(BuildContext context) {
-    var targetContext = context;
-    if (targetContext is StyleElement && targetContext.widget.runtimeType == W) {
-      Element? parent;
-      targetContext.visitAncestorElements((element) {
-        parent = element;
-        return false;
-      });
-      if (parent != null) {
-        targetContext = parent!;
-      }
+  static S styleOf<S extends Style, W extends WidgetTheme<S>>(
+    BuildContext context, {
+    BuildContext? inheritFrom,
+  }) {
+    final styleElement = (inheritFrom ?? context).getElementForInheritedWidgetOfExactType<W>() as StyleElement?;
+
+    if (styleElement == null) {
+      throw StyleNullException(W, context.widget.runtimeType, S);
     }
-    final styleElement = targetContext.getElementForInheritedWidgetOfExactType<W>() as StyleElement;
 
     if (!styleElement.doesHasDepended(context)) {
       context.dependOnInheritedElement(styleElement);
@@ -105,5 +102,24 @@ abstract class Style with Diagnosticable {
     properties.add(ObjectFlagProperty<Element>('_element', _element, ifNull: 'not mounted'));
     properties
         .add(ObjectFlagProperty<Element>('_hostElement', _hostElement, ifNull: 'not mounted'));
+  }
+}
+
+class StyleNullException implements Exception {
+  /// Create a ProviderNullException error with the type represented as a String.
+  StyleNullException(this.widgetThemeType, this.callerType, this.stateType);
+
+  final Type widgetThemeType;
+  final Type callerType;
+  final Type stateType;
+
+  @override
+  String toString() {
+    if (kReleaseMode) {
+      return 'A WidgetTheme for $widgetThemeType unexpectedly returned null.';
+    }
+    return '''
+Error: The widget $callerType tried to read WidgetTheme.styleOf<$stateType, $widgetThemeType> but widget has no parent theme of $widgetThemeType
+''';
   }
 }

@@ -8,8 +8,16 @@ class StyleElement extends InheritedElement {
   WidgetTheme get widget => super.widget as WidgetTheme;
 
   @override
-  InheritedWidget dependOnInheritedElement(Element ancestor, {Object? aspect}) {
-    return super.dependOnInheritedElement(ancestor as InheritedElement, aspect: aspect);
+  InheritedElement? getElementForInheritedWidgetOfExactType<I extends InheritedWidget>() {
+    InheritedElement? inheritedElement;
+
+    // An InheritedProvider<T>'s update tries to obtain a parent provider of
+    // the same type.
+    visitAncestorElements((parent) {
+      inheritedElement = parent.getElementForInheritedWidgetOfExactType<I>();
+      return false;
+    });
+    return inheritedElement;
   }
 
   bool doesHasDepended(BuildContext dependent) {
@@ -34,7 +42,7 @@ class StyleElement extends InheritedElement {
   }
 
   Style initStyle(Element dependent) {
-   return widget.createStyle()
+    return widget.createStyle()
       .._element = dependent
       .._hostElement = this;
   }

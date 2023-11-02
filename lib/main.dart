@@ -110,7 +110,12 @@ class _AppState extends State<App> {
         final theme = Theme.of(context);
         return ColorsTheme(
           createStyle: theme.brightness.isDark ? LightColorsStyle.new : DarkColorsStyle.new,
-          child: child!,
+          child: Center(
+            child: ButtonTheme(
+              child: child!,
+              createStyle: DefaultButtonStyle.new,
+            ),
+          ),
         );
       },
     );
@@ -154,13 +159,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Text'),
-            ButtonTheme(
-              createStyle: theme.brightness.isDark ? AccentButtonStyle.new : PrimaryButtonStyle.new,
+            Center(
               child: ButtonTheme(
                 createStyle: RoundedButtonStyle.new,
-                child: Button(
-                  child: Text('Button'),
+                child: Center(
+                  child: ButtonTheme(
+                    createStyle: AccentButtonStyle.new,
+                    child: Center(
+                      child:  ColorsTheme(
+                        createStyle: BlackColorsStyle.new,
+                        child: Button(
+                          child: Text('Button'),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

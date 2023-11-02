@@ -18,6 +18,7 @@ class Button extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal:12.0, vertical: 8.0),
         child: DefaultTextStyle.merge(
           child: child,
+          style: TextStyle(color: style.foregroundColor)
         ),
       ),
     );

@@ -10,8 +10,8 @@ class ColorsTheme extends WidgetTheme<ColorsStyle> {
     required super.child,
   });
 
-  static ColorsStyle of(BuildContext context) {
-    return WidgetTheme.styleOf<ColorsStyle, ColorsTheme>(context);
+  static ColorsStyle of(BuildContext context, [BuildContext? parent]) {
+    return WidgetTheme.styleOf<ColorsStyle, ColorsTheme>(context, inheritFrom: parent);
   }
 }
 
@@ -21,17 +21,19 @@ extension ColorsThemeExt on BuildContext {
 
 class ColorsStyle extends Style {
 
-  Brightness get brightness => parent.colorsStyle.brightness;
+  ColorsStyle get inherit => ColorsTheme.of(context, parent);
 
-  Color get primary => parent.colorsStyle.primary;
+  Brightness get brightness => inherit.brightness;
 
-  Color get onPrimary => parent.colorsStyle.onPrimary;
+  Color get primary => inherit.primary;
 
-  Color get accent => parent.colorsStyle.accent;
+  Color get onPrimary => inherit.onPrimary;
 
-  Color get onAccent => parent.colorsStyle.onAccent;
+  Color get accent => inherit.accent;
 
-  Color get background => parent.colorsStyle.background;
+  Color get onAccent => inherit.onAccent;
+
+  Color get background => inherit.background;
 }
 
 class LightColorsStyle extends ColorsStyle {
@@ -43,7 +45,7 @@ class LightColorsStyle extends ColorsStyle {
   Color get primary => Colors.deepPurple;
 
   @override
-  Color get onPrimary => Colors.white;
+  Color get onPrimary => Colors.red;
 
   @override
   Color get accent => Colors.cyanAccent;
@@ -64,7 +66,7 @@ class DarkColorsStyle extends ColorsStyle {
   Color get primary => Colors.deepPurple.shade200;
 
   @override
-  Color get onPrimary => Colors.black87;
+  Color get onPrimary => Colors.yellow;
 
   @override
   Color get accent => Colors.cyanAccent.shade700;
@@ -74,5 +76,18 @@ class DarkColorsStyle extends ColorsStyle {
 
   @override
   Color get background => const Color(0xFF2A2A2A);
+}
+
+class BlackColorsStyle extends ColorsStyle {
+
+  @override
+  Brightness get brightness => Brightness.dark;
+
+  @override
+  Color get primary => Colors.black;
+
+  @override
+  Color get onPrimary => Colors.white;
+
 }
 

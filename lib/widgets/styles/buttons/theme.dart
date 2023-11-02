@@ -11,8 +11,8 @@ class ButtonTheme extends WidgetTheme<ButtonStyle> {
     required super.createStyle,
   });
 
-  static ButtonStyle of(BuildContext context) {
-    return WidgetTheme.styleOf<ButtonStyle, ButtonTheme>(context);
+  static ButtonStyle of(BuildContext context, [BuildContext? parent]) {
+    return WidgetTheme.styleOf<ButtonStyle, ButtonTheme>(context,inheritFrom: parent);
   }
 }
 
@@ -21,17 +21,19 @@ extension ButtonStyleExt on BuildContext {
 }
 
 class ButtonStyle extends Style {
-  Color get primaryColor => parent.buttonStyle.primaryColor;
+  ButtonStyle get inherit => ButtonTheme.of(context, parent);
 
-  Color get onPrimaryColor => parent.buttonStyle.onPrimaryColor;
+  Color get primaryColor => inherit.primaryColor;
 
-  Color get backgroundColor => parent.buttonStyle.backgroundColor;
+  Color get onPrimaryColor => inherit.onPrimaryColor;
 
-  Color get foregroundColor => parent.buttonStyle.foregroundColor;
+  Color get backgroundColor => inherit.backgroundColor;
 
-  OutlinedBorder get shape => parent.buttonStyle.shape;
+  Color get foregroundColor => inherit.foregroundColor;
 
-  TextStyle? get textStyle => parent.buttonStyle.textStyle;
+  OutlinedBorder get shape => inherit.shape;
+
+  TextStyle? get textStyle => inherit.textStyle;
 }
 
 class DefaultButtonStyle extends ButtonStyle {
@@ -58,11 +60,10 @@ class DefaultButtonStyle extends ButtonStyle {
 
 class RoundedButtonStyle extends ButtonStyle {
   @override
-  OutlinedBorder get shape =>
-      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8)));
+  OutlinedBorder get shape => const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8)));
 }
 
-class PrimaryButtonStyle extends DefaultButtonStyle {
+class PrimaryButtonStyle extends ButtonStyle {
   @override
   Color get primaryColor => context.colorsStyle.primary;
 
@@ -70,7 +71,7 @@ class PrimaryButtonStyle extends DefaultButtonStyle {
   Color get onPrimaryColor => context.colorsStyle.onPrimary;
 }
 
-class AccentButtonStyle extends DefaultButtonStyle {
+class AccentButtonStyle extends ButtonStyle {
   @override
   Color get primaryColor => context.colorsStyle.accent;
 
