@@ -1,7 +1,7 @@
 part of 'style.dart';
 
 /// An [Element] that uses a [WidgetTheme] as its configuration.
-class StyleElement extends InheritedElement implements StyleOwnerContext {
+class StyleElement extends SingleChildInheritedElement implements StyleOwnerContext {
   StyleElement(WidgetTheme widget) : super(widget);
 
   @override
@@ -12,6 +12,7 @@ class StyleElement extends InheritedElement implements StyleOwnerContext {
     return getDependencies(dependent as Element) != null;
   }
 
+  @override
   Style getStyle(BuildContext context) {
     final style = getDependencies(context as Element) as Style?;
     assert(style != null);
@@ -30,7 +31,7 @@ class StyleElement extends InheritedElement implements StyleOwnerContext {
   }
 
   Style initStyle(Element dependent) {
-    return widget.createStyle()
+    return widget._createStyle()
       .._element = dependent
       .._hostElement = this;
   }

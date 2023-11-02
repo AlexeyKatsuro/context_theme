@@ -6,8 +6,8 @@ import '../style.dart';
 class ColorsTheme extends WidgetTheme<ColorsStyle> {
   const ColorsTheme({
     super.key,
-    required super.createStyle,
-    required super.child,
+    required super.style,
+    super.child,
   });
 
   static ColorsStyle of(BuildContext context, [StyleOwnerContext? parent]) {
@@ -20,7 +20,6 @@ extension ColorsThemeExt on BuildContext {
 }
 
 class ColorsStyle extends Style {
-
   ColorsStyle get inherit => ColorsTheme.of(context, parent);
 
   Brightness get brightness => inherit.brightness;
@@ -37,7 +36,6 @@ class ColorsStyle extends Style {
 }
 
 class LightColorsStyle extends ColorsStyle {
-
   @override
   Brightness get brightness => Brightness.light;
 
@@ -58,7 +56,6 @@ class LightColorsStyle extends ColorsStyle {
 }
 
 class DarkColorsStyle extends ColorsStyle {
-
   @override
   Brightness get brightness => Brightness.dark;
 
@@ -79,7 +76,6 @@ class DarkColorsStyle extends ColorsStyle {
 }
 
 class BlackColorsStyle extends ColorsStyle {
-
   @override
   Brightness get brightness => Brightness.dark;
 
@@ -88,6 +84,4 @@ class BlackColorsStyle extends ColorsStyle {
 
   @override
   Color get onPrimary => Colors.white;
-
 }
-

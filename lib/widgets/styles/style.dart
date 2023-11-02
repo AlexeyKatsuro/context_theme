@@ -1,17 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:nested/nested.dart';
+
+import 'single_Inherited_widget.dart';
 
 part 'style_element.dart';
 
 typedef CreateStyle<S extends Style> = S Function();
 
-abstract class WidgetTheme<S extends Style> extends InheritedWidget {
-  /// Initializes [key] for subclasses.
-  const WidgetTheme({super.key, required this.createStyle, required super.child});
 
-  static S styleOf<S extends Style, W extends WidgetTheme<S>>(
-    BuildContext context, {
+
+
+abstract class WidgetTheme<S extends Style> extends SingleChildInheritedWidget {
+  /// Initializes [key] for subclasses.
+  const WidgetTheme({super.key, required S Function() style, super.child}) : _createStyle = style;
+
+  static S styleOf<S extends Style, W extends WidgetTheme<S>>(BuildContext context, {
     StyleOwnerContext? inheritFrom,
   }) {
     final StyleOwnerContext? styleOwner;
@@ -39,11 +44,12 @@ abstract class WidgetTheme<S extends Style> extends InheritedWidget {
   StyleElement createElement() => StyleElement(this);
 
   @protected
-  final CreateStyle<S> createStyle;
+  final CreateStyle<S> _createStyle;
 
   @override
-  bool updateShouldNotify(covariant WidgetTheme oldWidget) => oldWidget.createStyle != createStyle;
+  bool updateShouldNotify(covariant WidgetTheme oldWidget) => oldWidget._createStyle != _createStyle;
 }
+
 
 @optionalTypeArgs
 abstract class Style with Diagnosticable {
@@ -74,7 +80,7 @@ abstract class Style with Diagnosticable {
       if (_element == null) {
         throw FlutterError(
           'This widget has been unmounted, so the State no longer has a context (and should be considered defunct). \n'
-          'Consider canceling any active work during "dispose" or using the "mounted" getter to determine if the State is still active.',
+              'Consider canceling any active work during "dispose" or using the "mounted" getter to determine if the State is still active.',
         );
       }
       if (_disposed) {
@@ -128,4 +134,16 @@ class StyleNullException implements Exception {
 Error: The widget $callerType tried to read WidgetTheme.styleOf<$stateType, $widgetThemeType> but widget has no parent theme of $widgetThemeType
 ''';
   }
+}
+
+class MultiTheme extends Nested {
+  MultiTheme({
+    Key? key,
+    required List<SingleChildWidget> themes,
+    Widget? child,
+  }) : super(
+    key: key,
+    children: themes,
+    child: child,
+  );
 }

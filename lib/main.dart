@@ -4,6 +4,7 @@ import 'package:attr_theme/widgets/buttons/app_button.dart';
 import 'package:attr_theme/widgets/buttons/outlined_styles.dart';
 import 'package:attr_theme/widgets/styles/button.dart';
 import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
+import 'package:attr_theme/widgets/styles/style.dart';
 import 'package:flutter/material.dart' hide ButtonTheme;
 
 import 'widgets/buttons/filled_styles.dart';
@@ -108,13 +109,15 @@ class _AppState extends State<App> {
       ),
       builder: (context, child) {
         final theme = Theme.of(context);
-        return ColorsTheme(
-          createStyle: theme.brightness.isDark ? LightColorsStyle.new : DarkColorsStyle.new,
+        return MultiTheme(
+          themes: [
+            ColorsTheme(
+                style: theme.brightness.isDark ? LightColorsStyle.new : DarkColorsStyle.new),
+            ButtonTheme(style: DefaultButtonStyle.new),
+            ButtonTheme(style: RoundedButtonStyle.new),
+          ],
           child: Center(
-            child: ButtonTheme(
-              child: child!,
-              createStyle: DefaultButtonStyle.new,
-            ),
+            child: child!,
           ),
         );
       },
@@ -160,23 +163,23 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: ButtonTheme(
-                createStyle: RoundedButtonStyle.new,
-                child: ButtonTheme(
-                  createStyle: AccentButtonStyle.new,
-                  child: Column(
-                    children: [
-                      Button(
+              child: MultiTheme(
+                themes: [
+                  ButtonTheme(style: RoundedButtonStyle.new),
+                  ButtonTheme(style: AccentButtonStyle.new),
+                ],
+                child: Column(
+                  children: [
+                    Button(
+                      child: Text('Button'),
+                    ),
+                    ColorsTheme(
+                      style: BlackColorsStyle.new,
+                      child: Button(
                         child: Text('Button'),
                       ),
-                      ColorsTheme(
-                        createStyle: BlackColorsStyle.new,
-                        child: Button(
-                          child: Text('Button'),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

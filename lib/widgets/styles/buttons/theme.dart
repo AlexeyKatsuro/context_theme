@@ -7,8 +7,8 @@ import '../style.dart';
 class ButtonTheme extends WidgetTheme<ButtonStyle> {
   const ButtonTheme({
     super.key,
-    required super.child,
-    required super.createStyle,
+    super.child,
+    required super.style,
   });
 
   static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
@@ -73,9 +73,9 @@ class PrimaryButtonStyle extends ButtonStyle {
 
 class AccentButtonStyle extends ButtonStyle {
   @override
-  Color get primaryColor => context.colorsStyle.accent;
+  Color get backgroundColor => context.colorsStyle.accent;
 
   @override
-  Color get onPrimaryColor => context.colorsStyle.onAccent;
+  Color get foregroundColor => context.colorsStyle.onAccent;
 
 }
