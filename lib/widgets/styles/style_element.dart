@@ -1,25 +1,13 @@
 part of 'style.dart';
 
 /// An [Element] that uses a [WidgetTheme] as its configuration.
-class StyleElement extends InheritedElement {
+class StyleElement extends InheritedElement implements StyleOwnerContext {
   StyleElement(WidgetTheme widget) : super(widget);
 
   @override
   WidgetTheme get widget => super.widget as WidgetTheme;
 
   @override
-  InheritedElement? getElementForInheritedWidgetOfExactType<I extends InheritedWidget>() {
-    InheritedElement? inheritedElement;
-
-    // An InheritedProvider<T>'s update tries to obtain a parent provider of
-    // the same type.
-    visitAncestorElements((parent) {
-      inheritedElement = parent.getElementForInheritedWidgetOfExactType<I>();
-      return false;
-    });
-    return inheritedElement;
-  }
-
   bool doesHasDepended(BuildContext dependent) {
     return getDependencies(dependent as Element) != null;
   }
@@ -55,4 +43,25 @@ class StyleElement extends InheritedElement {
     setDependencies(dependent, newStyle);
     super.notifyDependent(oldWidget, dependent);
   }
+
+  @override
+  StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme<Style>>() {
+    {
+      StyleOwnerContext? inheritedElement;
+      visitAncestorElements((parent) {
+        inheritedElement = parent.getElementForInheritedWidgetOfExactType<I>() as StyleOwnerContext;
+        return false;
+      });
+      return inheritedElement;
+    }
+  }
+}
+
+abstract interface class StyleOwnerContext implements InheritedElement {
+  StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme>();
+
+  bool doesHasDepended(BuildContext dependent);
+
+  Style getStyle(BuildContext context);
+
 }

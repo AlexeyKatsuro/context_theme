@@ -162,17 +162,20 @@ class _MyHomePageState extends State<MyHomePage> {
             Center(
               child: ButtonTheme(
                 createStyle: RoundedButtonStyle.new,
-                child: Center(
-                  child: ButtonTheme(
-                    createStyle: AccentButtonStyle.new,
-                    child: Center(
-                      child:  ColorsTheme(
+                child: ButtonTheme(
+                  createStyle: AccentButtonStyle.new,
+                  child: Column(
+                    children: [
+                      Button(
+                        child: Text('Button'),
+                      ),
+                      ColorsTheme(
                         createStyle: BlackColorsStyle.new,
                         child: Button(
                           child: Text('Button'),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),

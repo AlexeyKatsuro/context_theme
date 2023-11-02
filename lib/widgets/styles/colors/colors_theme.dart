@@ -10,7 +10,7 @@ class ColorsTheme extends WidgetTheme<ColorsStyle> {
     required super.child,
   });
 
-  static ColorsStyle of(BuildContext context, [BuildContext? parent]) {
+  static ColorsStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return WidgetTheme.styleOf<ColorsStyle, ColorsTheme>(context, inheritFrom: parent);
   }
 }

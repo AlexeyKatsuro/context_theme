@@ -11,7 +11,7 @@ class ButtonTheme extends WidgetTheme<ButtonStyle> {
     required super.createStyle,
   });
 
-  static ButtonStyle of(BuildContext context, [BuildContext? parent]) {
+  static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return WidgetTheme.styleOf<ButtonStyle, ButtonTheme>(context,inheritFrom: parent);
   }
 }

@@ -12,18 +12,24 @@ abstract class WidgetTheme<S extends Style> extends InheritedWidget {
 
   static S styleOf<S extends Style, W extends WidgetTheme<S>>(
     BuildContext context, {
-    BuildContext? inheritFrom,
+    StyleOwnerContext? inheritFrom,
   }) {
-    final styleElement = (inheritFrom ?? context).getElementForInheritedWidgetOfExactType<W>() as StyleElement?;
+    final StyleOwnerContext? styleOwner;
 
-    if (styleElement == null) {
+    if (inheritFrom != null) {
+      styleOwner = inheritFrom.getParentStyleOwner<W>();
+    } else {
+      styleOwner = context.getElementForInheritedWidgetOfExactType<W>() as StyleOwnerContext?;
+    }
+
+    if (styleOwner == null) {
       throw StyleNullException(W, context.widget.runtimeType, S);
     }
 
-    if (!styleElement.doesHasDepended(context)) {
-      context.dependOnInheritedElement(styleElement);
+    if (!styleOwner.doesHasDepended(context)) {
+      context.dependOnInheritedElement(styleOwner);
     }
-    return styleElement.getStyle(context) as S;
+    return styleOwner.getStyle(context) as S;
   }
 
   /// Creates a [StyleElement] to manage this widget's location in the tree.
@@ -81,12 +87,12 @@ abstract class Style with Diagnosticable {
 
   bool _disposed = false;
 
-  Element? _hostElement;
+  StyleElement? _hostElement;
 
   Element? _element;
 
   @protected
-  BuildContext get parent {
+  StyleOwnerContext get parent {
     assert(_hostElement != null);
     return _hostElement!;
   }
