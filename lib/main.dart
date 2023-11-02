@@ -2,10 +2,13 @@
 
 import 'package:attr_theme/widgets/buttons/app_button.dart';
 import 'package:attr_theme/widgets/buttons/outlined_styles.dart';
-import 'package:flutter/material.dart';
+import 'package:attr_theme/widgets/styles/button.dart';
+import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
+import 'package:flutter/material.dart' hide ButtonTheme;
 
 import 'widgets/buttons/filled_styles.dart';
 import 'widgets/buttons/icon_styles.dart';
+import 'widgets/styles/buttons/theme.dart';
 
 void emptyCallback() {}
 const ColorScheme _colorSchemeLightM2 = ColorScheme.light();
@@ -76,34 +79,40 @@ const ColorScheme _colorSchemeDarkM3 = ColorScheme(
 );
 
 void main() {
-  runApp(const MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class App extends StatefulWidget {
+  const App({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<App> createState() => _AppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  ThemeMode themeMode = ThemeMode.system;
+class _AppState extends State<App> {
+  ThemeMode themeMode = ThemeMode.light;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.from(useMaterial3: true,colorScheme: _colorSchemeLightM3),
-      darkTheme: ThemeData.from(useMaterial3: true,colorScheme: _colorSchemeDarkM3),
       themeMode: themeMode,
+      theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
       home: MyHomePage(
-        title: 'Analytics',
-        onThemeChanged: (ThemeMode value) {
+        title: 'Theme',
+        onThemeChanged: (value) {
           setState(() {
             themeMode = value;
           });
         },
       ),
+      builder: (context, child) {
+        final theme = Theme.of(context);
+        return ColorsTheme(
+          createStyle: theme.brightness.isDark ? LightColorsStyle.new : DarkColorsStyle.new,
+          child: child!,
+        );
+      },
     );
   }
 }
@@ -123,9 +132,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorStyle = context.colorsStyle;
     return Scaffold(
+      backgroundColor: colorStyle.background,
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: colorStyle.primary,
+        foregroundColor: colorStyle.onPrimary,
         actions: [
           IconButton(
             icon: theme.brightness.isDark
@@ -137,70 +150,95 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        children: [
-          Text('Weekly stats'),
-          SizedBox(height: 12),
-          InfoCard(
-            overline: Text('Marketing'),
-            title: Text('123.4 M'),
-            caption: Text('+12.3% of target'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Text'),
+            ButtonTheme(
+              createStyle: theme.brightness.isDark ? AccentButtonStyle.new : PrimaryButtonStyle.new,
+              child: ButtonTheme(
+                createStyle: RoundedButtonStyle.new,
+                child: Button(
+                  child: Text('Button'),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CardsList extends StatelessWidget {
+  const CardsList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      children: [
+        Text('Weekly stats'),
+        SizedBox(height: 12),
+        InfoCard(
+          overline: Text('Marketing'),
+          title: Text('123.4 M'),
+          caption: Text('+12.3% of target'),
+          secondaryAction: AppButton(
+            child: Text('Cancel'),
+            onPressed: emptyCallback,
+          ),
+          primaryAction: AppButton(
+            child: Text('Apply'),
+            onPressed: emptyCallback,
+          ),
+          cornerAction: AppButton(
+            child: Icon(Icons.info_outline_rounded),
+            onPressed: emptyCallback,
+          ),
+        ),
+        const SizedBox(height: 6),
+        PrimaryContainerTheme(
+          child: InfoCard(
+            overline: Text('Sells'),
+            title: Text('423.4 M'),
+            caption: Text('+4.01% of target'),
             secondaryAction: AppButton(
               child: Text('Cancel'),
               onPressed: emptyCallback,
             ),
             primaryAction: AppButton(
-              child: Text('Apply'),
+              child: Text('Review'),
               onPressed: emptyCallback,
             ),
             cornerAction: AppButton(
-              child: Icon(Icons.info_outline_rounded),
+              child: Icon(Icons.share_outlined),
               onPressed: emptyCallback,
             ),
           ),
-          const SizedBox(height: 6),
-          PrimaryContainerTheme(
-            child: InfoCard(
-              overline: Text('Sells'),
-              title: Text('423.4 M'),
-              caption: Text('+4.01% of target'),
-              secondaryAction: AppButton(
-                child: Text('Cancel'),
-                onPressed: emptyCallback,
-              ),
-              primaryAction: AppButton(
-                child: Text('Review'),
-                onPressed: emptyCallback,
-              ),
-              cornerAction: AppButton(
-                child: Icon(Icons.share_outlined),
-                onPressed: emptyCallback,
-              ),
+        ),
+        const SizedBox(height: 6),
+        ErrorContainerTheme(
+          child: InfoCard(
+            overline: Text('Losses'),
+            title: Text('50.4 M'),
+            caption: Text('-1.01% of target'),
+            secondaryAction: AppButton(
+              child: Text('Cancel'),
+              onPressed: emptyCallback,
+            ),
+            primaryAction: AppButton(
+              child: Text('Review'),
+              onPressed: emptyCallback,
+            ),
+            cornerAction: AppButton(
+              child: Icon(Icons.help_outline_outlined),
+              onPressed: emptyCallback,
             ),
           ),
-          const SizedBox(height: 6),
-          ErrorContainerTheme(
-            child: InfoCard(
-              overline: Text('Losses'),
-              title: Text('50.4 M'),
-              caption: Text('-1.01% of target'),
-              secondaryAction: AppButton(
-                child: Text('Cancel'),
-                onPressed: emptyCallback,
-              ),
-              primaryAction: AppButton(
-                child: Text('Review'),
-                onPressed: emptyCallback,
-              ),
-              cornerAction: AppButton(
-                child: Icon(Icons.help_outline_outlined),
-                onPressed: emptyCallback,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -227,51 +265,51 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
-      elevation: 8,
+        elevation: 8,
         child: Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
+          padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                  child: DefaultTextStyle.merge(
-                child: overline,
-                style: theme.textTheme.labelSmall,
-              )),
-              AppButtonTheme.merge(
-                data: IconButtonStyle(context),
-                child: cornerAction,
+              Row(
+                children: [
+                  Expanded(
+                      child: DefaultTextStyle.merge(
+                    child: overline,
+                    style: theme.textTheme.labelSmall,
+                  )),
+                  AppButtonTheme.merge(
+                    data: IconButtonStyle(context),
+                    child: cornerAction,
+                  ),
+                ],
+              ),
+              DefaultTextStyle.merge(child: title, style: theme.textTheme.headlineSmall),
+              DefaultTextStyle.merge(
+                child: caption,
+                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButtonTheme.merge(
+                      data: OutlinedButtonStyle(context),
+                      child: secondaryAction,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: AppButtonTheme.merge(
+                      data: FilledButtonStyle(context),
+                      child: primaryAction,
+                    ),
+                  )
+                ],
               ),
             ],
           ),
-          DefaultTextStyle.merge(child: title, style: theme.textTheme.headlineSmall),
-          DefaultTextStyle.merge(
-            child: caption,
-            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: AppButtonTheme.merge(
-                  data: OutlinedButtonStyle(context),
-                  child: secondaryAction,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: AppButtonTheme.merge(
-                  data: FilledButtonStyle(context),
-                  child: primaryAction,
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }
 
@@ -294,20 +332,19 @@ class PrimaryContainerTheme extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return Theme(
-      data: ThemeData(
-        brightness: theme.brightness,
-        useMaterial3: theme.useMaterial3,
-        colorScheme: theme.colorScheme.copyWith(
-          primary: colorScheme.onPrimaryContainer,
-          surface: colorScheme.primaryContainer,
-          onPrimary: colorScheme.primaryContainer,
-          onBackground: colorScheme.onPrimaryContainer,
-          onSurface: colorScheme.onPrimaryContainer,
-          background: colorScheme.primaryContainer,
-          outline: colorScheme.onPrimaryContainer,
-        )
-      ), child: child
-    );
+        data: ThemeData(
+            brightness: theme.brightness,
+            useMaterial3: theme.useMaterial3,
+            colorScheme: theme.colorScheme.copyWith(
+              primary: colorScheme.onPrimaryContainer,
+              surface: colorScheme.primaryContainer,
+              onPrimary: colorScheme.primaryContainer,
+              onBackground: colorScheme.onPrimaryContainer,
+              onSurface: colorScheme.onPrimaryContainer,
+              background: colorScheme.primaryContainer,
+              outline: colorScheme.onPrimaryContainer,
+            )),
+        child: child);
   }
 }
 
@@ -334,9 +371,8 @@ class ErrorContainerTheme extends StatelessWidget {
               onBackground: colorScheme.onErrorContainer,
               onSurface: colorScheme.onErrorContainer,
               background: colorScheme.errorContainer,
-                outline: colorScheme.onErrorContainer,
-            )
-        ), child: child
-    );
+              outline: colorScheme.onErrorContainer,
+            )),
+        child: child);
   }
 }
