@@ -50,7 +50,7 @@ class StyleElement extends SingleChildInheritedElement implements StyleOwnerCont
     {
       StyleOwnerContext? inheritedElement;
       visitAncestorElements((parent) {
-        inheritedElement = parent.getElementForInheritedWidgetOfExactType<I>() as StyleOwnerContext;
+        inheritedElement = parent.getElementForInheritedWidgetOfExactType<I>() as StyleOwnerContext?;
         return false;
       });
       return inheritedElement;

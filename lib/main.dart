@@ -2,14 +2,13 @@
 
 import 'package:attr_theme/widgets/buttons/app_button.dart';
 import 'package:attr_theme/widgets/buttons/outlined_styles.dart';
-import 'package:attr_theme/widgets/styles/button.dart';
 import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
 import 'package:attr_theme/widgets/styles/style.dart';
 import 'package:flutter/material.dart' hide ButtonTheme;
 
+import 'widgets/buttons/base_styles.dart';
 import 'widgets/buttons/filled_styles.dart';
 import 'widgets/buttons/icon_styles.dart';
-import 'widgets/styles/buttons/theme.dart';
 
 void emptyCallback() {}
 const ColorScheme _colorSchemeLightM2 = ColorScheme.light();
@@ -44,8 +43,6 @@ const ColorScheme _colorSchemeLightM3 = ColorScheme(
   inverseSurface: Color(0xFF313033),
   onInverseSurface: Color(0xFFF4EFF4),
   inversePrimary: Color(0xFFD0BCFF),
-  // The surfaceTint color is set to the same color as the primary.
-  surfaceTint: Color(0xFF6750A4),
 );
 
 const ColorScheme _colorSchemeDarkM3 = ColorScheme(
@@ -75,8 +72,6 @@ const ColorScheme _colorSchemeDarkM3 = ColorScheme(
   inverseSurface: Color(0xFFE6E1E5),
   onInverseSurface: Color(0xFF313033),
   inversePrimary: Color(0xFF6750A4),
-  // The surfaceTint color is set to the same color as the primary.
-  surfaceTint: Color(0xFFD0BCFF),
 );
 
 void main() {
@@ -97,8 +92,8 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       themeMode: themeMode,
-      theme: ThemeData(brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      theme: ThemeData.from(useMaterial3: true, colorScheme: _colorSchemeLightM2),
+      darkTheme: ThemeData.from(useMaterial3: true, colorScheme: _colorSchemeDarkM2),
       home: MyHomePage(
         title: 'Theme',
         onThemeChanged: (value) {
@@ -108,17 +103,12 @@ class _AppState extends State<App> {
         },
       ),
       builder: (context, child) {
-        final theme = Theme.of(context);
         return MultiTheme(
           themes: [
-            ColorsTheme(
-                style: theme.brightness.isDark ? LightColorsStyle.new : DarkColorsStyle.new),
-            ButtonTheme(style: DefaultButtonStyle.new),
-            ButtonTheme(style: RoundedButtonStyle.new),
+            ColorsTheme(style: MaterialColorsStyle.new),
+            ButtonTheme(style: BaseButtonStyle.new),
           ],
-          child: Center(
-            child: child!,
-          ),
+          child: child!,
         );
       },
     );
@@ -140,56 +130,66 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorStyle = context.colorsStyle;
     return Scaffold(
-      backgroundColor: colorStyle.background,
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: colorStyle.primary,
-        foregroundColor: colorStyle.onPrimary,
-        actions: [
-          IconButton(
-            icon: theme.brightness.isDark
-                ? const Icon(Icons.light_mode_outlined)
-                : const Icon(Icons.dark_mode_outlined),
-            onPressed: () {
-              widget.onThemeChanged(theme.brightness.isDark ? ThemeMode.light : ThemeMode.dark);
-            },
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: MultiTheme(
-                themes: [
-                  ButtonTheme(style: RoundedButtonStyle.new),
-                  ButtonTheme(style: AccentButtonStyle.new),
-                ],
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: [
+            IconButton(
+              icon: theme.brightness.isDark
+                  ? const Icon(Icons.light_mode_outlined)
+                  : const Icon(Icons.dark_mode_outlined),
+              onPressed: () {
+                widget.onThemeChanged(theme.brightness.isDark ? ThemeMode.light : ThemeMode.dark);
+              },
+            )
+          ],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
                 child: Column(
                   children: [
-                    Button(
-                      child: Text('Button'),
+                    FilledButton(
+                      child: Text('Filled'),
+                      onPressed: () {},
                     ),
-                    ColorsTheme(
-                      style: BlackColorsStyle.new,
-                      child: Button(
-                        child: Text('Button'),
+                    ButtonTheme(
+                      style: FilledButtonStyle.new,
+                      child: AppButton(
+                        child: Text('Filled'),
+                        onPressed: () {},
+                      ),
+                    ),
+                    MultiTheme(
+                      themes: [
+                        ButtonTheme(style: FilledButtonStyle.new),
+                        ButtonTheme(style: ErrorButtonStyle.new),
+                      ],
+                      child: AppButton(
+                        child: Text('Filled'),
+                        onPressed: () {},
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        )
+        // body: CardsList(),
+        );
   }
 }
 
+extension BrightnessExt on Brightness {
+  bool get isDark => this == Brightness.dark;
+
+  bool get isLight => this == Brightness.light;
+}
+
+/*
 class CardsList extends StatelessWidget {
   const CardsList({super.key});
 
@@ -332,11 +332,7 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-extension BrightnessExt on Brightness {
-  bool get isDark => this == Brightness.dark;
 
-  bool get isLight => this == Brightness.light;
-}
 
 class PrimaryContainerTheme extends StatelessWidget {
   const PrimaryContainerTheme({
@@ -395,3 +391,4 @@ class ErrorContainerTheme extends StatelessWidget {
         child: child);
   }
 }
+*/
