@@ -8,7 +8,6 @@ import 'package:flutter/material.dart' hide ButtonTheme;
 
 import 'widgets/buttons/base_styles.dart';
 import 'widgets/buttons/filled_styles.dart';
-import 'widgets/buttons/icon_styles.dart';
 
 void emptyCallback() {}
 const ColorScheme _colorSchemeLightM2 = ColorScheme.light();
@@ -131,55 +130,55 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: [
-            IconButton(
-              icon: theme.brightness.isDark
-                  ? const Icon(Icons.light_mode_outlined)
-                  : const Icon(Icons.dark_mode_outlined),
-              onPressed: () {
-                widget.onThemeChanged(theme.brightness.isDark ? ThemeMode.light : ThemeMode.dark);
-              },
-            )
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    FilledButton(
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: theme.brightness.isDark
+                ? const Icon(Icons.light_mode_outlined)
+                : const Icon(Icons.dark_mode_outlined),
+            onPressed: () {
+              widget.onThemeChanged(theme.brightness.isDark ? ThemeMode.light : ThemeMode.dark);
+            },
+          )
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  OutlinedButton(
+                    child: Text('Filled'),
+                    onPressed: () {},
+                  ),
+                  ButtonTheme(
+                    style: OutlinedButtonStyle.new,
+                    child: AppButton(
                       child: Text('Filled'),
                       onPressed: () {},
                     ),
-                    ButtonTheme(
-                      style: FilledButtonStyle.new,
-                      child: AppButton(
-                        child: Text('Filled'),
-                        onPressed: () {},
-                      ),
+                  ),
+                  MultiTheme(
+                    themes: [
+                      ButtonTheme(style: OutlinedButtonStyle.new),
+                      ButtonTheme(style: ErrorButtonStyle.new),
+                    ],
+                    child: AppButton(
+                      child: Text('Filled'),
+                      onPressed: () {},
                     ),
-                    MultiTheme(
-                      themes: [
-                        ButtonTheme(style: FilledButtonStyle.new),
-                        ButtonTheme(style: ErrorButtonStyle.new),
-                      ],
-                      child: AppButton(
-                        child: Text('Filled'),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        )
-        // body: CardsList(),
-        );
+            ),
+          ],
+        ),
+      ),
+      // body: CardsList(),
+    );
   }
 }
 

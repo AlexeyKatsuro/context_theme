@@ -3,12 +3,6 @@ import 'package:attr_theme/widgets/buttons/base_styles.dart';
 import 'package:flutter/material.dart' hide ButtonStyle;
 import 'package:flutter/material.dart' as material show  ButtonStyle;
 
-import 'base_styles.dart';
-
-
-import 'dart:math' as math;
-
-
 
 /// The base [StatefulWidget] class for buttons whose style is defined by a [AppButtonThemeData] object.
 ///
@@ -156,6 +150,7 @@ extension on ButtonStyle {
       backgroundColor: backgroundColor.toMaterialStateProperty(),
       foregroundColor: foregroundColor.toMaterialStateProperty(),
       overlayColor: overlayColor.toMaterialStateProperty(),
+      shadowColor: shadowColor.toMaterialStateProperty(),
       elevation: elevation.toMaterialStateProperty(),
       padding: padding.toMaterialStateProperty(),
       minimumSize: minimumSize.toMaterialStateProperty(),

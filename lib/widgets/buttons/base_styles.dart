@@ -1,6 +1,8 @@
+import 'package:attr_theme/utils/material_states/material_state_properties.dart';
+import 'package:attr_theme/utils/material_states/material_states_extension.dart';
 import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
 import 'package:attr_theme/widgets/styles/style.dart';
-import 'package:flutter/material.dart' hide ButtonStyle;
+import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
 
 class ButtonTheme extends WidgetTheme<ButtonStyle> {
   const ButtonTheme({
@@ -41,6 +43,10 @@ class ButtonStyle extends Style {
 
   Color? get overlayColor => inherit.overlayColor;
 
+  Color? get shadowColor => inherit.shadowColor;
+
+  Color? get surfaceTintColor => inherit.surfaceTintColor;
+
   double get elevation => inherit.elevation;
 
   EdgeInsetsGeometry get padding => inherit.padding;
@@ -70,6 +76,11 @@ class ButtonStyle extends Style {
 
 class BaseButtonStyle extends ButtonStyle {
 
+  @override
+  Color get primaryColor => context.colorScheme.primary;
+
+  @override
+  Color get onPrimaryColor => context.colorScheme.onPrimary;
 
   @override
   TextAlign? get textAlign => TextAlign.center;
@@ -84,7 +95,13 @@ class BaseButtonStyle extends ButtonStyle {
   Color? get iconColor => null;
 
   @override
-  double? get iconSize => null;
+  Color? get shadowColor => context.colorScheme.shadow;
+
+  @override
+  Color? get surfaceTintColor => Colors.transparent;
+
+  @override
+  double? get iconSize => 24;
 
   @override
   TextStyle? get textStyle => Theme.of(context).textTheme.labelLarge;
@@ -111,10 +128,41 @@ class BaseButtonStyle extends ButtonStyle {
   Duration? get animationDuration => kThemeChangeDuration;
 
   @override
+  EdgeInsetsGeometry get padding => scaledButtonPadding(context);
+
+
+  @override
   AlignmentGeometry get alignment => Alignment.center;
 
   @override
   InteractiveInkFeatureFactory? get splashFactory => Theme.of(context).splashFactory;
+}
+
+EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
+  final bool useMaterial3 = Theme.of(context).useMaterial3;
+  final double padding1x = useMaterial3 ? 24.0 : 16.0;
+  return ButtonStyleButton.scaledPadding(
+    EdgeInsets.symmetric(horizontal: padding1x),
+    EdgeInsets.symmetric(horizontal: padding1x / 2),
+    EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
+    MediaQuery.textScaleFactorOf(context),
+  );
+}
+
+class OverlayMaterialStateColor extends MaterialStateColor {
+  OverlayMaterialStateColor(Color highlight) : super.resolveWith((states) {
+    if (states.isPressed) {
+      return highlight.withOpacity(0.12);
+    }
+    if (states.isHovered) {
+      return highlight.withOpacity(0.08);
+    }
+    if (states.isFocused) {
+      return highlight.withOpacity(0.12);
+    }
+    return null;
+  });
+
 }
 
 class ErrorButtonStyle extends ButtonStyle {

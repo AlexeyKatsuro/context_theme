@@ -1,62 +1,35 @@
-import 'package:flutter/material.dart';
+import 'package:attr_theme/utils/material_states/material_state_scope.dart';
+import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
+import 'package:flutter/material.dart' hide ButtonStyle;
 
-import 'filled_styles.dart';
+import 'base_styles.dart';
 
 class OutlinedButtonStyle extends ButtonStyle {
-  OutlinedButtonStyle(this.context)
-      : super(
-  );
-
-  final BuildContext context;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
+  @override
+  Color? get backgroundColor => Colors.transparent;
 
   @override
-  MaterialStateProperty<Color?>? get backgroundColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
+  Color get foregroundColor {
+    if (context.isDisabled) {
+      return context.colorScheme.onSurface.withOpacity(0.38);
+    }
+    return link.primaryColor;
+  }
 
   @override
-  MaterialStateProperty<Color?>? get foregroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        return _colors.primary;
-      });
+  Color? get overlayColor => OverlayMaterialStateColor(link.primaryColor);
 
   @override
-  MaterialStateProperty<Color?>? get overlayColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.primary.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.primary.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.primary.withOpacity(0.12);
-        }
-        return null;
-      });
+  Color get shadowColor => Colors.transparent;
 
   @override
-  MaterialStateProperty<Color>? get shadowColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
+  double get elevation => 0.0;
 
   @override
-  MaterialStateProperty<Color>? get surfaceTintColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<double>? get elevation =>
-      const MaterialStatePropertyAll<double>(0.0);
-
-  @override
-  MaterialStateProperty<BorderSide>? get side =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return BorderSide(color: _colors.onSurface.withOpacity(0.12));
-        }
-        return BorderSide(color: _colors.outline);
-      });
-
+  BorderSide? get side {
+    if (context.isDisabled) {
+      return BorderSide(color: context.colorScheme.onSurface.withOpacity(0.12));
+    }
+    return BorderSide(color: context.colorScheme.outline);
+  }
 }
