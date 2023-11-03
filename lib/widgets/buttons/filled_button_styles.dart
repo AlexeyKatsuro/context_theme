@@ -17,7 +17,7 @@ class FilledButtonStyle extends ButtonStyle {
   }
 
   @override
-  Color? get overlayColor => OverlayMaterialStateColor(link.onPrimaryColor);
+  Color get overlayColor => OverlayMaterialStateColor(link.onPrimaryColor);
 
   @override
   Color? get foregroundColor {

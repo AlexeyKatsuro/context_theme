@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:attr_theme/widgets/buttons/app_button.dart';
-import 'package:attr_theme/widgets/buttons/outlined_styles.dart';
+import 'package:attr_theme/widgets/buttons/outlined_button_styles.dart';
 import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
 import 'package:attr_theme/widgets/styles/style.dart';
 import 'package:flutter/material.dart' hide ButtonTheme;
 
 import 'widgets/buttons/base_styles.dart';
-import 'widgets/buttons/filled_styles.dart';
+import 'widgets/buttons/filled_button_styles.dart';
+import 'widgets/buttons/text_button_styles.dart';
 
 void emptyCallback() {}
 const ColorScheme _colorSchemeLightM2 = ColorScheme.light();
