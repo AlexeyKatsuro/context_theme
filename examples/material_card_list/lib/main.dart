@@ -1,5 +1,5 @@
 import 'package:context_theme/context_theme.dart';
-import 'package:flutter/material.dart' hide ButtonTheme, CardTheme;
+import 'package:flutter/material.dart' hide MaterialButton, ButtonTheme, CardTheme;
 import 'package:material_context_theme/material_context_theme.dart';
 
 void emptyCallback() {}
@@ -101,15 +101,15 @@ class CardsList extends StatelessWidget {
           overline: Text('Marketing'),
           title: Text('123.4 M'),
           caption: Text('+12.3% of target'),
-          secondaryAction: AppButton(
+          secondaryAction: MaterialButton(
             onPressed: emptyCallback,
             child: Text('Cancel'),
           ),
-          primaryAction: AppButton(
+          primaryAction: MaterialButton(
             onPressed: emptyCallback,
             child: Text('Apply'),
           ),
-          cornerAction: AppButton(
+          cornerAction: MaterialButton(
             onPressed: emptyCallback,
             child: Icon(Icons.info_outline_rounded),
           ),
@@ -121,15 +121,15 @@ class CardsList extends StatelessWidget {
             overline: Text('Sells'),
             title: Text('423.4 M'),
             caption: Text('+4.01% of target'),
-            secondaryAction: AppButton(
+            secondaryAction: MaterialButton(
               onPressed: emptyCallback,
               child: Text('Cancel'),
             ),
-            primaryAction: AppButton(
+            primaryAction: MaterialButton(
               onPressed: emptyCallback,
               child: Text('Review'),
             ),
-            cornerAction: AppButton(
+            cornerAction: MaterialButton(
               onPressed: emptyCallback,
               child: Icon(Icons.share_outlined),
             ),
@@ -142,15 +142,15 @@ class CardsList extends StatelessWidget {
             overline: Text('Losses'),
             title: Text('50.4 M'),
             caption: Text('-1.01% of target'),
-            secondaryAction: AppButton(
+            secondaryAction: MaterialButton(
               onPressed: emptyCallback,
               child: Text('Cancel'),
             ),
-            primaryAction: AppButton(
+            primaryAction: MaterialButton(
               onPressed: emptyCallback,
               child: Text('Review'),
             ),
-            cornerAction: AppButton(
+            cornerAction: MaterialButton(
               onPressed: emptyCallback,
               child: Icon(Icons.help_outline_outlined),
             ),
@@ -193,11 +193,11 @@ class _SelectableInfoCardState extends State<SelectableInfoCard> {
           overline: const Text('Losses'),
           title: const Text('50.4 M'),
           caption: const Text('-1.01% of target'),
-          secondaryAction: const AppButton(
+          secondaryAction: const MaterialButton(
             onPressed: emptyCallback,
             child: Text('Cancel'),
           ),
-          primaryAction: const AppButton(
+          primaryAction: const MaterialButton(
             onPressed: emptyCallback,
             child: Text('Review'),
           ),
@@ -239,7 +239,7 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
-    return AppCard(
+    return MaterialCard(
         child: Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Column(

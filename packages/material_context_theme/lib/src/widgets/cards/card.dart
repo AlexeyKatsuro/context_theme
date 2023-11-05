@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:material_context_theme/src/widgets/cards/app_card_theme.dart';
+import 'package:material_context_theme/src/widgets/cards/card_theme.dart';
 
-class AppCard extends StatelessWidget {
-  const AppCard({
+class MaterialCard extends StatelessWidget {
+  const MaterialCard({
     super.key,
     bool? semanticContainer,
     this.child,
   }) : semanticContainer = semanticContainer ?? true;
 
-  /// Whether this widget represents a single semantic container, or if false
-  /// a collection of individual semantic nodes.
-  ///
-  /// Defaults to true.
-  ///
-  /// Setting this flag to true will attempt to merge all child semantics into
-  /// this node. Setting this flag to false will force all child semantic nodes
-  /// to be explicit.
-  ///
-  /// This flag should be false if the card contains multiple different types
-  /// of content.
   final bool semanticContainer;
-
-  /// The widget below this widget in the tree.
-  ///
-  /// {@macro flutter.widgets.ProxyWidget.child}
   final Widget? child;
 
   @override

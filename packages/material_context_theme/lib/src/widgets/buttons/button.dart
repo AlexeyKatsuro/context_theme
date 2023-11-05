@@ -1,21 +1,11 @@
-import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle;
 import 'package:flutter/material.dart' as material show  ButtonStyle;
-import 'package:material_context_theme/src/material_states/material_state_scope.dart';
-import 'package:material_context_theme/src/widgets/buttons/base_styles.dart';
+import 'package:material_context_theme/src/material_states/index.dart';
+import 'base_styles.dart';
 
 
-/// The base [StatefulWidget] class for buttons whose style is defined by a [AppButtonThemeData] object.
-///
-/// Using this directly is not recommended, because this widget does not have most styles,
-/// and is the base class for stylized button types.
-///
-/// See:
-/// * [AppButtonFilled], similar to material [ElevatedButton].
-/// * [AppButtonOutlined], similar to material [OutlinedButton].
-/// * [AppButtonToggleable], variant of button that can be selected and unselected.
-class AppButton extends StatefulWidget {
-  const AppButton({
+class MaterialButton extends StatefulWidget {
+  const MaterialButton({
     Key? key,
     Clip? clipBehavior,
     required this.onPressed,
@@ -31,59 +21,34 @@ class AppButton extends StatefulWidget {
         enabled = enabled ?? onPressed != null || onLongPress != null,
         super(key: key);
 
-  /// Called when the button is tapped or otherwise activated.
-  ///
-  /// If this callback and [onLongPress] are null, then the button will be disabled.
   final VoidCallback? onPressed;
 
-  /// Called when the button is long-pressed.
-  ///
-  /// If this callback and [onPressed] are null, then the button will be disabled.
   final VoidCallback? onLongPress;
 
-  /// Handler called when the focus changes.
-  ///
-  /// Called with true if this widget's node gains focus, and false if it loses
-  /// focus.
   final ValueChanged<bool>? onFocusChange;
 
-  /// Called when a pointer enters or exits the button response area.
-  ///
-  /// The value passed to the callback is true if a pointer has entered this
-  /// part of the material and false if a pointer has exited this part of the
-  /// material.
   final ValueChanged<bool>? onHover;
 
-  /// {@macro flutter.widgets.Focus.focusNode}
   final FocusNode? focusNode;
 
-  /// {@macro flutter.widgets.Focus.autofocus}
   final bool autofocus;
 
-  /// Typically the button's label.
   final Widget child;
 
-  /// {@macro flutter.material.Material.clipBehavior}
-  ///
-  /// Defaults to [Clip.none], and must not be null.
   final Clip clipBehavior;
 
-  /// Whether the button is enabled or disabled.
-  ///
-  /// Buttons are disabled by default. To enable a button, set its [onPressed]
-  /// or [onLongPress] properties to a non-null value.
   final bool enabled;
 
   @override
-  State<AppButton> createState() => _AppButtonState();
+  State<MaterialButton> createState() => _MaterialButtonState();
 }
 
-class _AppButtonState extends State<AppButton> {
+class _MaterialButtonState extends State<MaterialButton> {
   late final MaterialStatesController _statesController =
   MaterialStatesController({if (!widget.enabled) MaterialState.disabled});
 
   @override
-  void didUpdateWidget(covariant AppButton oldWidget) {
+  void didUpdateWidget(covariant MaterialButton oldWidget) {
     super.didUpdateWidget(oldWidget);
     _statesController.update(MaterialState.disabled, !widget.enabled);
   }
@@ -147,7 +112,7 @@ extension on ButtonStyle {
     return material.ButtonStyle(
       textStyle: textStyle.toMaterialStateProperty(),
       iconColor: iconColor.toMaterialStateProperty(),
-      iconSize: iconSize?.toMaterialStateProperty(),
+      iconSize: iconSize.toMaterialStateProperty(),
       backgroundColor: backgroundColor.toMaterialStateProperty(),
       foregroundColor: foregroundColor.toMaterialStateProperty(),
       overlayColor: overlayColor.toMaterialStateProperty(),
@@ -169,12 +134,3 @@ extension on ButtonStyle {
   }
 }
 
-
-extension MaterialStatePropertyTransform<T> on T {
-  MaterialStateProperty<T>? toMaterialStateProperty() {
-    final value = this;
-    if (value == null) return null;
-    if (value is MaterialStateProperty<T>) return value;
-    return MaterialStatePropertyAll<T>(value);
-  }
-}
