@@ -1,7 +1,7 @@
 /*
 import 'package:attr_theme/widgets/styles/button.dart';
 import 'package:attr_theme/widgets/styles/buttons/theme.dart';
-import 'package:attr_theme/widgets/styles/colors_styles.dart';
+import 'package:attr_theme/widgets/styles/typography_styles.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

@@ -1,14 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
+import 'package:attr_theme/utils/material_states/material_state_scope.dart';
+import 'package:attr_theme/utils/material_states/material_states_extension.dart';
 import 'package:attr_theme/widgets/buttons/app_button.dart';
 import 'package:attr_theme/widgets/buttons/outlined_button_styles.dart';
+import 'package:attr_theme/widgets/cards/app_card_theme.dart';
 import 'package:attr_theme/widgets/styles/colors/colors_theme.dart';
 import 'package:attr_theme/widgets/styles/style.dart';
-import 'package:flutter/material.dart' hide ButtonTheme;
+import 'package:attr_theme/widgets/styles/typography_styles.dart';
+import 'package:flutter/material.dart' hide ButtonTheme, CardTheme;
 
 import 'widgets/buttons/base_styles.dart';
 import 'widgets/buttons/filled_button_styles.dart';
+import 'widgets/buttons/icon_button_style.dart';
 import 'widgets/buttons/text_button_styles.dart';
+import 'widgets/cards/app_card.dart';
 
 void emptyCallback() {}
 const ColorScheme _colorSchemeLightM2 = ColorScheme.light();
@@ -106,6 +112,8 @@ class _AppState extends State<App> {
         return MultiTheme(
           themes: [
             ColorsTheme(style: MaterialColorsStyle.new),
+            TypographyTheme(style: MaterialTypographyStyle.new),
+            CardTheme(style: BaseCardStyle.new),
             ButtonTheme(style: BaseButtonStyle.new),
           ],
           child: child!,
@@ -144,41 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  OutlinedButton(
-                    child: Text('Filled'),
-                    onPressed: () {},
-                  ),
-                  ButtonTheme(
-                    style: OutlinedButtonStyle.new,
-                    child: AppButton(
-                      child: Text('Filled'),
-                      onPressed: () {},
-                    ),
-                  ),
-                  MultiTheme(
-                    themes: [
-                      ButtonTheme(style: OutlinedButtonStyle.new),
-                      ButtonTheme(style: ErrorButtonStyle.new),
-                    ],
-                    child: AppButton(
-                      child: Text('Filled'),
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      // body: CardsList(),
+      body: CardsList(),
     );
   }
 }
@@ -189,7 +163,6 @@ extension BrightnessExt on Brightness {
   bool get isLight => this == Brightness.light;
 }
 
-/*
 class CardsList extends StatelessWidget {
   const CardsList({super.key});
 
@@ -218,7 +191,8 @@ class CardsList extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
-        PrimaryContainerTheme(
+        ColorsTheme(
+          style: PrimaryContainerColorsStyle.new,
           child: InfoCard(
             overline: Text('Sells'),
             title: Text('423.4 M'),
@@ -238,7 +212,8 @@ class CardsList extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
-        ErrorContainerTheme(
+        ColorsTheme(
+          style: ErrorContainerColorsStyle.new,
           child: InfoCard(
             overline: Text('Losses'),
             title: Text('50.4 M'),
@@ -257,7 +232,63 @@ class CardsList extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 6),
+        SelectableInfoCard(),
       ],
+    );
+  }
+}
+
+class SelectableInfoCard extends StatefulWidget {
+  const SelectableInfoCard({super.key});
+
+  @override
+  State<SelectableInfoCard> createState() => _SelectableInfoCardState();
+}
+
+class _SelectableInfoCardState extends State<SelectableInfoCard> {
+  final MaterialStatesController _statesController = MaterialStatesController({
+    MaterialState.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _statesController,
+      builder: (context, child) {
+        return ColorsTheme(
+          style: !_statesController.value.isSelected
+              ? PrimaryContainerColorsStyle.new
+              : ColorsStyle.new,
+          child: child,
+        );
+      },
+      child: MaterialStateScope(
+        states: _statesController,
+        child: InfoCard(
+          overline: Text('Losses'),
+          title: Text('50.4 M'),
+          caption: Text('-1.01% of target'),
+          secondaryAction: AppButton(
+            child: Text('Cancel'),
+            onPressed: emptyCallback,
+          ),
+          primaryAction: AppButton(
+            child: Text('Review'),
+            onPressed: emptyCallback,
+          ),
+          cornerAction: Builder(builder: (context) {
+            return Switch(
+              value: context.isSelected,
+                activeTrackColor: context.colorScheme.primary,
+              activeColor: context.colorScheme.onPrimary,
+              onChanged: (value) {
+                _statesController.update(MaterialState.selected, value);
+              },
+            );
+          }),
+        ),
+      ),
     );
   }
 }
@@ -282,113 +313,92 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-        elevation: 8,
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
+    return AppCard(
         child: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: DefaultTextStyle.merge(
-                    child: overline,
-                    style: theme.textTheme.labelSmall,
-                  )),
-                  AppButtonTheme.merge(
-                    data: IconButtonStyle(context),
-                    child: cornerAction,
-                  ),
-                ],
-              ),
-              DefaultTextStyle.merge(child: title, style: theme.textTheme.headlineSmall),
-              DefaultTextStyle.merge(
-                child: caption,
-                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: AppButtonTheme.merge(
-                      data: OutlinedButtonStyle(context),
-                      child: secondaryAction,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: AppButtonTheme.merge(
-                      data: FilledButtonStyle(context),
-                      child: primaryAction,
-                    ),
-                  )
-                ],
+              Expanded(
+                  child: DefaultTextStyle.merge(
+                child: overline,
+                style: textTheme.labelSmall,
+              )),
+              ButtonTheme(
+                style: IconButtonStyle.new,
+                child: cornerAction,
               ),
             ],
           ),
-        ));
+          DefaultTextStyle.merge(child: title, style: textTheme.headlineSmall),
+          DefaultTextStyle.merge(
+            child: caption,
+            style: textTheme.bodySmall.copyWith(color: colorScheme.primary),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: ButtonTheme(
+                  style: OutlinedButtonStyle.new,
+                  child: secondaryAction,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ButtonTheme(
+                  style: FilledButtonStyle.new,
+                  child: primaryAction,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    ));
   }
 }
 
-
-
-class PrimaryContainerTheme extends StatelessWidget {
-  const PrimaryContainerTheme({
-    super.key,
-    required this.child,
-  });
-
-  final Widget child;
+class PrimaryContainerColorsStyle extends ColorsStyle {
+  @override
+  Color get primary => link.onPrimaryContainer;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return Theme(
-        data: ThemeData(
-            brightness: theme.brightness,
-            useMaterial3: theme.useMaterial3,
-            colorScheme: theme.colorScheme.copyWith(
-              primary: colorScheme.onPrimaryContainer,
-              surface: colorScheme.primaryContainer,
-              onPrimary: colorScheme.primaryContainer,
-              onBackground: colorScheme.onPrimaryContainer,
-              onSurface: colorScheme.onPrimaryContainer,
-              background: colorScheme.primaryContainer,
-              outline: colorScheme.onPrimaryContainer,
-            )),
-        child: child);
-  }
-}
-
-class ErrorContainerTheme extends StatelessWidget {
-  const ErrorContainerTheme({
-    super.key,
-    required this.child,
-  });
-
-  final Widget child;
+  Color get onPrimary => link.primaryContainer;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return Theme(
-        data: ThemeData(
-            brightness: theme.brightness,
-            useMaterial3: theme.useMaterial3,
-            colorScheme: theme.colorScheme.copyWith(
-              primary: colorScheme.onErrorContainer,
-              surface: colorScheme.errorContainer,
-              onPrimary: colorScheme.errorContainer,
-              onBackground: colorScheme.onErrorContainer,
-              onSurface: colorScheme.onErrorContainer,
-              background: colorScheme.errorContainer,
-              outline: colorScheme.onErrorContainer,
-            )),
-        child: child);
-  }
+  Color get surface => link.primaryContainer;
+
+  @override
+  Color get onSurface => link.onPrimaryContainer;
+
+  @override
+  Color get background => link.primaryContainer;
+
+  @override
+  Color get onBackground => link.onPrimaryContainer;
 }
-*/
+
+class ErrorContainerColorsStyle extends ColorsStyle {
+  @override
+  Color get primary => link.onErrorContainer;
+
+  @override
+  Color get onPrimary => link.errorContainer;
+
+  @override
+  Color get surface => link.errorContainer;
+
+  @override
+  Color get onSurface => link.onErrorContainer;
+
+  @override
+  Color get background => link.errorContainer;
+
+  @override
+  Color get onBackground => link.onErrorContainer;
+}

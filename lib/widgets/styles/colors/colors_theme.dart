@@ -32,33 +32,33 @@ class ColorsStyle extends Style {
 
   Color get onPrimary => inherit.onPrimary;
 
-  Color get primaryContainer => inherit.primary;
+  Color get primaryContainer => inherit.primaryContainer;
 
-  Color get onPrimaryContainer => inherit.onPrimary;
+  Color get onPrimaryContainer => inherit.onPrimaryContainer;
 
   Color get secondary => inherit.secondary;
 
   Color get onSecondary => inherit.onSecondary;
 
-  Color get secondaryContainer => inherit.secondary;
+  Color get secondaryContainer => inherit.secondaryContainer;
 
-  Color get onSecondaryContainer => inherit.onSecondary;
+  Color get onSecondaryContainer => inherit.onSecondaryContainer;
 
-  Color get tertiary => inherit.secondary;
+  Color get tertiary => inherit.tertiary;
 
-  Color get onTertiary => inherit.onSecondary;
+  Color get onTertiary => inherit.onTertiary;
 
-  Color get tertiaryContainer => inherit.tertiary;
+  Color get tertiaryContainer => inherit.tertiaryContainer;
 
-  Color get onTertiaryContainer => inherit.onTertiary;
+  Color get onTertiaryContainer => inherit.onTertiaryContainer;
 
   Color get error => inherit.error;
 
   Color get onError => inherit.onError;
 
-  Color get errorContainer => inherit.error;
+  Color get errorContainer => inherit.errorContainer;
 
-  Color get onErrorContainer => inherit.onError;
+  Color get onErrorContainer => inherit.onErrorContainer;
 
   Color get background => inherit.background;
 
@@ -68,25 +68,25 @@ class ColorsStyle extends Style {
 
   Color get onSurface => inherit.onSurface;
 
-  Color get surfaceVariant => inherit.surface;
+  Color get surfaceVariant => inherit.surfaceVariant;
 
-  Color get onSurfaceVariant => inherit.onSurface;
+  Color get onSurfaceVariant => inherit.onSurfaceVariant;
 
-  Color get outline => inherit.onBackground;
+  Color get outline => inherit.outline;
 
-  Color get outlineVariant => inherit.onBackground;
+  Color get outlineVariant => inherit.outlineVariant;
 
   Color get shadow => inherit.shadow;
 
   Color get scrim => inherit.scrim;
 
-  Color get inverseSurface => inherit.onSurface;
+  Color get inverseSurface => inherit.inverseSurface;
 
-  Color get onInverseSurface => inherit.surface;
+  Color get onInverseSurface => inherit.onInverseSurface;
 
-  Color get inversePrimary => inherit.onPrimary;
+  Color get inversePrimary => inherit.inversePrimary;
 
-  Color get surfaceTint => inherit.primary;
+  Color get surfaceTint => inherit.surfaceTint;
 }
 
 class BaseColorsStyle extends ColorsStyle {
