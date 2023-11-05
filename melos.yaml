@@ -1,0 +1,5 @@
+name: context_theme
+
+packages:
+  - packages/**
+  - examples/**
