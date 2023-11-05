@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: context_theme,material_context_theme
+dependency_overrides:
+  context_theme:
+    path: ../../packages/context_theme
+  material_context_theme:
+    path: ../../packages/material_context_theme
