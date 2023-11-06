@@ -3,6 +3,9 @@ import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
 import 'package:material_context_theme/src/material_states/material_state_properties.dart';
 import 'package:material_context_theme/src/material_states/material_states_extension.dart';
 import 'package:material_context_theme/src/theme/colors_theme.dart';
+import 'package:provider/single_child_widget.dart';
+
+typedef DecorateWrapper =  Widget Function(BuildContext context, Widget child);
 
 class ButtonTheme extends WidgetTheme<ButtonStyle> {
   const ButtonTheme({
@@ -72,6 +75,8 @@ class ButtonStyle extends Style {
   AlignmentGeometry get alignment => inherit.alignment;
 
   InteractiveInkFeatureFactory? get splashFactory => inherit.splashFactory;
+
+  DecorateWrapper? get decorator => inherit.decorator;
 }
 
 class BaseButtonStyle extends ButtonStyle {
@@ -136,6 +141,9 @@ class BaseButtonStyle extends ButtonStyle {
 
   @override
   InteractiveInkFeatureFactory? get splashFactory => Theme.of(context).splashFactory;
+
+  @override
+  DecorateWrapper? get decorator => null;
 }
 
 EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {

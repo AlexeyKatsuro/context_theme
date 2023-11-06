@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart' hide ButtonStyle;
-import 'package:flutter/material.dart' as material show  ButtonStyle;
+import 'package:flutter/material.dart' as material show ButtonStyle;
 import 'package:material_context_theme/src/material_states/index.dart';
 import 'base_styles.dart';
-
 
 class MaterialButton extends StatefulWidget {
   const MaterialButton({
@@ -45,7 +44,7 @@ class MaterialButton extends StatefulWidget {
 
 class _MaterialButtonState extends State<MaterialButton> {
   late final MaterialStatesController _statesController =
-  MaterialStatesController({if (!widget.enabled) MaterialState.disabled});
+      MaterialStatesController({if (!widget.enabled) MaterialState.disabled});
 
   @override
   void didUpdateWidget(covariant MaterialButton oldWidget) {
@@ -63,8 +62,8 @@ class _MaterialButtonState extends State<MaterialButton> {
   Widget build(BuildContext context) {
     return MaterialStateScope(
       states: _statesController,
-      child: Builder(
-        builder: (context) {
+      child: Builder(builder: (context) {
+        final child = Builder(builder: (context) {
           return _ButtonBridge(
             style: context.buttonStyle,
             statesController: _statesController,
@@ -77,8 +76,11 @@ class _MaterialButtonState extends State<MaterialButton> {
             autofocus: widget.autofocus,
             child: widget.child,
           );
-        }
-      ),
+        });
+        final decorator = context.buttonStyle.decorator;
+        if (decorator == null) return child;
+        return decorator(context, child);
+      }),
     );
   }
 }
@@ -96,9 +98,9 @@ class _ButtonBridge extends ButtonStyleButton {
     required super.statesController,
     required Widget child,
   }) : super(
-    style: style.toMaterial(),
-    child: DefaultTextStyle.merge(child: child, textAlign: style.textAlign),
-  );
+          style: style.toMaterial(),
+          child: DefaultTextStyle.merge(child: child, textAlign: style.textAlign),
+        );
 
   @override
   material.ButtonStyle defaultStyleOf(BuildContext context) => style!;
@@ -133,4 +135,3 @@ extension on ButtonStyle {
     );
   }
 }
-
