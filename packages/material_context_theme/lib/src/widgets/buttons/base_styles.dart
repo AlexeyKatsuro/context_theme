@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
 import 'package:material_context_theme/src/material_states/material_state_properties.dart';
 import 'package:material_context_theme/src/material_states/material_states_extension.dart';
 import 'package:material_context_theme/src/theme/colors_theme.dart';
-import 'package:provider/single_child_widget.dart';
 
 typedef DecorateWrapper =  Widget Function(BuildContext context, Widget child);
 
@@ -70,7 +69,7 @@ class ButtonStyle extends Style {
 
   MaterialTapTargetSize get tapTargetSize => inherit.tapTargetSize;
 
-  Duration? get animationDuration => inherit.animationDuration;
+  Duration get animationDuration => inherit.animationDuration;
 
   AlignmentGeometry get alignment => inherit.alignment;
 
@@ -130,7 +129,7 @@ class BaseButtonStyle extends ButtonStyle {
   BorderSide? get side => null;
 
   @override
-  Duration? get animationDuration => kThemeChangeDuration;
+  Duration get animationDuration => kThemeChangeDuration;
 
   @override
   EdgeInsetsGeometry get padding => scaledButtonPadding(context);
