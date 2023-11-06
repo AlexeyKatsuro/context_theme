@@ -1,22 +1,17 @@
 part of 'style.dart';
 
 /// An [Element] that uses a [WidgetTheme] as its configuration.
-class StyleElement extends SingleChildInheritedElement implements StyleOwnerContext {
+class StyleElement extends SingleChildInheritedElement with StyleOwnerContext {
   StyleElement(WidgetTheme widget) : super(widget);
 
   @override
   WidgetTheme get widget => super.widget as WidgetTheme;
 
   @override
-  bool doesHasDepended(BuildContext dependent) {
-    return getDependencies(dependent as Element) != null;
-  }
-
-  @override
-  Style getStyle(BuildContext context) {
-    final style = getDependencies(context as Element) as Style?;
-    assert(style != null);
-    return style!;
+  bool doesHasDepended<StyleType extends Style>(BuildContext dependent) {
+    final style = getDependencies(dependent as Element);
+    assert(style is StyleType?);
+    return style != null;
   }
 
   @override
@@ -24,23 +19,36 @@ class StyleElement extends SingleChildInheritedElement implements StyleOwnerCont
     final style = getDependencies(dependent) as Style?;
 
     if (style == null) {
-      final newStyle = initStyle(dependent);
+      final newStyle = _initStyle(dependent, widget._createStyle);
 
       setDependencies(dependent, newStyle);
     }
   }
 
-  Style initStyle(Element dependent) {
-    return widget._createStyle()
-      .._element = dependent
-      .._hostElement = this;
+  @override
+  StyleType _getStyle<StyleType extends Style>(BuildContext context) {
+    final style = getDependencies(context as Element);
+    if (style == null) {
+      throw FlutterError.fromParts(<DiagnosticsNode>[
+        ErrorSummary('_getStyle was called before dependOnInheritedElement.'),
+      ]);
+    }
+    if (style is! StyleType) {
+      throw FlutterError.fromParts(<DiagnosticsNode>[
+        ErrorSummary('StyleElement with ${widget.runtimeType} widget must have $StyleType type as dependency'),
+      ]);
+    }
+    return style;
   }
+
+  @override
+  StyleOwnerContext? get hostElement => this;
 
   @override
   void notifyDependent(InheritedWidget oldWidget, Element dependent) {
     final oldStyle = getDependencies(dependent) as Style?;
     oldStyle?._dispose();
-    final newStyle = initStyle(dependent);
+    final newStyle = _initStyle(dependent, widget._createStyle);
     setDependencies(dependent, newStyle);
     super.notifyDependent(oldWidget, dependent);
   }
@@ -48,21 +56,28 @@ class StyleElement extends SingleChildInheritedElement implements StyleOwnerCont
   @override
   StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme<Style>>() {
     {
-      StyleOwnerContext? inheritedElement;
+      StyleOwnerContext? ownerContext;
       visitAncestorElements((parent) {
-        inheritedElement = parent.getElementForInheritedWidgetOfExactType<I>() as StyleOwnerContext?;
+        ownerContext = parent.getElementForInheritedWidgetOfExactType<I>() as StyleOwnerContext?;
         return false;
       });
-      return inheritedElement;
+      return ownerContext;
     }
   }
 }
 
-abstract interface class StyleOwnerContext implements InheritedElement {
+mixin StyleOwnerContext on InheritedElement {
+  StyleOwnerContext? get hostElement;
+
   StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme>();
 
-  bool doesHasDepended(BuildContext dependent);
+  bool doesHasDepended<StyleType extends Style>(BuildContext dependent);
 
-  Style getStyle(BuildContext context);
+  StyleType _getStyle<StyleType extends Style>(BuildContext context);
 
+  Style _initStyle(Element dependent, Style Function() createStyle) {
+    return createStyle()
+      .._element = dependent
+      .._hostElement = this;
+  }
 }

@@ -4,36 +4,42 @@ import 'package:nested/nested.dart';
 
 import 'single_inherited_widget.dart';
 
+part 'default_theme_scope.dart';
+part 'default_theme_scope_element.dart';
 part 'style_element.dart';
 
 typedef CreateStyle<S extends Style> = S Function();
-
-
-
 
 abstract class WidgetTheme<S extends Style> extends SingleChildInheritedWidget {
   /// Initializes [key] for subclasses.
   const WidgetTheme({super.key, required S Function() style, super.child}) : _createStyle = style;
 
-  static S styleOf<S extends Style, W extends WidgetTheme<S>>(BuildContext context, {
+  static StyleType styleOf<StyleType extends Style, W extends WidgetTheme<StyleType>>(
+    BuildContext context, {
     StyleOwnerContext? inheritFrom,
+    required CreateStyle<StyleType> defaultStyle,
   }) {
-    final StyleOwnerContext? styleOwner;
+    StyleOwnerContext? styleOwner;
 
     if (inheritFrom != null) {
       styleOwner = inheritFrom.getParentStyleOwner<W>();
     } else {
       styleOwner = context.getElementForInheritedWidgetOfExactType<W>() as StyleOwnerContext?;
     }
+    styleOwner ??=
+        context.getElementForInheritedWidgetOfExactType<DefaultThemeScope>() as StyleOwnerContext?;
 
     if (styleOwner == null) {
-      throw StyleNullException(W, context.widget.runtimeType, S);
+      throw StyleNullException(W, context.widget.runtimeType, StyleType);
     }
 
     if (!styleOwner.doesHasDepended(context)) {
-      context.dependOnInheritedElement(styleOwner);
+      context.dependOnInheritedElement(
+        styleOwner,
+        aspect: _DefaultThemeAspect<StyleType>(defaultStyle),
+      );
     }
-    return styleOwner.getStyle(context) as S;
+    return styleOwner._getStyle<StyleType>(context);
   }
 
   /// Creates a [StyleElement] to manage this widget's location in the tree.
@@ -46,40 +52,21 @@ abstract class WidgetTheme<S extends Style> extends SingleChildInheritedWidget {
   final CreateStyle<S> _createStyle;
 
   @override
-  bool updateShouldNotify(covariant WidgetTheme oldWidget) => oldWidget._createStyle != _createStyle;
+  bool updateShouldNotify(covariant WidgetTheme oldWidget) =>
+      oldWidget._createStyle != _createStyle;
 }
-
 
 @optionalTypeArgs
 abstract class Style with Diagnosticable {
-  /// The current configuration.
-  ///
-  /// A [Style] object's configuration is the corresponding [StatefulWidget]
-  /// instance. This property is initialized by the framework before calling
-  /// [initState]. If the parent updates this location in the tree to a new
-  /// widget with the same [runtimeType] and [Widget.key] as the current
-  /// configuration, the framework will update this property to refer to the new
-  /// widget and then call [didUpdateWidget], passing the old configuration as
-  /// an argument.
   WidgetTheme get widget => _widget!;
   WidgetTheme? _widget;
 
-  /// The location in the tree where this widget builds.
-  ///
-  /// The framework associates [Style] objects with a [BuildContext] after
-  /// creating them with [StatefulWidget.createState] and before calling
-  /// [initState]. The association is permanent: the [Style] object will never
-  /// change its [BuildContext]. However, the [BuildContext] itself can be moved
-  /// around the tree.
-  ///
-  /// After calling [_dispose], the framework severs the [Style] object's
-  /// connection with the [BuildContext].
   BuildContext get context {
     assert(() {
       if (_element == null) {
         throw FlutterError(
           'This widget has been unmounted, so the State no longer has a context (and should be considered defunct). \n'
-              'Consider canceling any active work during "dispose" or using the "mounted" getter to determine if the State is still active.',
+          'Consider canceling any active work during "dispose" or using the "mounted" getter to determine if the State is still active.',
         );
       }
       if (_disposed) {
@@ -92,7 +79,7 @@ abstract class Style with Diagnosticable {
 
   bool _disposed = false;
 
-  StyleElement? _hostElement;
+  StyleOwnerContext? _hostElement;
 
   Element? _element;
 
@@ -117,7 +104,7 @@ abstract class Style with Diagnosticable {
 }
 
 class StyleNullException implements Exception {
-  /// Create a ProviderNullException error with the type represented as a String.
+  /// Create a StyleNullException error with the type represented as a String.
   StyleNullException(this.widgetThemeType, this.callerType, this.stateType);
 
   final Type widgetThemeType;
@@ -130,7 +117,10 @@ class StyleNullException implements Exception {
       return 'A WidgetTheme for $widgetThemeType unexpectedly returned null.';
     }
     return '''
-Error: The widget $callerType tried to read WidgetTheme.styleOf<$stateType, $widgetThemeType> but widget has no parent theme of $widgetThemeType
+Error: The widget $callerType tried to read WidgetTheme.styleOf<$stateType, $widgetThemeType> but widget has no parent theme of $widgetThemeType.
+And there is no DefaultThemeScope.
+
+Consider using DefaultThemeScope as a top widget.
 ''';
   }
 }
@@ -141,8 +131,8 @@ class MultiTheme extends Nested {
     required List<SingleChildWidget> themes,
     Widget? child,
   }) : super(
-    key: key,
-    children: themes,
-    child: child,
-  );
+          key: key,
+          children: themes,
+          child: child,
+        );
 }

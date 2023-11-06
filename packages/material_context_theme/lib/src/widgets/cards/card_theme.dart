@@ -10,7 +10,11 @@ class CardTheme extends WidgetTheme<CardStyle> {
   });
 
   static CardStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<CardStyle, CardTheme>(context, inheritFrom: parent);
+    return WidgetTheme.styleOf<CardStyle, CardTheme>(
+      context,
+      inheritFrom: parent,
+      defaultStyle: BaseCardStyle.new,
+    );
   }
 }
 
@@ -50,9 +54,8 @@ class BaseCardStyle extends CardStyle {
   Color get color => context.colorScheme.surface;
 
   @override
-  TextStyle get textStyle => DefaultTextStyle.of(context).style.copyWith(
-    color: context.colorScheme.onSurface
-  );
+  TextStyle get textStyle =>
+      DefaultTextStyle.of(context).style.copyWith(color: context.colorScheme.onSurface);
 
   @override
   Color get shadowColor => context.colorScheme.shadow;

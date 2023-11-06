@@ -1,6 +1,5 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TypographyTheme extends WidgetTheme<TypographyStyle> {
   const TypographyTheme({
@@ -10,7 +9,11 @@ class TypographyTheme extends WidgetTheme<TypographyStyle> {
   });
 
   static TypographyStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<TypographyStyle, TypographyTheme>(context, inheritFrom: parent);
+    return WidgetTheme.styleOf<TypographyStyle, TypographyTheme>(
+      context,
+      inheritFrom: parent,
+      defaultStyle: MaterialTypographyStyle.new,
+    );
   }
 }
 
@@ -93,66 +96,80 @@ class BaseTypographyStyle extends Style {
 class MaterialTypographyStyle extends TypographyStyle {
   @protected
   TextTheme get materialTextTheme => Theme.of(context).textTheme;
+
   @override
   TextStyle get displayLarge => materialTextTheme.displayLarge.makeInheritable();
+
   @override
   TextStyle get displayMedium => materialTextTheme.displayMedium.makeInheritable();
+
   @override
   TextStyle get displaySmall => materialTextTheme.displaySmall.makeInheritable();
+
   @override
   TextStyle get headlineLarge => materialTextTheme.headlineLarge.makeInheritable();
+
   @override
   TextStyle get headlineMedium => materialTextTheme.headlineMedium.makeInheritable();
+
   @override
   TextStyle get headlineSmall => materialTextTheme.headlineSmall.makeInheritable();
+
   @override
   TextStyle get titleLarge => materialTextTheme.titleLarge.makeInheritable();
+
   @override
   TextStyle get titleMedium => materialTextTheme.titleMedium.makeInheritable();
+
   @override
   TextStyle get titleSmall => materialTextTheme.titleSmall.makeInheritable();
+
   @override
   TextStyle get bodyLarge => materialTextTheme.bodyLarge.makeInheritable();
+
   @override
   TextStyle get bodyMedium => materialTextTheme.bodyMedium.makeInheritable();
+
   @override
   TextStyle get bodySmall => materialTextTheme.bodySmall.makeInheritable();
+
   @override
   TextStyle get labelLarge => materialTextTheme.labelLarge.makeInheritable();
+
   @override
   TextStyle get labelMedium => materialTextTheme.labelMedium.makeInheritable();
+
   @override
   TextStyle get labelSmall => materialTextTheme.labelSmall.makeInheritable();
 }
 
-
 extension on TextStyle? {
   TextStyle makeInheritable() {
     return TextStyle(
-        inherit: true,
-        color: null,
-        backgroundColor: null,
-        fontSize: this?.fontSize,
-        fontWeight: this?.fontWeight,
-        fontStyle: this?.fontStyle,
-        letterSpacing: this?.letterSpacing,
-        wordSpacing: this?.wordSpacing,
-        textBaseline: this?.textBaseline,
-        height: this?.height,
-        leadingDistribution: this?.leadingDistribution,
-        locale: this?.locale,
-        foreground: this?.foreground,
-        background: this?.background,
-        shadows: this?.shadows,
-        fontFeatures: this?.fontFeatures,
-        fontVariations: this?.fontVariations,
-        decoration: this?.decoration,
-        decorationColor: this?.decorationColor,
-        decorationStyle: this?.decorationStyle,
-        decorationThickness: this?.decorationThickness,
-        debugLabel: this?.debugLabel,
-        overflow: this?.overflow,
-        fontFamily: this?.fontFamily,
+      inherit: true,
+      color: null,
+      backgroundColor: null,
+      fontSize: this?.fontSize,
+      fontWeight: this?.fontWeight,
+      fontStyle: this?.fontStyle,
+      letterSpacing: this?.letterSpacing,
+      wordSpacing: this?.wordSpacing,
+      textBaseline: this?.textBaseline,
+      height: this?.height,
+      leadingDistribution: this?.leadingDistribution,
+      locale: this?.locale,
+      foreground: this?.foreground,
+      background: this?.background,
+      shadows: this?.shadows,
+      fontFeatures: this?.fontFeatures,
+      fontVariations: this?.fontVariations,
+      decoration: this?.decoration,
+      decorationColor: this?.decorationColor,
+      decorationStyle: this?.decorationStyle,
+      decorationThickness: this?.decorationThickness,
+      debugLabel: this?.debugLabel,
+      overflow: this?.overflow,
+      fontFamily: this?.fontFamily,
     );
   }
 }

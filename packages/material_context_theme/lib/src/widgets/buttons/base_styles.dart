@@ -4,7 +4,9 @@ import 'package:material_context_theme/src/material_states/material_state_proper
 import 'package:material_context_theme/src/material_states/material_states_extension.dart';
 import 'package:material_context_theme/src/theme/colors_theme.dart';
 
-typedef DecorateWrapper =  Widget Function(BuildContext context, Widget child);
+import 'filled_button_styles.dart';
+
+typedef DecorateWrapper = Widget Function(BuildContext context, Widget child);
 
 class ButtonTheme extends WidgetTheme<ButtonStyle> {
   const ButtonTheme({
@@ -14,7 +16,11 @@ class ButtonTheme extends WidgetTheme<ButtonStyle> {
   });
 
   static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<ButtonStyle, ButtonTheme>(context, inheritFrom: parent);
+    return WidgetTheme.styleOf<ButtonStyle, ButtonTheme>(
+      context,
+      inheritFrom: parent,
+      defaultStyle: BaseButtonStyle.new,
+    );
   }
 }
 
@@ -79,7 +85,6 @@ class ButtonStyle extends Style {
 }
 
 class BaseButtonStyle extends ButtonStyle {
-
   @override
   Color get primaryColor => context.colorScheme.primary;
 
@@ -134,7 +139,6 @@ class BaseButtonStyle extends ButtonStyle {
   @override
   EdgeInsetsGeometry get padding => scaledButtonPadding(context);
 
-
   @override
   AlignmentGeometry get alignment => Alignment.center;
 
@@ -157,28 +161,25 @@ EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
 }
 
 class OverlayMaterialStateColor extends MaterialStateColor {
-  OverlayMaterialStateColor(Color highlight) : super.resolveWith((states) {
-    if (states.isPressed) {
-      return highlight.withOpacity(0.12);
-    }
-    if (states.isHovered) {
-      return highlight.withOpacity(0.08);
-    }
-    if (states.isFocused) {
-      return highlight.withOpacity(0.12);
-    }
-    return null;
-  });
-
+  OverlayMaterialStateColor(Color highlight)
+      : super.resolveWith((states) {
+          if (states.isPressed) {
+            return highlight.withOpacity(0.12);
+          }
+          if (states.isHovered) {
+            return highlight.withOpacity(0.08);
+          }
+          if (states.isFocused) {
+            return highlight.withOpacity(0.12);
+          }
+          return null;
+        });
 }
 
 class ErrorButtonStyle extends ButtonStyle {
-
   @override
   Color get primaryColor => context.colorScheme.error;
 
   @override
   Color get onPrimaryColor => context.colorScheme.onError;
 }
-
-

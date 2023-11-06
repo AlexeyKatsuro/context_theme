@@ -33,15 +33,7 @@ class _AppState extends State<App> {
         },
       ),
       builder: (context, child) {
-        return MultiTheme(
-          themes: const [
-            ColorsTheme(style: MaterialColorsStyle.new),
-            TypographyTheme(style: MaterialTypographyStyle.new),
-            CardTheme(style: BaseCardStyle.new),
-            ButtonTheme(style: BaseButtonStyle.new),
-          ],
-          child: child!,
-        );
+        return DefaultThemeScope(child: child!);
       },
     );
   }

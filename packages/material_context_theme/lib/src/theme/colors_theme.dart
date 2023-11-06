@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:context_theme/context_theme.dart';
 
-
 class ColorsTheme extends WidgetTheme<ColorsStyle> {
   const ColorsTheme({
     super.key,
@@ -10,7 +9,11 @@ class ColorsTheme extends WidgetTheme<ColorsStyle> {
   });
 
   static ColorsStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<ColorsStyle, ColorsTheme>(context, inheritFrom: parent);
+    return WidgetTheme.styleOf<ColorsStyle, ColorsTheme>(
+      context,
+      inheritFrom: parent,
+      defaultStyle: MaterialColorsStyle.new,
+    );
   }
 }
 
