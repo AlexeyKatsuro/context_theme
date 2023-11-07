@@ -2,29 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nested/nested.dart';
 
-abstract class SingleChildInheritedWidget extends DiagnosticableTree
-    implements SingleChildWidget, InheritedWidget {
-  const SingleChildInheritedWidget({this.key, Widget? child}) : _child = child;
-
-  @override
-  final Key? key;
+abstract class SingleChildInheritedWidget extends InheritedWidget implements SingleChildWidget {
+  const SingleChildInheritedWidget({super.key, Widget? child})
+      : _child = child,
+        super(child: child ?? const SizedBox());
 
   final Widget? _child;
-
-  /// A short, textual description of this widget.
-  @override
-  String toStringShort() {
-    final String type = objectRuntimeType(this, 'Widget');
-    return key == null ? type : '$type-$key';
-  }
-
-  @override
-  @nonVirtual
-  bool operator ==(Object other) => super == other;
-
-  @override
-  @nonVirtual
-  int get hashCode => super.hashCode;
 
   @override
   @protected
