@@ -1,5 +1,6 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
+import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:material_context_theme/src/material_states/material_state_properties.dart';
 import 'package:material_context_theme/src/material_states/material_states_extension.dart';
 import 'package:material_context_theme/src/theme/colors_theme.dart';
@@ -147,6 +148,20 @@ class BaseButtonStyle extends ButtonStyle {
 
   @override
   DecorateWrapper? get decorator => null;
+
+  @override
+  Color? get backgroundColor => link.primaryColor;
+
+  @override
+  double get elevation => 0;
+
+  @override
+  Color? get foregroundColor => link.onPrimaryColor;
+
+  @override
+  Color? get overlayColor => OverlayMaterialStateColor(link.onPrimaryColor);
+
+
 }
 
 EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
