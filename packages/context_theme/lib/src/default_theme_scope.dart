@@ -2,9 +2,9 @@ part of 'style.dart';
 
 class DefaultThemeScope extends SingleChildInheritedWidget {
   const DefaultThemeScope({
-    Key? key,
-    required Widget child,
-  }) : super(key: key, child: child);
+    super.key,
+    super.child,
+  }) : super();
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
