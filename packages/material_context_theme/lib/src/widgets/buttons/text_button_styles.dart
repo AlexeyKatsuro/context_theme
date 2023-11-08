@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide ButtonStyle;
-import 'package:material_context_theme/src/material_states/material_state_scope.dart';
-import 'package:material_context_theme/src/theme/colors_theme.dart';
+import '../../material_states/material_state_scope.dart';
+import '../../theme/colors_theme.dart';
 
 import 'base_styles.dart';
 
@@ -24,7 +24,7 @@ class TextButtonStyle extends ButtonStyle {
   Color get shadowColor => Colors.transparent;
 
   @override
-  double get elevation => 0.0;
+  double get elevation => 0;
 
   @override
   EdgeInsetsGeometry get padding => scaledTextPadding(context);
@@ -33,7 +33,7 @@ class TextButtonStyle extends ButtonStyle {
 }
 
 EdgeInsetsGeometry scaledTextPadding(BuildContext context) {
-  final bool useMaterial3 = Theme.of(context).useMaterial3;
+  final useMaterial3 = Theme.of(context).useMaterial3;
   return ButtonStyleButton.scaledPadding(
     useMaterial3 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8) :  const EdgeInsets.all(8),
     const EdgeInsets.symmetric(horizontal: 8),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_context_theme/src/material_states/material_state_scope.dart';
-import 'package:material_context_theme/src/theme/colors_theme.dart';
+import '../../material_states/material_state_scope.dart';
+import '../../theme/colors_theme.dart';
 
 import 'base_styles.dart';
 import 'text_button_styles.dart';
@@ -23,8 +23,8 @@ class IconButtonStyle extends TextButtonStyle {
     );
 
   @override
-  EdgeInsetsGeometry get padding => const EdgeInsets.all(8.0);
+  EdgeInsetsGeometry get padding => const EdgeInsets.all(8);
 
   @override
-  Size get minimumSize => const Size(40.0, 40.0);
+  Size get minimumSize => const Size(40, 40);
 }

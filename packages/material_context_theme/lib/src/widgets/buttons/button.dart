@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart' hide ButtonStyle;
 import 'package:flutter/material.dart' as material show ButtonStyle;
-import 'package:material_context_theme/src/material_states/index.dart';
+import '../../material_states/index.dart';
 import 'base_styles.dart';
 
 class MaterialButton extends StatefulWidget {
   const MaterialButton({
-    Key? key,
+    super.key,
     Clip? clipBehavior,
     required this.onPressed,
     this.onLongPress,
@@ -17,8 +17,7 @@ class MaterialButton extends StatefulWidget {
     required this.child,
   })  : clipBehavior = clipBehavior ?? Clip.none,
         autofocus = autofocus ?? false,
-        enabled = enabled ?? onPressed != null || onLongPress != null,
-        super(key: key);
+        enabled = enabled ?? onPressed != null || onLongPress != null;
 
   final VoidCallback? onPressed;
 
@@ -76,11 +75,11 @@ class _MaterialButtonState extends State<MaterialButton> {
             autofocus: widget.autofocus,
             child: widget.child,
           );
-        });
+        },);
         final decorator = context.buttonStyle.decorator;
         if (decorator == null) return child;
         return decorator(context, child);
-      }),
+      },),
     );
   }
 }

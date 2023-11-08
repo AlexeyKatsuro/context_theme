@@ -147,8 +147,6 @@ extension on TextStyle? {
   TextStyle makeInheritable() {
     return TextStyle(
       inherit: true,
-      color: null,
-      backgroundColor: null,
       fontSize: this?.fontSize,
       fontWeight: this?.fontWeight,
       fontStyle: this?.fontStyle,

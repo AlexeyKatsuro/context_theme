@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:context_theme/context_theme.dart';
+import 'package:flutter/material.dart';
 
 class ColorsTheme extends ContextTheme<ColorsStyle> {
   const ColorsTheme({

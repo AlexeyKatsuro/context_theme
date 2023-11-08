@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
-import 'package:material_context_theme/src/material_states/material_state_scope.dart';
-import 'package:material_context_theme/src/theme/colors_theme.dart';
+import '../../material_states/material_state_scope.dart';
+import '../../theme/colors_theme.dart';
 
 import 'base_styles.dart';
 
@@ -28,18 +28,18 @@ class FilledButtonStyle extends ButtonStyle {
   @override
   double get elevation {
     if (context.isDisabled) {
-      return 0.0;
+      return 0;
     }
     if (context.isHovered) {
-      return 1.0;
+      return 1;
     }
     if (context.isFocused) {
-      return 0.0;
+      return 0;
     }
     if (context.isPressed) {
-      return 0.0;
+      return 0;
     }
-    return 0.0;
+    return 0;
   }
 
 }

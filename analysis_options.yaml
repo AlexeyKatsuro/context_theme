@@ -91,3 +91,9 @@ linter:
     public_member_api_docs: false
 
     prefer_asserts_with_message: false
+
+    avoid_redundant_argument_values: false
+
+    sort_pub_dependencies: false
+
+    unnecessary_library_directive: false

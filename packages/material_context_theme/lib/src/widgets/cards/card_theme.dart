@@ -1,6 +1,6 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/widgets.dart';
-import 'package:material_context_theme/src/theme/colors_theme.dart';
+import '../../theme/colors_theme.dart';
 
 class CardTheme extends ContextTheme<CardStyle> {
   const CardTheme({
@@ -64,14 +64,14 @@ class BaseCardStyle extends CardStyle {
   Color get surfaceTintColor => context.colorScheme.surfaceTint;
 
   @override
-  double get elevation => 1.0;
+  double get elevation => 1;
 
   @override
   ShapeBorder get shape =>
-      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0)));
+      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12)));
 
   @override
-  EdgeInsetsGeometry get margin => const EdgeInsets.all(4.0);
+  EdgeInsetsGeometry get margin => const EdgeInsets.all(4);
 
   @override
   bool get borderOnForeground => true;

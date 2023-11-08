@@ -1,8 +1,8 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
-import 'package:material_context_theme/src/material_states/material_state_properties.dart';
-import 'package:material_context_theme/src/material_states/material_states_extension.dart';
-import 'package:material_context_theme/src/theme/colors_theme.dart';
+import '../../material_states/material_state_properties.dart';
+import '../../material_states/material_states_extension.dart';
+import '../../theme/colors_theme.dart';
 
 typedef DecorateWrapper = Widget Function(BuildContext context, Widget child);
 
@@ -93,7 +93,7 @@ class BaseButtonStyle extends ButtonStyle {
   TextAlign? get textAlign => TextAlign.center;
 
   @override
-  Size? get minimumSize => const Size(64.0, 40.0);
+  Size? get minimumSize => const Size(64, 40);
 
   @override
   Size get maximumSize => Size.infinite;
@@ -162,8 +162,8 @@ class BaseButtonStyle extends ButtonStyle {
 }
 
 EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
-  final bool useMaterial3 = Theme.of(context).useMaterial3;
-  final double padding1x = useMaterial3 ? 24.0 : 16.0;
+  final useMaterial3 = Theme.of(context).useMaterial3;
+  final padding1x = useMaterial3 ? 24.0 : 16.0;
   return ButtonStyleButton.scaledPadding(
     EdgeInsets.symmetric(horizontal: padding1x),
     EdgeInsets.symmetric(horizontal: padding1x / 2),

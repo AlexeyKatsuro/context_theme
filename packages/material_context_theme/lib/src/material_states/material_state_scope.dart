@@ -3,16 +3,16 @@ import 'package:provider/provider.dart';
 
 class MaterialStateScope extends ChangeNotifierProvider<MaterialStatesController> {
   MaterialStateScope({
-    Key? key,
+    super.key,
     required MaterialStatesController states,
-    required Widget child,
-  }) : super.value(key: key, child: child, value: states);
+    required Widget super.child,
+  }) : super.value(value: states);
 }
 
 extension MaterialStateScopeExt on BuildContext {
   bool containsStates(Set<MaterialState> materialStates) {
     return select<MaterialStatesController, bool>(
-        (states) => states.value.containsAll(materialStates));
+        (states) => states.value.containsAll(materialStates),);
   }
 
   bool get isInteractive => !isDisabled;

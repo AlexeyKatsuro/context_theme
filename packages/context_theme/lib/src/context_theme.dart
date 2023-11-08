@@ -60,7 +60,7 @@ abstract class Style with Diagnosticable {
     assert(() {
       if (_element == null) {
         throw FlutterError(
-          "This widget hasn't been mounted, so the Style no longer has a context (and should be considered defunct). \n"
+          "This widget hasn't been mounted, so the Style no longer has a context (and should be considered defunct). \n",
         );
       }
       if (_disposed) {

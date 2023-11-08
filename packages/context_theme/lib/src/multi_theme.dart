@@ -1,15 +1,12 @@
-import 'package:flutter/widgets.dart';
 import 'package:nested/nested.dart';
 
 class MultiTheme extends Nested {
   MultiTheme({
-    Key? key,
+    super.key,
     required List<SingleChildWidget> themes,
-    Widget? child,
+    super.child,
   }) : super(
-    key: key,
     children: themes,
-    child: child,
   );
 }
 

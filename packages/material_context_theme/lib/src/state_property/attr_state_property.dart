@@ -9,6 +9,11 @@ typedef LerpFunction<T> = T? Function(T?, T?, double);
 abstract class AttrStateProperty<T> {
   const AttrStateProperty();
 
+  const factory AttrStateProperty.resolveWith(AttrPropertyResolver<T> callback) =
+      AttrStatePropertyWith<T>;
+
+  const factory AttrStateProperty.all(T value) = AttrStatePropertyAll<T>;
+
   T resolve(Set<AttrState> states);
 
   static T resolveAs<T>(T value, Set<AttrState> states) {
@@ -17,11 +22,6 @@ abstract class AttrStateProperty<T> {
     }
     return value;
   }
-
-  const factory AttrStateProperty.resolveWith(AttrPropertyResolver<T> callback) =
-      AttrStatePropertyWith<T>;
-
-  const factory AttrStateProperty.all(T value) = AttrStatePropertyAll<T>;
 
   static AttrStateProperty<T?>? lerp<T>(
     AttrStateProperty<T>? a,
@@ -94,8 +94,8 @@ class AtterLerpProperties<T> implements AttrStateProperty<T?> {
 
   @override
   T? resolve(Set<AttrState> states) {
-    final T? resolvedA = a?.resolve(states);
-    final T? resolvedB = b?.resolve(states);
+    final resolvedA = a?.resolve(states);
+    final resolvedB = b?.resolve(states);
     return lerpFunction(resolvedA, resolvedB, t);
   }
 }
