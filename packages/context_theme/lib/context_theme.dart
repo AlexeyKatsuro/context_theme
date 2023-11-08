@@ -1,3 +1,4 @@
 library context_theme;
 
-export 'src/style.dart';
+export 'src/context_theme.dart' hide DefaultThemeScopeElement, ContextThemeElement;
+export 'src/multi_theme.dart';

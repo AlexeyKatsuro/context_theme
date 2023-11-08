@@ -1,7 +1,7 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart';
 
-class TypographyTheme extends WidgetTheme<TypographyStyle> {
+class TypographyTheme extends ContextTheme<TypographyStyle> {
   const TypographyTheme({
     super.key,
     super.child,
@@ -9,7 +9,7 @@ class TypographyTheme extends WidgetTheme<TypographyStyle> {
   });
 
   static TypographyStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<TypographyStyle, TypographyTheme>(
+    return ContextTheme.styleOf<TypographyStyle, TypographyTheme>(
       context,
       inheritFrom: parent,
       defaultStyle: MaterialTypographyStyle.new,

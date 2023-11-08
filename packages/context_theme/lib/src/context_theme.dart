@@ -1,20 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:nested/nested.dart';
 
 import 'single_inherited_widget.dart';
 
+part 'context_theme_element.dart';
 part 'default_theme_scope.dart';
 part 'default_theme_scope_element.dart';
-part 'style_element.dart';
 
 typedef CreateStyle<S extends Style> = S Function();
 
-abstract class WidgetTheme<S extends Style> extends SingleChildInheritedWidget {
-  /// Initializes [key] for subclasses.
-  const WidgetTheme({super.key, required S Function() style, super.child}) : _createStyle = style;
+abstract class ContextTheme<S extends Style> extends SingleChildInheritedWidget {
+  const ContextTheme({super.key, required S Function() style, super.child}) : _createStyle = style;
 
-  static StyleType styleOf<StyleType extends Style, W extends WidgetTheme<StyleType>>(
+  static StyleType styleOf<StyleType extends Style, W extends ContextTheme<StyleType>>(
     BuildContext context, {
     StyleOwnerContext? inheritFrom,
     required CreateStyle<StyleType> defaultStyle,
@@ -42,31 +40,27 @@ abstract class WidgetTheme<S extends Style> extends SingleChildInheritedWidget {
     return styleOwner._getStyle<StyleType>(context);
   }
 
-  /// Creates a [StyleElement] to manage this widget's location in the tree.
-  ///
-  /// It is uncommon for subclasses to override this method.
   @override
-  StyleElement createElement() => StyleElement(this);
+  ContextThemeElement createElement() => ContextThemeElement(this);
 
   @protected
   final CreateStyle<S> _createStyle;
 
   @override
-  bool updateShouldNotify(covariant WidgetTheme oldWidget) =>
+  bool updateShouldNotify(covariant ContextTheme oldWidget) =>
       oldWidget._createStyle != _createStyle;
 }
 
 @optionalTypeArgs
 abstract class Style with Diagnosticable {
-  WidgetTheme get widget => _widget!;
-  WidgetTheme? _widget;
+  ContextTheme get widget => _widget!;
+  ContextTheme? _widget;
 
   BuildContext get context {
     assert(() {
       if (_element == null) {
         throw FlutterError(
-          'This widget has been unmounted, so the State no longer has a context (and should be considered defunct). \n'
-          'Consider canceling any active work during "dispose" or using the "mounted" getter to determine if the State is still active.',
+          "This widget hasn't been mounted, so the Style no longer has a context (and should be considered defunct). \n"
         );
       }
       if (_disposed) {
@@ -96,10 +90,10 @@ abstract class Style with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<WidgetTheme>('_widget', _widget, ifNull: 'no widget'));
+    properties.add(ObjectFlagProperty<ContextTheme>('_widget', _widget, ifNull: 'no widget'));
     properties.add(ObjectFlagProperty<Element>('_element', _element, ifNull: 'not mounted'));
     properties
-        .add(ObjectFlagProperty<Element>('_hostElement', _hostElement, ifNull: 'not mounted'));
+        .add(ObjectFlagProperty<Element>('_hostElement', _hostElement, ifNull: 'Has not parent'));
   }
 }
 
@@ -114,10 +108,10 @@ class StyleNullException implements Exception {
   @override
   String toString() {
     if (kReleaseMode) {
-      return 'A WidgetTheme for $widgetThemeType unexpectedly returned null.';
+      return 'A ContextTheme for $widgetThemeType unexpectedly returned null.';
     }
     return '''
-Error: The widget $callerType tried to read WidgetTheme.styleOf<$stateType, $widgetThemeType> but widget has no parent theme of $widgetThemeType.
+Error: The widget $callerType tried to read ContextTheme.styleOf<$stateType, $widgetThemeType> but widget has no parent theme of $widgetThemeType.
 And there is no DefaultThemeScope.
 
 Consider using DefaultThemeScope as a top widget.
@@ -125,14 +119,3 @@ Consider using DefaultThemeScope as a top widget.
   }
 }
 
-class MultiTheme extends Nested {
-  MultiTheme({
-    Key? key,
-    required List<SingleChildWidget> themes,
-    Widget? child,
-  }) : super(
-          key: key,
-          children: themes,
-          child: child,
-        );
-}

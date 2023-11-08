@@ -1,6 +1,7 @@
-import 'package:context_theme/src/state_property/attr_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
+
+import 'attr_state.dart';
 
 typedef AttrPropertyResolver<T> = T Function(Set<AttrState> states);
 typedef LerpFunction<T> = T? Function(T?, T?, double);

@@ -1,11 +1,11 @@
-part of 'style.dart';
+part of 'context_theme.dart';
 
-/// An [Element] that uses a [WidgetTheme] as its configuration.
-class StyleElement extends SingleChildInheritedElement with StyleOwnerContext {
-  StyleElement(WidgetTheme widget) : super(widget);
+/// An [Element] that uses a [ContextTheme] as its configuration.
+class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerContext {
+  ContextThemeElement(ContextTheme super.widget);
 
   @override
-  WidgetTheme get widget => super.widget as WidgetTheme;
+  ContextTheme get widget => super.widget as ContextTheme;
 
   @override
   bool doesHasDepended<StyleType extends Style>(BuildContext dependent) {
@@ -54,7 +54,7 @@ class StyleElement extends SingleChildInheritedElement with StyleOwnerContext {
   }
 
   @override
-  StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme<Style>>() {
+  StyleOwnerContext? getParentStyleOwner<I extends ContextTheme<Style>>() {
     {
       StyleOwnerContext? ownerContext;
       visitAncestorElements((parent) {
@@ -69,7 +69,7 @@ class StyleElement extends SingleChildInheritedElement with StyleOwnerContext {
 mixin StyleOwnerContext on InheritedElement {
   StyleOwnerContext? get hostElement;
 
-  StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme>();
+  StyleOwnerContext? getParentStyleOwner<I extends ContextTheme>();
 
   bool doesHasDepended<StyleType extends Style>(BuildContext dependent);
 

@@ -2,7 +2,7 @@ import 'package:context_theme/context_theme.dart';
 import 'package:flutter/widgets.dart';
 import 'package:material_context_theme/src/theme/colors_theme.dart';
 
-class CardTheme extends WidgetTheme<CardStyle> {
+class CardTheme extends ContextTheme<CardStyle> {
   const CardTheme({
     super.key,
     super.child,
@@ -10,7 +10,7 @@ class CardTheme extends WidgetTheme<CardStyle> {
   });
 
   static CardStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<CardStyle, CardTheme>(
+    return ContextTheme.styleOf<CardStyle, CardTheme>(
       context,
       inheritFrom: parent,
       defaultStyle: BaseCardStyle.new,

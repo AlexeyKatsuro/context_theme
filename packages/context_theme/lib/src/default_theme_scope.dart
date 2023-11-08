@@ -1,4 +1,4 @@
-part of 'style.dart';
+part of 'context_theme.dart';
 
 class DefaultThemeScope extends SingleChildInheritedWidget {
   const DefaultThemeScope({

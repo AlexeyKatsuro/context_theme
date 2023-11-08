@@ -1,9 +1,9 @@
-part of 'style.dart';
+part of 'context_theme.dart';
 
 class _DefaultThemeDependencies {
-  final Map<Type, Style> styles;
 
   _DefaultThemeDependencies() : styles = {};
+  final Map<Type, Style> styles;
 }
 
 class _DefaultThemeAspect<StyleType extends Style> {
@@ -36,7 +36,7 @@ class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwn
   StyleOwnerContext? get hostElement => null;
 
   @override
-  StyleOwnerContext? getParentStyleOwner<I extends WidgetTheme<Style>>() {
+  StyleOwnerContext? getParentStyleOwner<I extends ContextTheme<Style>>() {
     return null;
   }
 

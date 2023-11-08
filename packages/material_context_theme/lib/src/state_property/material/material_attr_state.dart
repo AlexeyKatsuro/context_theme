@@ -1,5 +1,6 @@
-import 'package:context_theme/src/state_property/attr_state.dart';
 import 'package:flutter/material.dart';
+
+import '../attr_state.dart';
 
 abstract class MaterialAttrState extends AttrState {
   const MaterialAttrState();

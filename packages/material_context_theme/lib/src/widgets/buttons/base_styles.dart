@@ -1,15 +1,12 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
-import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:material_context_theme/src/material_states/material_state_properties.dart';
 import 'package:material_context_theme/src/material_states/material_states_extension.dart';
 import 'package:material_context_theme/src/theme/colors_theme.dart';
 
-import 'filled_button_styles.dart';
-
 typedef DecorateWrapper = Widget Function(BuildContext context, Widget child);
 
-class ButtonTheme extends WidgetTheme<ButtonStyle> {
+class ButtonTheme extends ContextTheme<ButtonStyle> {
   const ButtonTheme({
     super.key,
     super.child,
@@ -17,7 +14,7 @@ class ButtonTheme extends WidgetTheme<ButtonStyle> {
   });
 
   static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return WidgetTheme.styleOf<ButtonStyle, ButtonTheme>(
+    return ContextTheme.styleOf<ButtonStyle, ButtonTheme>(
       context,
       inheritFrom: parent,
       defaultStyle: BaseButtonStyle.new,

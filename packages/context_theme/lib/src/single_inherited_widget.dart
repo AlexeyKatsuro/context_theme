@@ -19,8 +19,14 @@ abstract class SingleChildInheritedWidget extends InheritedWidget implements Sin
 
 class SingleChildInheritedElement extends InheritedElement
     with SingleChildWidgetElementMixin, SingleChildInheritedElementMixin {
-  SingleChildInheritedElement(SingleChildInheritedWidget widget) : super(widget);
+  SingleChildInheritedElement(SingleChildInheritedWidget super.widget);
 
   @override
   SingleChildInheritedWidget get widget => super.widget as SingleChildInheritedWidget;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    visitChildren((e) => e.debugFillProperties(properties));
+  }
 }
