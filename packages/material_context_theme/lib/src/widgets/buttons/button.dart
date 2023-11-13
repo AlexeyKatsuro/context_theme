@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide ButtonStyle;
 import 'package:flutter/material.dart' as material show ButtonStyle;
 import '../../material_states/index.dart';
+import '../decorator/index.dart';
 import 'base_styles.dart';
 
 class MaterialButton extends StatefulWidget {
@@ -61,8 +62,8 @@ class _MaterialButtonState extends State<MaterialButton> {
   Widget build(BuildContext context) {
     return MaterialStateScope.controller(
       controller: _statesController,
-      child: Builder(builder: (context) {
-        final child = Builder(builder: (context) {
+      child: context.buttonStyle.decorator.apply(
+        builder: (context) {
           return _ButtonBridge(
             style: context.buttonStyle,
             statesController: _statesController,
@@ -75,11 +76,8 @@ class _MaterialButtonState extends State<MaterialButton> {
             autofocus: widget.autofocus,
             child: widget.child,
           );
-        },);
-        final decorator = context.buttonStyle.decorator;
-        if (decorator == null) return child;
-        return decorator(context, child);
-      },),
+        },
+      ),
     );
   }
 }

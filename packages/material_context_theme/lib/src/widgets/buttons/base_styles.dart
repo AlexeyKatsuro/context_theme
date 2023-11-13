@@ -1,11 +1,13 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
+
 import '../../material_states/material_state_properties.dart';
 import '../../material_states/material_state_scope.dart';
 import '../../material_states/material_states_extension.dart';
 import '../../theme/colors_theme.dart';
+import '../decorator/index.dart';
 
-typedef DecorateWrapper = Widget Function(BuildContext context, Widget child);
+
 
 class ButtonTheme extends ContextTheme<ButtonStyle> {
   const ButtonTheme({
