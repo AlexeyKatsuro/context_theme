@@ -1,6 +1,7 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
 import '../../material_states/material_state_properties.dart';
+import '../../material_states/material_state_scope.dart';
 import '../../material_states/material_states_extension.dart';
 import '../../theme/colors_theme.dart';
 
@@ -157,8 +158,6 @@ class BaseButtonStyle extends ButtonStyle {
 
   @override
   Color? get overlayColor => OverlayMaterialStateColor(link.onPrimaryColor);
-
-
 }
 
 EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
@@ -186,6 +185,14 @@ class OverlayMaterialStateColor extends MaterialStateColor {
           }
           return null;
         });
+
+  Color? resolveWith(BuildContext context) {
+    return resolve({
+      if (context.isPressed) MaterialState.pressed,
+      if (context.isHovered) MaterialState.hovered,
+      if (context.isFocused) MaterialState.focused,
+    });
+  }
 }
 
 class ErrorButtonStyle extends ButtonStyle {

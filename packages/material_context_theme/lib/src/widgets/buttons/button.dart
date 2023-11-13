@@ -59,8 +59,8 @@ class _MaterialButtonState extends State<MaterialButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialStateScope(
-      states: _statesController,
+    return MaterialStateScope.controller(
+      controller: _statesController,
       child: Builder(builder: (context) {
         final child = Builder(builder: (context) {
           return _ButtonBridge(

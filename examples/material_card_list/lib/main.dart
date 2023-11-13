@@ -86,10 +86,10 @@ class CardsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      children: const [
-        Text('Weekly stats'),
-        SizedBox(height: 12),
-        InfoCard(
+      children: [
+        const Text('Weekly stats'),
+        const SizedBox(height: 12),
+        const InfoCard(
           overline: Text('Marketing'),
           title: Text('123.4 M'),
           caption: Text('+12.3% of target'),
@@ -106,8 +106,8 @@ class CardsList extends StatelessWidget {
             child: Icon(Icons.info_outline_rounded),
           ),
         ),
-        SizedBox(height: 6),
-        ColorsTheme(
+        const SizedBox(height: 6),
+        const ColorsTheme(
           style: PrimaryContainerColorsStyle.new,
           child: InfoCard(
             overline: Text('Sells'),
@@ -127,8 +127,8 @@ class CardsList extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 6),
-        ColorsTheme(
+        const SizedBox(height: 6),
+        const ColorsTheme(
           style: ErrorContainerColorsStyle.new,
           child: InfoCard(
             overline: Text('Losses'),
@@ -148,63 +148,41 @@ class CardsList extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 6),
-        SelectableInfoCard(),
-      ],
-    );
-  }
-}
-
-class SelectableInfoCard extends StatefulWidget {
-  const SelectableInfoCard({super.key});
-
-  @override
-  State<SelectableInfoCard> createState() => _SelectableInfoCardState();
-}
-
-class _SelectableInfoCardState extends State<SelectableInfoCard> {
-  final MaterialStatesController _statesController = MaterialStatesController({
-    MaterialState.selected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: _statesController,
-      builder: (context, child) {
-        return ColorsTheme(
-          style: !_statesController.value.isSelected
-              ? PrimaryContainerColorsStyle.new
-              : ColorsStyle.new,
-          child: child,
-        );
-      },
-      child: MaterialStateScope(
-        states: _statesController,
-        child: InfoCard(
-          overline: const Text('Losses'),
-          title: const Text('50.4 M'),
-          caption: const Text('-1.01% of target'),
-          secondaryAction: const MaterialButton(
-            onPressed: emptyCallback,
-            child: Text('Cancel'),
-          ),
-          primaryAction: const MaterialButton(
-            onPressed: emptyCallback,
-            child: Text('Review'),
-          ),
-          cornerAction: Builder(builder: (context) {
-            return Switch(
-              value: context.isSelected,
-              activeTrackColor: context.colorScheme.primary,
-              activeColor: context.colorScheme.onPrimary,
-              onChanged: (value) {
-                _statesController.update(MaterialState.selected, value);
-              },
+        const SizedBox(height: 6),
+        Builder(builder: (context) {
+          var selected = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return ColorsTheme(
+              style: selected ? PrimaryContainerColorsStyle.new : ColorsStyle.new,
+              child: InfoCard(
+                overline: const Text('Losses'),
+                title: const Text('50.4 M'),
+                caption: const Text('-1.01% of target'),
+                secondaryAction: const MaterialButton(
+                  onPressed: emptyCallback,
+                  child: Text('Cancel'),
+                ),
+                primaryAction: const MaterialButton(
+                  onPressed: emptyCallback,
+                  child: Text('Review'),
+                ),
+                cornerAction: Builder(builder: (context) {
+                  return Switch(
+                    value: selected,
+                    activeTrackColor: context.colorScheme.primary,
+                    activeColor: context.colorScheme.onPrimary,
+                    onChanged: (value) {
+                      setState(() {
+                        selected = value;
+                      });
+                    },
+                  );
+                }),
+              ),
             );
-          }),
-        ),
-      ),
+          });
+        }),
+      ],
     );
   }
 }
