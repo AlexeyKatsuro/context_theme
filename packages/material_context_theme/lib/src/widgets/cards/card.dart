@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Card;
+import 'package:flutter/material.dart' show Card, InputBorder;
 import 'package:flutter/widgets.dart';
 
 import '../decorator/index.dart';
@@ -20,12 +20,21 @@ class MaterialCard extends StatelessWidget {
       builder: (context) {
         final style = context.cardStyle;
         final child = this.child;
+        var shape = style.shape;
+        final side = style.side;
+        if (side != null && shape != null) {
+          if (shape is OutlinedBorder) {
+            shape = shape.copyWith(side: style.side);
+          } else if (shape is InputBorder) {
+            shape = shape.copyWith(borderSide: style.side);
+          }
+        }
         return Card(
           color: style.color,
           shadowColor: style.shadowColor,
           surfaceTintColor: style.surfaceTintColor,
           elevation: style.elevation,
-          shape: style.shape,
+          shape: shape,
           borderOnForeground: style.borderOnForeground,
           margin: style.margin,
           clipBehavior: style.clipBehavior,

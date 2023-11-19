@@ -42,6 +42,8 @@ abstract class CardStyle extends Style {
 
   ShapeBorder? get shape;
 
+  BorderSide? get side;
+
   bool get borderOnForeground;
 
   EdgeInsetsGeometry get margin;
@@ -89,6 +91,9 @@ class InheritCardStyle extends CardStyle {
 
   @override
   DecorateWrapper? get decorator => inherit.decorator;
+
+  @override
+  BorderSide? get side => inherit.side;
 }
 
 class DefaultCardStyle extends CardStyle {
@@ -129,4 +134,7 @@ class DefaultCardStyle extends CardStyle {
 
   @override
   DecorateWrapper? get decorator => null;
+
+  @override
+  BorderSide? get side => null;
 }
