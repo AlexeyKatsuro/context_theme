@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Card;
+import 'package:flutter/widgets.dart';
+
+import '../decorator/index.dart';
 import 'card_theme.dart';
 
 class MaterialCard extends StatelessWidget {
@@ -13,23 +16,34 @@ class MaterialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.cardStyle;
-    return Card(
-      color: style.color,
-      shadowColor: style.shadowColor,
-      surfaceTintColor: style.surfaceTintColor,
-      elevation: style.elevation,
-      shape: style.shape,
-      borderOnForeground: style.borderOnForeground,
-      margin: style.margin,
-      clipBehavior: style.clipBehavior,
-      semanticContainer: semanticContainer,
-      child: child != null
-          ? DefaultTextStyle(
-              style: style.textStyle,
-              child: child!,
-            )
-          : null,
+    return context.cardStyle.decorator.apply(
+      builder: (context) {
+        final style = context.cardStyle;
+        final child = this.child;
+        return Card(
+          color: style.color,
+          shadowColor: style.shadowColor,
+          surfaceTintColor: style.surfaceTintColor,
+          elevation: style.elevation,
+          shape: style.shape,
+          borderOnForeground: style.borderOnForeground,
+          margin: style.margin,
+          clipBehavior: style.clipBehavior,
+          semanticContainer: semanticContainer,
+          child: child != null
+              ? DefaultTextStyle.merge(
+                  style: style.textStyle,
+                  child: IconTheme(
+                    data: IconTheme.of(context).merge(style.iconTheme),
+                    child: Padding(
+                      padding: style.padding,
+                      child: child,
+                    ),
+                  ),
+                )
+              : null,
+        );
+      },
     );
   }
 }
