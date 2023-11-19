@@ -7,8 +7,6 @@ import '../../material_states/material_states_extension.dart';
 import '../../theme/colors_theme.dart';
 import '../decorator/index.dart';
 
-
-
 class ButtonTheme extends ContextTheme<ButtonStyle> {
   const ButtonTheme({
     super.key,
@@ -20,7 +18,7 @@ class ButtonTheme extends ContextTheme<ButtonStyle> {
     return ContextTheme.styleOf<ButtonStyle, ButtonTheme>(
       context,
       inheritFrom: parent,
-      defaultStyle: BaseButtonStyle.new,
+      defaultStyle: DefaultButtonStyle.new,
     );
   }
 }
@@ -29,63 +27,140 @@ extension ButtonStyleExt on BuildContext {
   ButtonStyle get buttonStyle => ButtonTheme.of(this);
 }
 
-class ButtonStyle extends Style {
-  ButtonStyle get inherit => ButtonTheme.of(context, parent);
-
+abstract class ButtonStyle extends Style {
   ButtonStyle get link => ButtonTheme.of(context);
 
+  Color get primaryColor;
+
+  Color get onPrimaryColor;
+
+  TextStyle? get textStyle;
+
+  TextAlign? get textAlign;
+
+  Color? get iconColor;
+
+  double? get iconSize;
+
+  Color? get backgroundColor;
+
+  Color? get foregroundColor;
+
+  Color? get overlayColor;
+
+  Color? get shadowColor;
+
+  Color? get surfaceTintColor;
+
+  double get elevation;
+
+  EdgeInsetsGeometry get padding;
+
+  Size? get minimumSize;
+
+  Size? get fixedSize;
+
+  Size get maximumSize;
+
+  BorderSide? get side;
+
+  OutlinedBorder get shape;
+
+  MouseCursor? get mouseCursor;
+
+  VisualDensity get visualDensity;
+
+  MaterialTapTargetSize get tapTargetSize;
+
+  Duration get animationDuration;
+
+  AlignmentGeometry get alignment;
+
+  InteractiveInkFeatureFactory? get splashFactory;
+
+  DecorateWrapper? get decorator;
+}
+
+class InheritButtonStyle extends ButtonStyle {
+  ButtonStyle get inherit => ButtonTheme.of(context, parent);
+
+  @override
   Color get primaryColor => inherit.primaryColor;
 
+  @override
   Color get onPrimaryColor => inherit.onPrimaryColor;
 
+  @override
   TextStyle? get textStyle => inherit.textStyle;
 
+  @override
   TextAlign? get textAlign => inherit.textAlign;
 
+  @override
   Color? get iconColor => inherit.iconColor;
 
+  @override
   double? get iconSize => inherit.iconSize;
 
+  @override
   Color? get backgroundColor => inherit.backgroundColor;
 
+  @override
   Color? get foregroundColor => inherit.foregroundColor;
 
+  @override
   Color? get overlayColor => inherit.overlayColor;
 
+  @override
   Color? get shadowColor => inherit.shadowColor;
 
+  @override
   Color? get surfaceTintColor => inherit.surfaceTintColor;
 
+  @override
   double get elevation => inherit.elevation;
 
+  @override
   EdgeInsetsGeometry get padding => inherit.padding;
 
+  @override
   Size? get minimumSize => inherit.minimumSize;
 
+  @override
   Size? get fixedSize => inherit.fixedSize;
 
+  @override
   Size get maximumSize => inherit.maximumSize;
 
+  @override
   BorderSide? get side => inherit.side;
 
+  @override
   OutlinedBorder get shape => inherit.shape;
 
+  @override
   MouseCursor? get mouseCursor => inherit.mouseCursor;
 
+  @override
   VisualDensity get visualDensity => inherit.visualDensity;
 
+  @override
   MaterialTapTargetSize get tapTargetSize => inherit.tapTargetSize;
 
+  @override
   Duration get animationDuration => inherit.animationDuration;
 
+  @override
   AlignmentGeometry get alignment => inherit.alignment;
 
+  @override
   InteractiveInkFeatureFactory? get splashFactory => inherit.splashFactory;
 
+  @override
   DecorateWrapper? get decorator => inherit.decorator;
 }
 
-class BaseButtonStyle extends ButtonStyle {
+class DefaultButtonStyle extends ButtonStyle {
   @override
   Color get primaryColor => context.colorScheme.primary;
 
@@ -197,7 +272,7 @@ class OverlayMaterialStateColor extends MaterialStateColor {
   }
 }
 
-class ErrorButtonStyle extends ButtonStyle {
+class ErrorButtonStyle extends InheritButtonStyle {
   @override
   Color get primaryColor => context.colorScheme.error;
 

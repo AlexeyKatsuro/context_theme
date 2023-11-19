@@ -4,7 +4,7 @@ import '../../theme/colors_theme.dart';
 
 import 'base_styles.dart';
 
-class FilledButtonStyle extends ButtonStyle {
+class FilledButtonStyle extends InheritButtonStyle {
 
   @override
   Color? get backgroundColor {

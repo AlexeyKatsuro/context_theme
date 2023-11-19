@@ -4,7 +4,7 @@ import '../../theme/colors_theme.dart';
 
 import 'base_styles.dart';
 
-class TextButtonStyle extends ButtonStyle {
+class TextButtonStyle extends InheritButtonStyle {
 
   @override
   Color get backgroundColor => Colors.transparent;

@@ -23,7 +23,9 @@ extension CardStyleExt on BuildContext {
   CardStyle get cardStyle => CardTheme.of(this);
 }
 
-abstract interface class CardStyle extends Style {
+abstract class CardStyle extends Style {
+  CardStyle get inherit => CardTheme.of(context, parent);
+
   Clip get clipBehavior;
 
   Color? get color;
@@ -49,9 +51,7 @@ abstract interface class CardStyle extends Style {
   DecorateWrapper? get decorator;
 }
 
-class InheritCardStyle extends Style implements CardStyle {
-  CardStyle get inherit => CardTheme.of(context, parent);
-
+class InheritCardStyle extends CardStyle {
   CardStyle get link => CardTheme.of(context);
 
   @override
@@ -91,7 +91,7 @@ class InheritCardStyle extends Style implements CardStyle {
   DecorateWrapper? get decorator => inherit.decorator;
 }
 
-class DefaultCardStyle extends Style implements CardStyle {
+class DefaultCardStyle extends CardStyle {
   @override
   Clip get clipBehavior => Clip.none;
 
