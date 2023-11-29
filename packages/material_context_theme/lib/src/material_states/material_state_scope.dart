@@ -8,17 +8,38 @@ class MaterialStateScope extends InheritedModel<MaterialState> {
     required this.states,
   });
 
+  static Widget merge({required Widget child, required Set<MaterialState> states}) {
+    return Builder(
+      builder: (context) {
+        final parentStates =
+            InheritedModel.inheritFrom<MaterialStateScope>(context)?.states ?? const {};
+        return MaterialStateScope(
+          states: {...parentStates, ...states},
+          child: child,
+        );
+      },
+    );
+  }
+
   static Widget controller({
+    bool? inherit,
     required Widget child,
     required MaterialStatesController controller,
   }) {
     return ValueListenableBuilder(
       valueListenable: controller,
       builder: (context, states, child) {
-        return MaterialStateScope(
-          states: {...states},
-          child: child!,
-        );
+        if (inherit ?? true) {
+          return MaterialStateScope.merge(
+            states: {...states},
+            child: child!,
+          );
+        } else {
+          return MaterialStateScope(
+            states: {...states},
+            child: child!,
+          );
+        }
       },
       child: child,
     );

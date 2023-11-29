@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide ButtonStyle, MaterialStateColor;
 
@@ -41,6 +44,8 @@ abstract class ButtonStyle extends Style {
   Color? get iconColor;
 
   double? get iconSize;
+
+  double get iconGap;
 
   Color? get backgroundColor;
 
@@ -158,6 +163,9 @@ class InheritButtonStyle extends ButtonStyle {
 
   @override
   DecorateWrapper? get decorator => inherit.decorator;
+
+  @override
+  double get iconGap => inherit.iconGap;
 }
 
 class DefaultButtonStyle extends ButtonStyle {
@@ -235,6 +243,9 @@ class DefaultButtonStyle extends ButtonStyle {
 
   @override
   Color? get overlayColor => OverlayMaterialStateColor(link.onPrimaryColor);
+
+  @override
+  double get iconGap => scaledButtonIconGap(context, 8);
 }
 
 EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
@@ -246,6 +257,13 @@ EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
     EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
     MediaQuery.textScaleFactorOf(context),
   );
+}
+
+double scaledButtonIconGap(BuildContext context, double origin) {
+  final scale = MediaQuery.textScalerOf(context).scale(origin) / origin;
+  // Adjust the gap based on the text scale factor. Start at 8, and lerp
+  // to 4 based on how large the text is.
+  return scale <= 1 ? origin : lerpDouble(origin, origin / 2, math.min(scale - 1, 1))!;
 }
 
 class OverlayMaterialStateColor extends MaterialStateColor {
