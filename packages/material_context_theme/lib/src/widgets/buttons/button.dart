@@ -4,7 +4,9 @@ import '../../material_states/index.dart';
 import '../decorator/index.dart';
 import 'base_styles.dart';
 
-class MaterialButton extends StatefulWidget {
+mixin MaterialButtonBuilder on Widget {}
+
+class MaterialButton extends StatefulWidget with MaterialButtonBuilder {
   const MaterialButton({
     super.key,
     Clip? clipBehavior,

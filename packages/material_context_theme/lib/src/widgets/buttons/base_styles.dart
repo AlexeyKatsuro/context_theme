@@ -9,8 +9,9 @@ import '../../material_states/material_state_scope.dart';
 import '../../material_states/material_states_extension.dart';
 import '../../theme/colors_theme.dart';
 import '../decorator/index.dart';
+import 'button.dart';
 
-class ButtonTheme extends ContextTheme<ButtonStyle> {
+class ButtonTheme extends ContextTheme<ButtonStyle> with MaterialButtonBuilder {
   const ButtonTheme({
     super.key,
     super.child,
