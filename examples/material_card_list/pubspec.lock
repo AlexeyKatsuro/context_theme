@@ -47,7 +47,7 @@ packages:
       path: "../../packages/context_theme"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.4"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -112,7 +112,7 @@ packages:
       path: "../../packages/material_context_theme"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.4"
   meta:
     dependency: transitive
     description:
