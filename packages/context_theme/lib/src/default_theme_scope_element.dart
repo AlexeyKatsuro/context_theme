@@ -1,7 +1,6 @@
 part of 'context_theme.dart';
 
 class _DefaultThemeDependencies {
-
   _DefaultThemeDependencies() : styles = {};
   final Map<Type, Style> styles;
 }
@@ -58,7 +57,8 @@ class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwn
     if (dependencies is! _DefaultThemeDependencies) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary(
-            'DefaultThemeScope must have only _DefaultThemeDependencies type as Dependencies',),
+          'DefaultThemeScope must have only _DefaultThemeDependencies type as Dependencies',
+        ),
       ]);
     }
     final style = dependencies.styles[StyleType];

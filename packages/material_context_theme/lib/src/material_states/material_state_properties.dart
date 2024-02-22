@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 class MaterialStateColor<C extends Color?> extends Color implements MaterialStateProperty<C> {
-  MaterialStateColor.resolveWith(MaterialPropertyResolver<C> callback,
-      {Set<MaterialState> defaultStates = const {},})
-      : _resolve = callback,
+  MaterialStateColor.resolveWith(
+    MaterialPropertyResolver<C> callback, {
+    Set<MaterialState> defaultStates = const {},
+  })  : _resolve = callback,
         super(callback(defaultStates)?.value ?? 0x00000000);
 
   final MaterialPropertyResolver<C> _resolve;
@@ -21,6 +21,3 @@ extension MaterialStatePropertyTransform<T> on T {
     return MaterialStatePropertyAll<T>(value);
   }
 }
-
-
-

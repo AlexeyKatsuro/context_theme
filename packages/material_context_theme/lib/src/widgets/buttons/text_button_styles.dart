@@ -5,7 +5,6 @@ import '../../theme/colors_theme.dart';
 import 'base_styles.dart';
 
 class TextButtonStyle extends InheritButtonStyle {
-
   @override
   Color get backgroundColor => Colors.transparent;
 
@@ -28,13 +27,14 @@ class TextButtonStyle extends InheritButtonStyle {
 
   @override
   EdgeInsetsGeometry get padding => scaledTextPadding(context);
-
 }
 
 EdgeInsetsGeometry scaledTextPadding(BuildContext context) {
   final useMaterial3 = Theme.of(context).useMaterial3;
   return ButtonStyleButton.scaledPadding(
-    useMaterial3 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8) :  const EdgeInsets.all(8),
+    useMaterial3
+        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+        : const EdgeInsets.all(8),
     const EdgeInsets.symmetric(horizontal: 8),
     const EdgeInsets.symmetric(horizontal: 4),
     MediaQuery.textScaleFactorOf(context),

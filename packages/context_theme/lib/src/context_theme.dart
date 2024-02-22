@@ -102,7 +102,8 @@ abstract class Style with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<ContextTheme>('_widget', _widget, ifNull: 'no widget'));
-    properties.add(ObjectFlagProperty<Element>('_element', _dependentElement, ifNull: 'not mounted'));
+    properties
+        .add(ObjectFlagProperty<Element>('_element', _dependentElement, ifNull: 'not mounted'));
     properties
         .add(ObjectFlagProperty<Element>('_hostElement', _hostElement, ifNull: 'Has not parent'));
   }

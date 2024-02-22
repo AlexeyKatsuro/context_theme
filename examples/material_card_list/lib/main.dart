@@ -168,7 +168,7 @@ class CardsList extends StatelessWidget {
           var selected = false;
           return StatefulBuilder(builder: (context, setState) {
             return MaterialStateScope(
-              states: {if(selected) MaterialState.selected},
+              states: {if (selected) MaterialState.selected},
               child: ColorsTheme(
                 style: PrimarySelectedContainerColorsStyle.new,
                 child: InfoCard(
@@ -277,26 +277,26 @@ class InfoCard extends StatelessWidget {
 
 class PrimaryContainerColorsStyle extends ColorsStyle {
   @override
-  Color get primary =>  link.onPrimaryContainer;
+  Color get primary => link.onPrimaryContainer;
 
   @override
-  Color get onPrimary =>  link.primaryContainer;
+  Color get onPrimary => link.primaryContainer;
 
   @override
-  Color get surface =>  link.primaryContainer;
+  Color get surface => link.primaryContainer;
 
   @override
-  Color get onSurface =>  link.onPrimaryContainer;
+  Color get onSurface => link.onPrimaryContainer;
 
   @override
-  Color get background =>  link.primaryContainer;
+  Color get background => link.primaryContainer;
 
   @override
-  Color get onBackground =>  link.onPrimaryContainer;
+  Color get onBackground => link.onPrimaryContainer;
 }
 
 class PrimarySelectedContainerColorsStyle extends ColorsStyle {
-   @override
+  @override
   ColorsStyle get inherit => super.inherit;
 }
 

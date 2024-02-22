@@ -6,8 +6,8 @@ class MultiTheme extends Nested {
     required List<SingleChildWidget> themes,
     super.child,
   }) : super(
-    children: themes,
-  );
+          children: themes,
+        );
 }
 
 class ThemeAdapter extends SingleChildBuilder {

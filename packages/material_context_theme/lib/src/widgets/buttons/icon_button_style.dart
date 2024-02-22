@@ -19,8 +19,8 @@ class IconButtonStyle extends TextButtonStyle {
 
   @override
   Color get overlayColor => OverlayMaterialStateColor(
-      context.isSelected ? link.primaryColor : context.colorScheme.onSurface,
-    );
+        context.isSelected ? link.primaryColor : context.colorScheme.onSurface,
+      );
 
   @override
   EdgeInsetsGeometry get padding => const EdgeInsets.all(8);
