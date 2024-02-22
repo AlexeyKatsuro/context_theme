@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 : const Icon(Icons.lock_open_rounded),
             onPressed: () {
               setState(() {
-                isLocked;
+                isLocked = !isLocked;
               });
             },
           ),
@@ -81,8 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: MaterialStateScope.merge(
-        states: {},
-        child: const CardsList(),
+        states: {if (isLocked) MaterialState.disabled},
+        child: const CardTheme(
+          style: DisabledCardStyle.new,
+          child: CardsList(),
+        ),
       ),
     );
   }
@@ -167,10 +170,10 @@ class CardsList extends StatelessWidget {
         Builder(builder: (context) {
           var selected = false;
           return StatefulBuilder(builder: (context, setState) {
-            return MaterialStateScope(
+            return MaterialStateScope.merge(
               states: {if (selected) MaterialState.selected},
               child: ColorsTheme(
-                style: PrimaryContainerColorsStyle.new,
+                style: selected ? PrimaryContainerColorsStyle.new : MaterialColorsStyle.new,
                 child: InfoCard(
                   overline: const Text('Losses'),
                   title: const Text('50.4 M'),
@@ -313,4 +316,21 @@ class ErrorContainerColorsStyle extends InheritColorsStyle {
 
   @override
   Color get onBackground => link.onErrorContainer;
+}
+
+class DisabledCardStyle extends InheritCardStyle {
+  @override
+  DecorateWrapper? get decorator => inherit.decorator.wrap(
+        decorator: (context, child) {
+          final isDisabled = context.isDisabled;
+          return IgnorePointer(
+            ignoring: isDisabled,
+            child: AnimatedOpacity(
+              opacity: isDisabled ? 0.6 : 1.0,
+              duration: kThemeAnimationDuration,
+              child: child,
+            ),
+          );
+        },
+      );
 }
