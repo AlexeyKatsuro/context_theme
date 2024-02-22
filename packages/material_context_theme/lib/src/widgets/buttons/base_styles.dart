@@ -256,7 +256,8 @@ EdgeInsetsGeometry scaledButtonPadding(BuildContext context) {
     EdgeInsets.symmetric(horizontal: padding1x),
     EdgeInsets.symmetric(horizontal: padding1x / 2),
     EdgeInsets.symmetric(horizontal: padding1x / 2 / 2),
-    MediaQuery.textScaleFactorOf(context),
+    // ignore: deprecated_member_use
+    MediaQuery.textScalerOf(context).textScaleFactor,
   );
 }
 

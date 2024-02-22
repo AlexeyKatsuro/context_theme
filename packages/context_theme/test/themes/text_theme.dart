@@ -43,7 +43,7 @@ class DefaultFontStyle extends FontStyle {
   FontStyle get inherit => FontTheme.of(context, parent);
 
   @override
-  Color get color => const Color(0x000000);
+  Color get color => const Color(0x00000000);
 
   @override
   double get fontSize => 14.0;

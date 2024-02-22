@@ -21,75 +21,86 @@ extension TypographyStyleExt on BuildContext {
   TypographyStyle get textTheme => TypographyTheme.of(this);
 }
 
-class TypographyStyle extends Style {
-  TypographyStyle get inherit => TypographyTheme.of(context, parent);
-
+abstract class TypographyStyle extends Style {
   TypographyStyle get link => TypographyTheme.of(context);
 
-  TextStyle get displayLarge => inherit.displayLarge;
+  TextStyle get displayLarge;
 
-  TextStyle get displayMedium => inherit.displayMedium;
+  TextStyle get displayMedium;
 
-  TextStyle get displaySmall => inherit.displaySmall;
+  TextStyle get displaySmall;
 
-  TextStyle get headlineLarge => inherit.headlineLarge;
+  TextStyle get headlineLarge;
 
-  TextStyle get headlineMedium => inherit.headlineMedium;
+  TextStyle get headlineMedium;
 
-  TextStyle get headlineSmall => inherit.headlineSmall;
+  TextStyle get headlineSmall;
 
-  TextStyle get titleLarge => inherit.titleLarge;
+  TextStyle get titleLarge;
 
-  TextStyle get titleMedium => inherit.titleMedium;
+  TextStyle get titleMedium;
 
-  TextStyle get titleSmall => inherit.titleSmall;
+  TextStyle get titleSmall;
 
-  TextStyle get bodyLarge => inherit.bodyLarge;
+  TextStyle get bodyLarge;
 
-  TextStyle get bodyMedium => inherit.bodyMedium;
+  TextStyle get bodyMedium;
 
-  TextStyle get bodySmall => inherit.bodySmall;
+  TextStyle get bodySmall;
 
-  TextStyle get labelLarge => inherit.labelLarge;
+  TextStyle get labelLarge;
 
-  TextStyle get labelMedium => inherit.labelMedium;
+  TextStyle get labelMedium;
 
-  TextStyle get labelSmall => inherit.labelSmall;
+  TextStyle get labelSmall;
 }
 
-class BaseTypographyStyle extends Style {
+class InheritTypographyStyle extends TypographyStyle {
   TypographyStyle get inherit => TypographyTheme.of(context, parent);
 
-  TypographyStyle get link => TypographyTheme.of(context);
-
+  @override
   TextStyle get displayLarge => inherit.displayLarge;
 
+  @override
   TextStyle get displayMedium => inherit.displayMedium;
 
+  @override
   TextStyle get displaySmall => inherit.displaySmall;
 
+  @override
   TextStyle get headlineLarge => inherit.headlineLarge;
 
+  @override
   TextStyle get headlineMedium => inherit.headlineMedium;
 
+  @override
   TextStyle get headlineSmall => inherit.headlineSmall;
 
+  @override
   TextStyle get titleLarge => inherit.titleLarge;
 
+  @override
   TextStyle get titleMedium => inherit.titleMedium;
 
+  @override
   TextStyle get titleSmall => inherit.titleSmall;
 
+  @override
   TextStyle get bodyLarge => inherit.bodyLarge;
 
+  @override
   TextStyle get bodyMedium => inherit.bodyMedium;
 
+  @override
   TextStyle get bodySmall => inherit.bodySmall;
 
+  @override
   TextStyle get labelLarge => inherit.labelLarge;
 
+  @override
   TextStyle get labelMedium => inherit.labelMedium;
 
+  @override
   TextStyle get labelSmall => inherit.labelSmall;
 }
 

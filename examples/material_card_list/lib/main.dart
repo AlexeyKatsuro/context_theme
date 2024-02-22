@@ -123,7 +123,7 @@ class CardsList extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         const ColorsTheme(
-          style: PrimarySelectedContainerColorsStyle.new,
+          style: PrimaryContainerColorsStyle.new,
           child: InfoCard(
             overline: Text('Sells'),
             title: Text('423.4 M'),
@@ -170,7 +170,7 @@ class CardsList extends StatelessWidget {
             return MaterialStateScope(
               states: {if (selected) MaterialState.selected},
               child: ColorsTheme(
-                style: PrimarySelectedContainerColorsStyle.new,
+                style: PrimaryContainerColorsStyle.new,
                 child: InfoCard(
                   overline: const Text('Losses'),
                   title: const Text('50.4 M'),
@@ -275,7 +275,7 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-class PrimaryContainerColorsStyle extends ColorsStyle {
+class PrimaryContainerColorsStyle extends InheritColorsStyle {
   @override
   Color get primary => link.onPrimaryContainer;
 
@@ -295,12 +295,7 @@ class PrimaryContainerColorsStyle extends ColorsStyle {
   Color get onBackground => link.onPrimaryContainer;
 }
 
-class PrimarySelectedContainerColorsStyle extends ColorsStyle {
-  @override
-  ColorsStyle get inherit => super.inherit;
-}
-
-class ErrorContainerColorsStyle extends ColorsStyle {
+class ErrorContainerColorsStyle extends InheritColorsStyle {
   @override
   Color get primary => link.onErrorContainer;
 

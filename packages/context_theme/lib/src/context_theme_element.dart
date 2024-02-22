@@ -36,7 +36,8 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
     if (style is! StyleType) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary(
-            'StyleElement with ${widget.runtimeType} widget must have $StyleType type as dependency'),
+          'StyleElement with ${widget.runtimeType} widget must have $StyleType type as dependency',
+        ),
       ]);
     }
     return style;

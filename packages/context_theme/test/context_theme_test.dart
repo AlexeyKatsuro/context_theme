@@ -27,23 +27,25 @@ void main() {
         (tester) async {
       CardStyle? styleDeep1;
       CardStyle? styleDeep2;
-      await tester.pumpWidget(CardTheme(
-        style: RedForegroundCardStyle.new,
-        child: Builder(
-          builder: (context) {
-            styleDeep1 = context.cardTheme;
-            return CardTheme(
-              style: RedBackgroundCardStyle.new,
-              child: Builder(
-                builder: (context) {
-                  styleDeep2 = context.cardTheme;
-                  return const SizedBox();
-                },
-              ),
-            );
-          },
+      await tester.pumpWidget(
+        CardTheme(
+          style: RedForegroundCardStyle.new,
+          child: Builder(
+            builder: (context) {
+              styleDeep1 = context.cardTheme;
+              return CardTheme(
+                style: RedBackgroundCardStyle.new,
+                child: Builder(
+                  builder: (context) {
+                    styleDeep2 = context.cardTheme;
+                    return const SizedBox();
+                  },
+                ),
+              );
+            },
+          ),
         ),
-      ));
+      );
 
       expect(styleDeep1, isA<RedForegroundCardStyle>());
       expect(styleDeep2, isA<RedBackgroundCardStyle>());

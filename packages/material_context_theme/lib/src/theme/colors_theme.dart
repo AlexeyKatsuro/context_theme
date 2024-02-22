@@ -21,77 +21,176 @@ extension ColorsThemeExt on BuildContext {
   ColorsStyle get colorScheme => ColorsTheme.of(this);
 }
 
-class ColorsStyle extends Style {
-  @protected
-  ColorsStyle get inherit => ColorsTheme.of(context, parent);
-
+abstract class ColorsStyle extends Style {
   @protected
   ColorsStyle get link => ColorsTheme.of(context);
 
+  Brightness get brightness;
+
+  Color get primary;
+
+  Color get onPrimary;
+
+  Color get primaryContainer;
+
+  Color get onPrimaryContainer;
+
+  Color get secondary;
+
+  Color get onSecondary;
+
+  Color get secondaryContainer;
+
+  Color get onSecondaryContainer;
+
+  Color get tertiary;
+
+  Color get onTertiary;
+
+  Color get tertiaryContainer;
+
+  Color get onTertiaryContainer;
+
+  Color get error;
+
+  Color get onError;
+
+  Color get errorContainer;
+
+  Color get onErrorContainer;
+
+  Color get background;
+
+  Color get onBackground;
+
+  Color get surface;
+
+  Color get onSurface;
+
+  Color get surfaceVariant;
+
+  Color get onSurfaceVariant;
+
+  Color get outline;
+
+  Color get outlineVariant;
+
+  Color get shadow;
+
+  Color get scrim;
+
+  Color get inverseSurface;
+
+  Color get onInverseSurface;
+
+  Color get inversePrimary;
+
+  Color get surfaceTint;
+}
+
+class InheritColorsStyle extends ColorsStyle {
+  @protected
+  ColorsStyle get inherit => ColorsTheme.of(context, parent);
+
+  @override
+  @protected
+  ColorsStyle get link => ColorsTheme.of(context);
+
+  @override
   Brightness get brightness => inherit.brightness;
 
+  @override
   Color get primary => inherit.primary;
 
+  @override
   Color get onPrimary => inherit.onPrimary;
 
+  @override
   Color get primaryContainer => inherit.primaryContainer;
 
+  @override
   Color get onPrimaryContainer => inherit.onPrimaryContainer;
 
+  @override
   Color get secondary => inherit.secondary;
 
+  @override
   Color get onSecondary => inherit.onSecondary;
 
+  @override
   Color get secondaryContainer => inherit.secondaryContainer;
 
+  @override
   Color get onSecondaryContainer => inherit.onSecondaryContainer;
 
+  @override
   Color get tertiary => inherit.tertiary;
 
+  @override
   Color get onTertiary => inherit.onTertiary;
 
+  @override
   Color get tertiaryContainer => inherit.tertiaryContainer;
 
+  @override
   Color get onTertiaryContainer => inherit.onTertiaryContainer;
 
+  @override
   Color get error => inherit.error;
 
+  @override
   Color get onError => inherit.onError;
 
+  @override
   Color get errorContainer => inherit.errorContainer;
 
+  @override
   Color get onErrorContainer => inherit.onErrorContainer;
 
+  @override
   Color get background => inherit.background;
 
+  @override
   Color get onBackground => inherit.onBackground;
 
+  @override
   Color get surface => inherit.surface;
 
+  @override
   Color get onSurface => inherit.onSurface;
 
+  @override
   Color get surfaceVariant => inherit.surfaceVariant;
 
+  @override
   Color get onSurfaceVariant => inherit.onSurfaceVariant;
 
+  @override
   Color get outline => inherit.outline;
 
+  @override
   Color get outlineVariant => inherit.outlineVariant;
 
+  @override
   Color get shadow => inherit.shadow;
 
+  @override
   Color get scrim => inherit.scrim;
 
+  @override
   Color get inverseSurface => inherit.inverseSurface;
 
+  @override
   Color get onInverseSurface => inherit.onInverseSurface;
 
+  @override
   Color get inversePrimary => inherit.inversePrimary;
 
+  @override
   Color get surfaceTint => inherit.surfaceTint;
 }
 
-class BaseColorsStyle extends ColorsStyle {
+abstract class BaseColorsStyle extends ColorsStyle {
   @override
   Color get primaryContainer => link.primary;
 
