@@ -97,3 +97,5 @@ linter:
     sort_pub_dependencies: false
 
     unnecessary_library_directive: false
+
+    prefer_int_literals: false

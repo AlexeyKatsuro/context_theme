@@ -13,4 +13,14 @@ extension DecorateWrapperApply on DecorateWrapper? {
       },
     );
   }
+
+  DecorateWrapper wrap({required DecorateWrapper decorator}) {
+    final parentDecorator = this;
+    return (context, child) {
+      final decoratedChild = Builder(
+        builder: (context) => decorator(context, child),
+      );
+      return parentDecorator != null ? parentDecorator(context, decoratedChild) : decoratedChild;
+    };
+  }
 }

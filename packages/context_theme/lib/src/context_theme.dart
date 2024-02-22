@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'single_inherited_widget.dart';
 
 part 'context_theme_element.dart';
+
 part 'default_theme_scope.dart';
+
 part 'default_theme_scope_element.dart';
 
 typedef CreateStyle<S extends Style> = S Function();
@@ -57,10 +59,36 @@ abstract class Style with Diagnosticable {
   ContextTheme? _widget;
 
   BuildContext get context {
+    _assetMounted();
+    return _dependentElement!;
+  }
+
+  bool _disposed = false;
+
+  StyleOwnerContext? _hostElement;
+
+  Element? _dependentElement;
+
+  @protected
+  StyleOwnerContext get parent {
+    _assetMounted();
+    return _hostElement!;
+  }
+
+  void _mound(Element dependent, StyleOwnerContext hostElement) {
+    _dependentElement = dependent;
+    _hostElement = hostElement;
+  }
+
+  void _dispose() {
+    _disposed = true;
+  }
+
+  void _assetMounted() {
     assert(() {
-      if (_element == null) {
+      if (_dependentElement == null || _hostElement == null) {
         throw FlutterError(
-          "This widget hasn't been mounted, so the Style no longer has a context (and should be considered defunct). \n",
+          "This widget hasn't been mounted, so the Style has no a context or parent (and should be considered defunct).\n",
         );
       }
       if (_disposed) {
@@ -68,30 +96,13 @@ abstract class Style with Diagnosticable {
       }
       return true;
     }());
-    return _element!;
-  }
-
-  bool _disposed = false;
-
-  StyleOwnerContext? _hostElement;
-
-  Element? _element;
-
-  @protected
-  StyleOwnerContext get parent {
-    assert(_hostElement != null);
-    return _hostElement!;
-  }
-
-  void _dispose() {
-    _disposed = true;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<ContextTheme>('_widget', _widget, ifNull: 'no widget'));
-    properties.add(ObjectFlagProperty<Element>('_element', _element, ifNull: 'not mounted'));
+    properties.add(ObjectFlagProperty<Element>('_element', _dependentElement, ifNull: 'not mounted'));
     properties
         .add(ObjectFlagProperty<Element>('_hostElement', _hostElement, ifNull: 'Has not parent'));
   }
@@ -118,4 +129,3 @@ Consider using DefaultThemeScope as a top widget.
 ''';
   }
 }
-

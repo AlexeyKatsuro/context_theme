@@ -51,6 +51,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLocked = false;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -58,6 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          IconButton(
+            icon: isLocked
+                ? const Icon(Icons.lock_outline_rounded)
+                : const Icon(Icons.lock_open_rounded),
+            onPressed: () {
+              setState(() {
+                isLocked;
+              });
+            },
+          ),
           IconButton(
             icon: theme.brightness.isDark
                 ? const Icon(Icons.light_mode_outlined)
@@ -68,7 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: const CardsList(),
+      body: MaterialStateScope.merge(
+        states: {},
+        child: const CardsList(),
+      ),
     );
   }
 }
@@ -108,7 +123,7 @@ class CardsList extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         const ColorsTheme(
-          style: PrimaryContainerColorsStyle.new,
+          style: PrimarySelectedContainerColorsStyle.new,
           child: InfoCard(
             overline: Text('Sells'),
             title: Text('423.4 M'),
@@ -152,32 +167,35 @@ class CardsList extends StatelessWidget {
         Builder(builder: (context) {
           var selected = false;
           return StatefulBuilder(builder: (context, setState) {
-            return ColorsTheme(
-              style: selected ? PrimaryContainerColorsStyle.new : ColorsStyle.new,
-              child: InfoCard(
-                overline: const Text('Losses'),
-                title: const Text('50.4 M'),
-                caption: const Text('-1.01% of target'),
-                secondaryAction: const MaterialButton(
-                  onPressed: emptyCallback,
-                  child: Text('Cancel'),
+            return MaterialStateScope(
+              states: {if(selected) MaterialState.selected},
+              child: ColorsTheme(
+                style: PrimarySelectedContainerColorsStyle.new,
+                child: InfoCard(
+                  overline: const Text('Losses'),
+                  title: const Text('50.4 M'),
+                  caption: const Text('-1.01% of target'),
+                  secondaryAction: const MaterialButton(
+                    onPressed: emptyCallback,
+                    child: Text('Cancel'),
+                  ),
+                  primaryAction: const MaterialButton(
+                    onPressed: emptyCallback,
+                    child: Text('Review'),
+                  ),
+                  cornerAction: Builder(builder: (context) {
+                    return Switch(
+                      value: selected,
+                      activeTrackColor: context.colorScheme.primary,
+                      activeColor: context.colorScheme.onPrimary,
+                      onChanged: (value) {
+                        setState(() {
+                          selected = value;
+                        });
+                      },
+                    );
+                  }),
                 ),
-                primaryAction: const MaterialButton(
-                  onPressed: emptyCallback,
-                  child: Text('Review'),
-                ),
-                cornerAction: Builder(builder: (context) {
-                  return Switch(
-                    value: selected,
-                    activeTrackColor: context.colorScheme.primary,
-                    activeColor: context.colorScheme.onPrimary,
-                    onChanged: (value) {
-                      setState(() {
-                        selected = value;
-                      });
-                    },
-                  );
-                }),
               ),
             );
           });
@@ -259,22 +277,27 @@ class InfoCard extends StatelessWidget {
 
 class PrimaryContainerColorsStyle extends ColorsStyle {
   @override
-  Color get primary => link.onPrimaryContainer;
+  Color get primary =>  link.onPrimaryContainer;
 
   @override
-  Color get onPrimary => link.primaryContainer;
+  Color get onPrimary =>  link.primaryContainer;
 
   @override
-  Color get surface => link.primaryContainer;
+  Color get surface =>  link.primaryContainer;
 
   @override
-  Color get onSurface => link.onPrimaryContainer;
+  Color get onSurface =>  link.onPrimaryContainer;
 
   @override
-  Color get background => link.primaryContainer;
+  Color get background =>  link.primaryContainer;
 
   @override
-  Color get onBackground => link.onPrimaryContainer;
+  Color get onBackground =>  link.onPrimaryContainer;
+}
+
+class PrimarySelectedContainerColorsStyle extends ColorsStyle {
+   @override
+  ColorsStyle get inherit => super.inherit;
 }
 
 class ErrorContainerColorsStyle extends ColorsStyle {

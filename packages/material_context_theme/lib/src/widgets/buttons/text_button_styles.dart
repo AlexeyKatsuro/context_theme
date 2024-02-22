@@ -29,7 +29,6 @@ class TextButtonStyle extends InheritButtonStyle {
   @override
   EdgeInsetsGeometry get padding => scaledTextPadding(context);
 
-
 }
 
 EdgeInsetsGeometry scaledTextPadding(BuildContext context) {

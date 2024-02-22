@@ -35,7 +35,8 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
     }
     if (style is! StyleType) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary('StyleElement with ${widget.runtimeType} widget must have $StyleType type as dependency'),
+        ErrorSummary(
+            'StyleElement with ${widget.runtimeType} widget must have $StyleType type as dependency'),
       ]);
     }
     return style;
@@ -76,8 +77,6 @@ mixin StyleOwnerContext on InheritedElement {
   StyleType _getStyle<StyleType extends Style>(BuildContext context);
 
   Style _initStyle(Element dependent, Style Function() createStyle) {
-    return createStyle()
-      .._element = dependent
-      .._hostElement = this;
+    return createStyle().._mound(dependent, this);
   }
 }
