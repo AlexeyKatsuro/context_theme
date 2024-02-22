@@ -4,9 +4,9 @@ import '../../theme/colors_theme.dart';
 import 'text_button_styles.dart';
 
 class OutlinedButtonStyle extends TextButtonStyle {
-
   @override
-  EdgeInsetsGeometry get padding => inherit.padding; // Take default padding, not from TextButtonStyle
+  EdgeInsetsGeometry get padding =>
+      inherit.padding; // Take default padding, not from TextButtonStyle
 
   @override
   BorderSide get side {

@@ -5,7 +5,6 @@ import '../../theme/colors_theme.dart';
 import 'base_styles.dart';
 
 class FilledButtonStyle extends InheritButtonStyle {
-
   @override
   Color? get backgroundColor {
     if (context.isDisabled) {
@@ -41,9 +40,4 @@ class FilledButtonStyle extends InheritButtonStyle {
     }
     return 0;
   }
-
 }
-
-
-
-

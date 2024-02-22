@@ -91,7 +91,7 @@ void main() {
 
   testWidgets(
     "shouldn't trigger rebuild for widgets that don't depend on changed styles",
-        (tester) async {
+    (tester) async {
       var buildCount = 0;
       final child = Builder(
         builder: (context) {
