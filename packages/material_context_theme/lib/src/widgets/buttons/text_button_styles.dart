@@ -37,6 +37,7 @@ EdgeInsetsGeometry scaledTextPadding(BuildContext context) {
         : const EdgeInsets.all(8),
     const EdgeInsets.symmetric(horizontal: 8),
     const EdgeInsets.symmetric(horizontal: 4),
-    MediaQuery.textScaleFactorOf(context),
+    // ignore: deprecated_member_use
+    MediaQuery.textScalerOf(context).textScaleFactor,
   );
 }
