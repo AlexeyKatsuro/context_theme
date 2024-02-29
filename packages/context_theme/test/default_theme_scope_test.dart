@@ -1,6 +1,5 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' hide CardTheme;
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'themes/card_theme.dart';
@@ -56,5 +55,23 @@ void main() {
 
     expect(cardStyle, isA<DefaultCardStyle>());
     expect(fontStyle, isA<DefaultFontStyle>());
+  });
+
+  testWidgets('links should use bottom style', (tester) async {
+    TextStyle? textStyle;
+    await tester.pumpWidget(
+      DefaultThemeScope(
+        child: CardTheme(
+          style: RedForegroundCardStyle.new,
+          child: Builder(
+            builder: (context) {
+              textStyle = context.cardTheme.textStyle;
+              return const SizedBox();
+            },
+          ),
+        ),
+      ),
+    );
+    expect(textStyle?.color, Colors.red);
   });
 }

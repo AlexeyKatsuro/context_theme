@@ -21,6 +21,9 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
     if (style == null) {
       final newStyle = _initStyle(dependent, widget._createStyle);
       newStyle._widget = widget;
+      if (aspect is _DefaultThemeAspect) {
+        newStyle._styleOf = aspect.styleOf;
+      }
       setDependencies(dependent, newStyle);
     }
   }
@@ -51,6 +54,8 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
     final oldStyle = getDependencies(dependent) as Style?;
     oldStyle?._dispose();
     final newStyle = _initStyle(dependent, widget._createStyle);
+    newStyle._widget = widget;
+    newStyle._styleOf = oldStyle?._styleOf;
     setDependencies(dependent, newStyle);
     super.notifyDependent(oldWidget, dependent);
   }

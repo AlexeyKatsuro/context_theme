@@ -57,7 +57,7 @@ class DefaultCardStyle extends CardStyle {
   Color get foreground => Colors.black;
 
   @override
-  TextStyle? get textStyle => const TextStyle(fontSize: 14);
+  TextStyle? get textStyle => TextStyle(fontSize: 14, color: link.foreground);
 }
 
 class RedBackgroundCardStyle extends InheritCardStyle {

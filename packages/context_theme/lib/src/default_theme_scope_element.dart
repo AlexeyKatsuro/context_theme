@@ -6,10 +6,11 @@ class _DefaultThemeDependencies {
 }
 
 class _DefaultThemeAspect<S extends Style, T extends ContextTheme<S, T>> {
-  _DefaultThemeAspect(this.createStyle);
+  _DefaultThemeAspect(this.createStyle, { required this.styleOf});
 
   Type get themeType => T;
   final CreateStyle<S> createStyle;
+  final StyleOf<S> styleOf;
 }
 
 class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwnerContext {
@@ -26,6 +27,7 @@ class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwn
         getDependencies(dependent) as _DefaultThemeDependencies? ?? _DefaultThemeDependencies();
     if (!dependencies.styles.containsKey(aspect.themeType)) {
       final newStyle = _initStyle(dependent, aspect.createStyle);
+      newStyle._styleOf = aspect.styleOf;
       dependencies.styles[aspect.themeType] = newStyle;
       setDependencies(dependent, dependencies);
     }

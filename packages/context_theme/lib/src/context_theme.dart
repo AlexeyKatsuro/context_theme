@@ -47,9 +47,20 @@ abstract class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
     }
 
     if (!styleOwner.doesHasDepended<S, T>(context)) {
+      S styleOf(BuildContext context, [StyleOwnerContext? inheritFrom]) {
+        return ContextTheme.styleOf<S, T>(
+          context,
+          inheritFrom: inheritFrom,
+          defaultStyle: defaultStyle,
+        );
+      }
+
       context.dependOnInheritedElement(
         styleOwner,
-        aspect: _DefaultThemeAspect<S, T>(defaultStyle),
+        aspect: _DefaultThemeAspect<S, T>(
+          defaultStyle,
+          styleOf: styleOf,
+        ),
       );
     }
     return styleOwner._getStyle<S, T>(context);
@@ -75,10 +86,12 @@ abstract class Style with Diagnosticable {
   ContextTheme get widget => _widget!;
   ContextTheme? _widget;
 
+  StyleOf? _styleOf;
+
   @protected
   Style get link {
     _assetMounted();
-    return _widget?._link(this) ?? this;
+    return _widget?._link(this) ?? _styleOf!.call(context);
   }
 
   @protected
