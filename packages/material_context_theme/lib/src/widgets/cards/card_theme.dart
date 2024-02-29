@@ -1,14 +1,15 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/widgets.dart';
+
 import '../../theme/colors_theme.dart';
 import '../decorator/index.dart';
 
-class CardTheme extends ContextTheme<CardStyle> {
+class CardTheme extends ContextTheme<CardStyle, CardTheme> {
   const CardTheme({
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(styleOf: of);
 
   static CardStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return ContextTheme.styleOf<CardStyle, CardTheme>(
@@ -24,7 +25,9 @@ extension CardStyleExt on BuildContext {
 }
 
 abstract class CardStyle extends Style {
-  CardStyle get inherit => CardTheme.of(context, parent);
+  @protected
+  @override
+  CardStyle get link => super.link as CardStyle;
 
   Clip get clipBehavior;
 
@@ -54,7 +57,9 @@ abstract class CardStyle extends Style {
 }
 
 class InheritCardStyle extends CardStyle {
-  CardStyle get link => CardTheme.of(context);
+  @protected
+  @override
+  CardStyle get inherit => super.inherit as CardStyle;
 
   @override
   Clip get clipBehavior => inherit.clipBehavior;

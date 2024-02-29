@@ -1,6 +1,8 @@
 import 'package:context_theme/context_theme.dart';
-import 'package:flutter/material.dart' hide MaterialButton, ButtonTheme, CardTheme;
+import 'package:flutter/material.dart' hide MaterialButton, ButtonTheme, CardTheme, IconButtonTheme;
 import 'package:material_context_theme/material_context_theme.dart';
+
+import 'icon_button/icon_button.dart';
 
 void emptyCallback() {}
 
@@ -82,9 +84,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: MaterialStateScope.merge(
         states: {if (isLocked) MaterialState.disabled},
-        child: const CardTheme(
-          style: DisabledCardStyle.new,
-          child: CardsList(),
+        child: MultiTheme(
+          themes: const [
+            CardTheme(style: DisabledCardStyle.new),
+            ButtonTheme(style: RoundedButtonStyle.new),
+          ],
+          child: const Center(child: CardsList()),
         ),
       ),
     );
@@ -119,7 +124,7 @@ class CardsList extends StatelessWidget {
             onPressed: emptyCallback,
             child: Text('Apply'),
           ),
-          cornerAction: MaterialButton(
+          cornerAction: MaterialIconButton(
             onPressed: emptyCallback,
             child: Icon(Icons.info_outline_rounded),
           ),
@@ -139,7 +144,7 @@ class CardsList extends StatelessWidget {
               onPressed: emptyCallback,
               child: Text('Review'),
             ),
-            cornerAction: MaterialButton(
+            cornerAction: MaterialIconButton(
               onPressed: emptyCallback,
               child: Icon(Icons.share_outlined),
             ),
@@ -160,7 +165,7 @@ class CardsList extends StatelessWidget {
               onPressed: emptyCallback,
               child: Text('Review'),
             ),
-            cornerAction: MaterialButton(
+            cornerAction: MaterialIconButton(
               onPressed: emptyCallback,
               child: Icon(Icons.help_outline_outlined),
             ),
@@ -333,4 +338,9 @@ class DisabledCardStyle extends InheritCardStyle {
           );
         },
       );
+}
+
+class RoundedButtonStyle extends InheritButtonStyle {
+  @override
+  OutlinedBorder get shape => RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));
 }

@@ -1,12 +1,12 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart';
 
-class ColorsTheme extends ContextTheme<ColorsStyle> {
+class ColorsTheme extends ContextTheme<ColorsStyle, ColorsTheme> {
   const ColorsTheme({
     super.key,
     required super.style,
     super.child,
-  });
+  }) : super(styleOf: of);
 
   static ColorsStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return ContextTheme.styleOf<ColorsStyle, ColorsTheme>(
@@ -22,8 +22,8 @@ extension ColorsThemeExt on BuildContext {
 }
 
 abstract class ColorsStyle extends Style {
-  @protected
-  ColorsStyle get link => ColorsTheme.of(context);
+  @override
+  ColorsStyle get link => super.link as ColorsStyle;
 
   Brightness get brightness;
 
@@ -89,11 +89,10 @@ abstract class ColorsStyle extends Style {
 }
 
 class InheritColorsStyle extends ColorsStyle {
-  @protected
-  ColorsStyle get inherit => ColorsTheme.of(context, parent);
+  @override
+  ColorsStyle get inherit => super.inherit as ColorsStyle;
 
   @override
-  @protected
   ColorsStyle get link => ColorsTheme.of(context);
 
   @override

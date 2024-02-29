@@ -1,12 +1,12 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart';
 
-class CardTheme extends ContextTheme<CardStyle> {
+class CardTheme extends ContextTheme<CardStyle, CardTheme> {
   const CardTheme({
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(styleOf: of);
 
   static CardStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return ContextTheme.styleOf<CardStyle, CardTheme>(
@@ -22,24 +22,32 @@ extension TestThemeExt on BuildContext {
 }
 
 abstract class CardStyle extends Style {
-  CardStyle get link => CardTheme.of(context);
+  @override
+  CardStyle get link => super.link as CardStyle;
 
   Color get background;
 
   Color get foreground;
+
+  TextStyle? get textStyle;
 }
 
 class InheritCardStyle extends CardStyle {
-  CardStyle get inherit => CardTheme.of(context, parent);
+  @override
+  CardStyle get inherit => super.inherit as CardStyle;
 
   @override
   Color get background => inherit.background;
 
   @override
   Color get foreground => inherit.foreground;
+
+  @override
+  TextStyle? get textStyle => inherit.textStyle;
 }
 
 class DefaultCardStyle extends CardStyle {
+  @override
   CardStyle get inherit => CardTheme.of(context, parent);
 
   @override
@@ -47,6 +55,9 @@ class DefaultCardStyle extends CardStyle {
 
   @override
   Color get foreground => Colors.black;
+
+  @override
+  TextStyle? get textStyle => const TextStyle(fontSize: 14);
 }
 
 class RedBackgroundCardStyle extends InheritCardStyle {

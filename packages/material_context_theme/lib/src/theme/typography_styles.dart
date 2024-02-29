@@ -1,12 +1,12 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart';
 
-class TypographyTheme extends ContextTheme<TypographyStyle> {
+class TypographyTheme extends ContextTheme<TypographyStyle, TypographyTheme> {
   const TypographyTheme({
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(styleOf: of);
 
   static TypographyStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return ContextTheme.styleOf<TypographyStyle, TypographyTheme>(
@@ -22,7 +22,8 @@ extension TypographyStyleExt on BuildContext {
 }
 
 abstract class TypographyStyle extends Style {
-  TypographyStyle get link => TypographyTheme.of(context);
+  @override
+  TypographyStyle get link => super.link as TypographyStyle;
 
   TextStyle get displayLarge;
 
@@ -56,7 +57,8 @@ abstract class TypographyStyle extends Style {
 }
 
 class InheritTypographyStyle extends TypographyStyle {
-  TypographyStyle get inherit => TypographyTheme.of(context, parent);
+  @override
+  TypographyStyle get inherit => super.inherit as TypographyStyle;
 
   @override
   TextStyle get displayLarge => inherit.displayLarge;

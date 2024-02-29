@@ -11,12 +11,12 @@ import '../../theme/colors_theme.dart';
 import '../decorator/index.dart';
 import 'button.dart';
 
-class ButtonTheme extends ContextTheme<ButtonStyle> with MaterialButtonBuilder {
+class ButtonTheme extends ContextTheme<ButtonStyle, ButtonTheme> with MaterialButtonBuilder {
   const ButtonTheme({
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(styleOf: of);
 
   static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return ContextTheme.styleOf<ButtonStyle, ButtonTheme>(
@@ -32,7 +32,9 @@ extension ButtonStyleExt on BuildContext {
 }
 
 abstract class ButtonStyle extends Style {
-  ButtonStyle get link => ButtonTheme.of(context);
+  @protected
+  @override
+  ButtonStyle get link => super.link as ButtonStyle;
 
   Color get primaryColor;
 
@@ -88,7 +90,8 @@ abstract class ButtonStyle extends Style {
 }
 
 class InheritButtonStyle extends ButtonStyle {
-  ButtonStyle get inherit => ButtonTheme.of(context, parent);
+  @override
+  ButtonStyle get inherit => super.inherit as ButtonStyle;
 
   @override
   Color get primaryColor => inherit.primaryColor;

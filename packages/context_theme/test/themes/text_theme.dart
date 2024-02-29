@@ -1,12 +1,12 @@
 import 'package:context_theme/context_theme.dart';
 import 'package:flutter/widgets.dart';
 
-class FontTheme extends ContextTheme<FontStyle> {
+class FontTheme extends ContextTheme<FontStyle, FontTheme> {
   const FontTheme({
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(styleOf: of);
 
   static FontStyle of(BuildContext context, [StyleOwnerContext? parent]) {
     return ContextTheme.styleOf<FontStyle, FontTheme>(
@@ -22,7 +22,8 @@ extension FontThemeExt on BuildContext {
 }
 
 abstract class FontStyle extends Style {
-  FontStyle get link => FontTheme.of(context);
+  @override
+  FontStyle get link => super.link as FontStyle;
 
   Color get color;
 
@@ -30,7 +31,8 @@ abstract class FontStyle extends Style {
 }
 
 class InheritFontStyle extends FontStyle {
-  FontStyle get inherit => FontTheme.of(context, parent);
+  @override
+  FontStyle get inherit => super.inherit as FontStyle;
 
   @override
   Color get color => inherit.color;
@@ -40,7 +42,8 @@ class InheritFontStyle extends FontStyle {
 }
 
 class DefaultFontStyle extends FontStyle {
-  FontStyle get inherit => FontTheme.of(context, parent);
+  @override
+  FontStyle get inherit => super.inherit as FontStyle;
 
   @override
   Color get color => const Color(0x00000000);

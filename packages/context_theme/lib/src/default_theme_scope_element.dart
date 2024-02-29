@@ -5,11 +5,11 @@ class _DefaultThemeDependencies {
   final Map<Type, Style> styles;
 }
 
-class _DefaultThemeAspect<StyleType extends Style> {
+class _DefaultThemeAspect<S extends Style, T extends ContextTheme<S, T>> {
   _DefaultThemeAspect(this.createStyle);
 
-  Type get type => StyleType;
-  final CreateStyle<StyleType> createStyle;
+  Type get themeType => T;
+  final CreateStyle<S> createStyle;
 }
 
 class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwnerContext {
@@ -24,9 +24,9 @@ class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwn
     }
     final dependencies =
         getDependencies(dependent) as _DefaultThemeDependencies? ?? _DefaultThemeDependencies();
-    if (!dependencies.styles.containsKey(aspect.type)) {
+    if (!dependencies.styles.containsKey(aspect.themeType)) {
       final newStyle = _initStyle(dependent, aspect.createStyle);
-      dependencies.styles[aspect.type] = newStyle;
+      dependencies.styles[aspect.themeType] = newStyle;
       setDependencies(dependent, dependencies);
     }
   }
@@ -35,19 +35,20 @@ class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwn
   StyleOwnerContext? get hostElement => null;
 
   @override
-  StyleOwnerContext? getParentStyleOwner<I extends ContextTheme<Style>>() {
+  StyleOwnerContext? getParentStyleOwner<S extends Style, T extends ContextTheme<S, T>>() {
     return null;
   }
 
   @override
-  bool doesHasDepended<StyleType extends Style>(BuildContext dependent) {
+  bool doesHasDepended<S extends Style, T extends ContextTheme<S, T>>(BuildContext dependent) {
     final dependencies = getDependencies(dependent as Element) as _DefaultThemeDependencies?;
-    final style = dependencies?.styles[StyleType];
+    final style = dependencies?.styles[T];
+    assert(style is S?);
     return style != null;
   }
 
   @override
-  StyleType _getStyle<StyleType extends Style>(BuildContext context) {
+  S _getStyle<S extends Style, T extends ContextTheme<S, T>>(BuildContext context) {
     final dependencies = getDependencies(context as Element);
     if (dependencies == null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -61,12 +62,12 @@ class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwn
         ),
       ]);
     }
-    final style = dependencies.styles[StyleType];
+    final style = dependencies.styles[T];
     if (style == null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary("StyleType wasn't registered as dependency"),
       ]);
     }
-    return style as StyleType;
+    return style as S;
   }
 }

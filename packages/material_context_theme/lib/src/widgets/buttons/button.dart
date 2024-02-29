@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart' hide ButtonStyle;
+import 'package:context_theme/context_theme.dart';
 import 'package:flutter/material.dart' as material show ButtonStyle;
+import 'package:flutter/material.dart' hide ButtonStyle, ButtonTheme;
+
 import '../../material_states/index.dart';
 import '../decorator/index.dart';
 import 'base_styles.dart';
 
 mixin MaterialButtonBuilder on Widget {}
+
+typedef StyleOfContext<S extends Style> = S Function(BuildContext);
 
 class MaterialButton extends StatefulWidget with MaterialButtonBuilder {
   const MaterialButton({
@@ -15,12 +19,16 @@ class MaterialButton extends StatefulWidget with MaterialButtonBuilder {
     this.onFocusChange,
     this.onHover,
     this.focusNode,
-    bool? autofocus = false,
+    bool? autofocus,
     bool? enabled,
+    StyleOfContext<ButtonStyle>? styleOf,
     required this.child,
   })  : clipBehavior = clipBehavior ?? Clip.none,
+        styleOf = styleOf ?? ButtonTheme.of,
         autofocus = autofocus ?? false,
         enabled = enabled ?? onPressed != null || onLongPress != null;
+
+  final StyleOfContext<ButtonStyle> styleOf;
 
   final VoidCallback? onPressed;
 
@@ -62,12 +70,13 @@ class _MaterialButtonState extends State<MaterialButton> {
 
   @override
   Widget build(BuildContext context) {
+    final style = widget.styleOf(context);
     return MaterialStateScope.controller(
       controller: _statesController,
-      child: context.buttonStyle.decorator.apply(
+      child: style.decorator.apply(
         builder: (context) {
           return _ButtonBridge(
-            style: context.buttonStyle,
+            style: widget.styleOf(context),
             statesController: _statesController,
             clipBehavior: widget.clipBehavior,
             onPressed: widget.enabled ? widget.onPressed : null,

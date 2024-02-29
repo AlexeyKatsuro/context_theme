@@ -8,9 +8,9 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
   ContextTheme get widget => super.widget as ContextTheme;
 
   @override
-  bool doesHasDepended<StyleType extends Style>(BuildContext dependent) {
+  bool doesHasDepended<S extends Style, T extends ContextTheme<S, T>>(BuildContext dependent) {
     final style = getDependencies(dependent as Element);
-    assert(style is StyleType?);
+    assert(style is S?);
     return style != null;
   }
 
@@ -20,23 +20,23 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
 
     if (style == null) {
       final newStyle = _initStyle(dependent, widget._createStyle);
-
+      newStyle._widget = widget;
       setDependencies(dependent, newStyle);
     }
   }
 
   @override
-  StyleType _getStyle<StyleType extends Style>(BuildContext context) {
+  S _getStyle<S extends Style, T extends ContextTheme<S, T>>(BuildContext context) {
     final style = getDependencies(context as Element);
     if (style == null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary('_getStyle was called before dependOnInheritedElement.'),
       ]);
     }
-    if (style is! StyleType) {
+    if (style is! S) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary(
-          'StyleElement with ${widget.runtimeType} widget must have $StyleType type as dependency',
+          'StyleElement with ${widget.runtimeType} widget must have $S type as dependency',
         ),
       ]);
     }
@@ -56,11 +56,11 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
   }
 
   @override
-  StyleOwnerContext? getParentStyleOwner<I extends ContextTheme<Style>>() {
+  StyleOwnerContext? getParentStyleOwner<S extends Style, T extends ContextTheme<S, T>>() {
     {
       StyleOwnerContext? ownerContext;
       visitAncestorElements((parent) {
-        ownerContext = parent.getElementForInheritedWidgetOfExactType<I>() as StyleOwnerContext?;
+        ownerContext = parent.getElementForInheritedWidgetOfExactType<T>() as StyleOwnerContext?;
         return false;
       });
       return ownerContext;
@@ -71,11 +71,11 @@ class ContextThemeElement extends SingleChildInheritedElement with StyleOwnerCon
 mixin StyleOwnerContext on InheritedElement {
   StyleOwnerContext? get hostElement;
 
-  StyleOwnerContext? getParentStyleOwner<I extends ContextTheme>();
+  StyleOwnerContext? getParentStyleOwner<S extends Style, T extends ContextTheme<S, T>>();
 
-  bool doesHasDepended<StyleType extends Style>(BuildContext dependent);
+  bool doesHasDepended<S extends Style, T extends ContextTheme<S, T>>(BuildContext dependent);
 
-  StyleType _getStyle<StyleType extends Style>(BuildContext context);
+  S _getStyle<S extends Style, T extends ContextTheme<S, T>>(BuildContext context);
 
   Style _initStyle(Element dependent, Style Function() createStyle) {
     return createStyle().._mound(dependent, this);
