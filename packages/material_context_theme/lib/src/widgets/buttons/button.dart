@@ -51,13 +51,13 @@ class MaterialButton extends StatefulWidget with MaterialButtonBuilder {
 }
 
 class _MaterialButtonState extends State<MaterialButton> {
-  late final MaterialStatesController _statesController =
-      MaterialStatesController({if (!widget.enabled) MaterialState.disabled});
+  late final WidgetStatesController _statesController =
+      WidgetStatesController({if (!widget.enabled) WidgetState.disabled});
 
   @override
   void didUpdateWidget(covariant MaterialButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _statesController.update(MaterialState.disabled, !widget.enabled);
+    _statesController.update(WidgetState.disabled, !widget.enabled);
   }
 
   @override

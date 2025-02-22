@@ -9,7 +9,7 @@ class IconButtonStyle extends TextButtonStyle {
   @override
   Color get foregroundColor {
     if (context.isDisabled) {
-      return context.colorScheme.onSurface.withOpacity(0.38);
+      return context.colorScheme.onSurface.withValues(alpha: 0.38);
     }
     if (context.isSelected) {
       return link.primaryColor;

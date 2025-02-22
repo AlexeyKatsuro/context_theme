@@ -55,15 +55,11 @@ abstract class ColorsStyle extends Style {
 
   Color get onErrorContainer;
 
-  Color get background;
-
-  Color get onBackground;
-
   Color get surface;
 
   Color get onSurface;
 
-  Color get surfaceVariant;
+  Color get surfaceContainerHighest;
 
   Color get onSurfaceVariant;
 
@@ -143,19 +139,13 @@ class InheritColorsStyle extends ColorsStyle {
   Color get onErrorContainer => inherit.onErrorContainer;
 
   @override
-  Color get background => inherit.background;
-
-  @override
-  Color get onBackground => inherit.onBackground;
-
-  @override
   Color get surface => inherit.surface;
 
   @override
   Color get onSurface => inherit.onSurface;
 
   @override
-  Color get surfaceVariant => inherit.surfaceVariant;
+  Color get surfaceContainerHighest => inherit.surfaceContainerHighest;
 
   @override
   Color get onSurfaceVariant => inherit.onSurfaceVariant;
@@ -217,16 +207,16 @@ abstract class BaseColorsStyle extends ColorsStyle {
   Color get onErrorContainer => link.onError;
 
   @override
-  Color get surfaceVariant => link.surface;
+  Color get surfaceContainerHighest => link.surface;
 
   @override
   Color get onSurfaceVariant => link.onSurface;
 
   @override
-  Color get outline => link.onBackground;
+  Color get outline => link.onSurface;
 
   @override
-  Color get outlineVariant => link.onBackground;
+  Color get outlineVariant => link.onSurface;
 
   @override
   Color get shadow => const Color(0xff000000);
@@ -302,19 +292,13 @@ class MaterialColorsStyle extends BaseColorsStyle {
   Color get onErrorContainer => materialScheme.onErrorContainer;
 
   @override
-  Color get background => materialScheme.background;
-
-  @override
-  Color get onBackground => materialScheme.onBackground;
-
-  @override
   Color get surface => materialScheme.surface;
 
   @override
   Color get onSurface => materialScheme.onSurface;
 
   @override
-  Color get surfaceVariant => materialScheme.surfaceVariant;
+  Color get surfaceContainerHighest => materialScheme.surfaceContainerHighest;
 
   @override
   Color get onSurfaceVariant => materialScheme.onSurfaceVariant;
@@ -388,19 +372,13 @@ class LightColorsStyle extends BaseColorsStyle {
   Color get onErrorContainer => const Color(0xFF410E0B);
 
   @override
-  Color get background => const Color(0xFFFFFBFE);
-
-  @override
-  Color get onBackground => const Color(0xFF1C1B1F);
-
-  @override
   Color get surface => const Color(0xFFFFFBFE);
 
   @override
   Color get onSurface => const Color(0xFF1C1B1F);
 
   @override
-  Color get surfaceVariant => const Color(0xFFE7E0EC);
+  Color get surfaceContainerHighest => const Color(0xFFE7E0EC);
 
   @override
   Color get onSurfaceVariant => const Color(0xFF49454F);
@@ -474,19 +452,13 @@ class DarkColorsStyle extends BaseColorsStyle {
   Color get onErrorContainer => const Color(0xFFF9DEDC);
 
   @override
-  Color get background => const Color(0xFF1C1B1F);
-
-  @override
-  Color get onBackground => const Color(0xFFE6E1E5);
-
-  @override
   Color get surface => const Color(0xFF1C1B1F);
 
   @override
   Color get onSurface => const Color(0xFFE6E1E5);
 
   @override
-  Color get surfaceVariant => const Color(0xFF49454F);
+  Color get surfaceContainerHighest => const Color(0xFF49454F);
 
   @override
   Color get onSurfaceVariant => const Color(0xFFCAC4D0);

@@ -11,7 +11,7 @@ class TextButtonStyle extends InheritButtonStyle {
   @override
   Color get foregroundColor {
     if (context.isDisabled) {
-      return context.colorScheme.onSurface.withOpacity(0.38);
+      return context.colorScheme.onSurface.withValues(alpha: 0.38);
     }
     return link.primaryColor;
   }

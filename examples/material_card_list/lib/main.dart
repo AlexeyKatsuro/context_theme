@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: MaterialStateScope.merge(
-        states: {if (isLocked) MaterialState.disabled},
+        states: {if (isLocked) WidgetState.disabled},
         child: MultiTheme(
           themes: const [
             CardTheme(style: DisabledCardStyle.new),
@@ -176,7 +176,7 @@ class CardsList extends StatelessWidget {
           var selected = false;
           return StatefulBuilder(builder: (context, setState) {
             return MaterialStateScope.merge(
-              states: {if (selected) MaterialState.selected},
+              states: {if (selected) WidgetState.selected},
               child: ColorsTheme(
                 style: selected ? PrimaryContainerColorsStyle.new : MaterialColorsStyle.new,
                 child: InfoCard(
@@ -296,11 +296,6 @@ class PrimaryContainerColorsStyle extends InheritColorsStyle {
   @override
   Color get onSurface => link.onPrimaryContainer;
 
-  @override
-  Color get background => link.primaryContainer;
-
-  @override
-  Color get onBackground => link.onPrimaryContainer;
 }
 
 class ErrorContainerColorsStyle extends InheritColorsStyle {
@@ -316,11 +311,6 @@ class ErrorContainerColorsStyle extends InheritColorsStyle {
   @override
   Color get onSurface => link.onErrorContainer;
 
-  @override
-  Color get background => link.errorContainer;
-
-  @override
-  Color get onBackground => link.onErrorContainer;
 }
 
 class DisabledCardStyle extends InheritCardStyle {

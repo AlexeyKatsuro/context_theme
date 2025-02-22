@@ -23,10 +23,10 @@ abstract class CardStyle extends Style with TypedStyle<CardStyle> {
   TextStyle? get textStyle;
 }
 
-class InheritCardStyle = CardStyle with InheritCardStyleMixin;
+class InheritCardStyle = CardStyle with InheritStyle, InheritCardStyleMixin;
 mixin InheritCardStyleMixin on CardStyle {
   @override
-  final inheritFrom = CardTheme.of;
+  StyleOfContext<CardStyle> get inheritFrom => CardTheme.of;
 
   @override
   Color get background => inherit.background;

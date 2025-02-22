@@ -26,6 +26,8 @@ abstract class ExtendedCardStyle extends CardStyle {
   @override
   ExtendedCardStyle get inherit => super.inherit as ExtendedCardStyle;
 
+  BorderSide get side;
+
   OutlinedBorder get shape;
 }
 
@@ -33,13 +35,25 @@ class InheritExtendedCardStyle = ExtendedCardStyle
     with InheritCardStyleMixin, InheritExtendedCardStyleMixin;
 mixin InheritExtendedCardStyleMixin on ExtendedCardStyle {
   @override
-  final inheritFrom = ExtendedCardTheme.of;
+  StyleOfContext<ExtendedCardStyle> get inheritFrom => ExtendedCardTheme.of;
 
   @override
   OutlinedBorder get shape => inherit.shape;
+
+  @override
+  BorderSide get side => inherit.side;
 }
 
 class DefaultExtendedCardStyle extends ExtendedCardStyle with InheritCardStyleMixin {
   @override
-  OutlinedBorder get shape => RoundedRectangleBorder(side: BorderSide(color: link.foreground));
+  OutlinedBorder get shape => RoundedRectangleBorder(side: link.side);
+
+  @override
+  BorderSide get side => BorderSide(color: link.foreground);
+}
+
+class StadiumCard = InheritExtendedCardStyle with StadiumCardStyleMixin;
+mixin StadiumCardStyleMixin on ExtendedCardStyle {
+  @override
+  OutlinedBorder get shape => StadiumBorder(side: link.side);
 }

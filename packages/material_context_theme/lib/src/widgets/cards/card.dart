@@ -3,13 +3,14 @@ import 'package:flutter/material.dart' show Card, InputBorder;
 import 'package:flutter/widgets.dart';
 
 import '../../../material_context_theme.dart';
-import '../decorator/index.dart';
-import 'card_theme.dart';
 
 class MaterialCard extends StatelessWidget {
-  const MaterialCard(
-      {super.key, bool? semanticContainer, this.child, StyleOfContext<CardStyle>? styleOf})
-      : styleOf = styleOf ?? CardTheme.of,
+  const MaterialCard({
+    super.key,
+    bool? semanticContainer,
+    this.child,
+    StyleOfContext<CardStyle>? styleOf,
+  })  : styleOf = styleOf ?? CardTheme.of,
         semanticContainer = semanticContainer ?? true;
 
   final bool semanticContainer;

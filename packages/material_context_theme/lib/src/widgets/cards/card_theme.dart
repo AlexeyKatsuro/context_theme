@@ -48,9 +48,10 @@ abstract class CardStyle extends Style with TypedStyle<CardStyle> {
   DecorateWrapper? get decorator;
 }
 
-class InheritCardStyle extends CardStyle {
+class InheritCardStyle = CardStyle with InheritStyle, InheritCardStyleMixin;
+mixin InheritCardStyleMixin on CardStyle {
   @override
-  final inheritFrom = CardTheme.of;
+  StyleOfContext<CardStyle> get inheritFrom => CardTheme.of;
 
   @override
   Clip get clipBehavior => inherit.clipBehavior;

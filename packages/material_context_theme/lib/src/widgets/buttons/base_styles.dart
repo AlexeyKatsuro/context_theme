@@ -27,11 +27,7 @@ extension ButtonStyleExt on BuildContext {
   ButtonStyle get buttonStyle => ButtonTheme.of(this);
 }
 
-abstract class ButtonStyle extends Style {
-  @protected
-  @override
-  ButtonStyle get link => super.link as ButtonStyle;
-
+abstract class ButtonStyle extends Style with TypedStyle<ButtonStyle> {
   Color get primaryColor;
 
   Color get onPrimaryColor;
@@ -85,9 +81,10 @@ abstract class ButtonStyle extends Style {
   DecorateWrapper? get decorator;
 }
 
-class InheritButtonStyle extends ButtonStyle {
+class InheritButtonStyle = ButtonStyle with InheritStyle, InheritButtonStyleMixin;
+mixin InheritButtonStyleMixin on ButtonStyle {
   @override
-  ButtonStyle get inherit => super.inherit as ButtonStyle;
+  StyleOfContext<ButtonStyle> get inheritFrom => ButtonTheme.of;
 
   @override
   Color get primaryColor => inherit.primaryColor;
@@ -203,7 +200,7 @@ class DefaultButtonStyle extends ButtonStyle {
   OutlinedBorder get shape => const StadiumBorder();
 
   @override
-  MouseCursor? get mouseCursor => MaterialStateMouseCursor.clickable;
+  MouseCursor? get mouseCursor => WidgetStateMouseCursor.clickable;
 
   @override
   VisualDensity get visualDensity => Theme.of(context).visualDensity;
@@ -271,22 +268,22 @@ class OverlayMaterialStateColor extends MaterialStateColor {
   OverlayMaterialStateColor(Color highlight)
       : super.resolveWith((states) {
           if (states.isPressed) {
-            return highlight.withOpacity(0.12);
+            return highlight.withValues(alpha: 0.12);
           }
           if (states.isHovered) {
-            return highlight.withOpacity(0.08);
+            return highlight.withValues(alpha: 0.08);
           }
           if (states.isFocused) {
-            return highlight.withOpacity(0.12);
+            return highlight.withValues(alpha: 0.12);
           }
           return null;
         });
 
   Color? resolveWith(BuildContext context) {
     return resolve({
-      if (context.isPressed) MaterialState.pressed,
-      if (context.isHovered) MaterialState.hovered,
-      if (context.isFocused) MaterialState.focused,
+      if (context.isPressed) WidgetState.pressed,
+      if (context.isHovered) WidgetState.hovered,
+      if (context.isFocused) WidgetState.focused,
     });
   }
 }

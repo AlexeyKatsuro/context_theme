@@ -49,9 +49,10 @@ abstract class TypographyStyle extends Style with TypedStyle<TypographyStyle> {
   TextStyle get labelSmall;
 }
 
-class InheritTypographyStyle extends TypographyStyle with InheritStyle {
+class InheritTypographyStyle = TypographyStyle with InheritStyle, InheritTypographyStyleMixin;
+mixin InheritTypographyStyleMixin on TypographyStyle {
   @override
-  final inheritFrom = TypographyTheme.of;
+  StyleOfContext<TypographyStyle> get inheritFrom => TypographyTheme.of;
 
   @override
   TextStyle get displayLarge => inherit.displayLarge;
@@ -101,52 +102,52 @@ class InheritTypographyStyle extends TypographyStyle with InheritStyle {
 
 class MaterialTypographyStyle extends TypographyStyle {
   @protected
-  TextTheme get materialTextTheme => Theme.of(context).textTheme;
+  late final materialTextTheme = Theme.of(context).textTheme;
 
   @override
-  TextStyle get displayLarge => materialTextTheme.displayLarge.makeInheritable();
+  late TextStyle displayLarge = materialTextTheme.displayLarge.makeInheritable();
 
   @override
-  TextStyle get displayMedium => materialTextTheme.displayMedium.makeInheritable();
+  late TextStyle displayMedium = materialTextTheme.displayMedium.makeInheritable();
 
   @override
-  TextStyle get displaySmall => materialTextTheme.displaySmall.makeInheritable();
+  late TextStyle displaySmall = materialTextTheme.displaySmall.makeInheritable();
 
   @override
-  TextStyle get headlineLarge => materialTextTheme.headlineLarge.makeInheritable();
+  late TextStyle headlineLarge = materialTextTheme.headlineLarge.makeInheritable();
 
   @override
-  TextStyle get headlineMedium => materialTextTheme.headlineMedium.makeInheritable();
+  late TextStyle headlineMedium = materialTextTheme.headlineMedium.makeInheritable();
 
   @override
-  TextStyle get headlineSmall => materialTextTheme.headlineSmall.makeInheritable();
+  late TextStyle headlineSmall = materialTextTheme.headlineSmall.makeInheritable();
 
   @override
-  TextStyle get titleLarge => materialTextTheme.titleLarge.makeInheritable();
+  late TextStyle titleLarge = materialTextTheme.titleLarge.makeInheritable();
 
   @override
-  TextStyle get titleMedium => materialTextTheme.titleMedium.makeInheritable();
+  late TextStyle titleMedium = materialTextTheme.titleMedium.makeInheritable();
 
   @override
-  TextStyle get titleSmall => materialTextTheme.titleSmall.makeInheritable();
+  late TextStyle titleSmall = materialTextTheme.titleSmall.makeInheritable();
 
   @override
-  TextStyle get bodyLarge => materialTextTheme.bodyLarge.makeInheritable();
+  late TextStyle bodyLarge = materialTextTheme.bodyLarge.makeInheritable();
 
   @override
-  TextStyle get bodyMedium => materialTextTheme.bodyMedium.makeInheritable();
+  late TextStyle bodyMedium = materialTextTheme.bodyMedium.makeInheritable();
 
   @override
-  TextStyle get bodySmall => materialTextTheme.bodySmall.makeInheritable();
+  late TextStyle bodySmall = materialTextTheme.bodySmall.makeInheritable();
 
   @override
-  TextStyle get labelLarge => materialTextTheme.labelLarge.makeInheritable();
+  late TextStyle labelLarge = materialTextTheme.labelLarge.makeInheritable();
 
   @override
-  TextStyle get labelMedium => materialTextTheme.labelMedium.makeInheritable();
+  late TextStyle labelMedium = materialTextTheme.labelMedium.makeInheritable();
 
   @override
-  TextStyle get labelSmall => materialTextTheme.labelSmall.makeInheritable();
+  late TextStyle labelSmall = materialTextTheme.labelSmall.makeInheritable();
 }
 
 extension on TextStyle? {

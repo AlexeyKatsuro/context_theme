@@ -10,7 +10,11 @@ part 'default_theme_scope_element.dart';
 typedef CreateStyle<S extends Style> = S Function();
 
 mixin StyleOfContext<S extends Style> {
-  S call(BuildContext context, {StyleOwnerContext? inheritFrom});
+  S call(
+    BuildContext context, {
+    StyleOwnerContext? inheritFrom,
+    StyleOf<S, ContextTheme<S, dynamic>>? linkTo,
+  });
 }
 
 @immutable
@@ -60,14 +64,13 @@ class StyleOf<S extends Style, T extends ContextTheme<S, T>> with StyleOfContext
   }
 }
 
-abstract class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
+class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
     extends SingleChildInheritedWidget {
   const ContextTheme({
     super.key,
     required S Function() style,
     super.child,
-  })  : _createStyle = style;
-
+  }) : _createStyle = style;
 
   @override
   ContextThemeElement createElement() => ContextThemeElement(this);
@@ -88,7 +91,7 @@ abstract class Style with Diagnosticable {
   StyleOf? _styleOf;
   StyleOf? _linkTo;
 
-  StyleOf? get inheritFrom => null;
+  StyleOfContext? get inheritFrom => null;
 
   @protected
   Style get link {
@@ -100,10 +103,23 @@ abstract class Style with Diagnosticable {
   Style get inherit {
     _assetMounted();
     final inheritFrom = _widget != null ? _styleOf : this.inheritFrom;
-    assert(inheritFrom != null, "TODO");
+
+    if (inheritFrom == null) {
+      throw FlutterError.fromParts([
+        ErrorSummary('Style inheritance error'),
+        ErrorDescription(
+          'Failed to inherit from the parent style in $runtimeType.',
+        ),
+        ErrorHint('This might be caused by attempting to use `inherit` on a Default style, '
+            'which has no parent and requires all values to be explicitly set.'),
+        ErrorHint('Alternatively, if this error occurs in an Inherit style, ensure that '
+            '`inheritFrom` is properly overridden. Using `InheritStyle` mixin '
+            'can enforce this requirement.'),
+      ]);
+    }
 
     final linkTo = (_linkTo ?? _styleOf)!;
-    return inheritFrom!(
+    return inheritFrom(
       context,
       inheritFrom: _widget != null ? parent : null,
       linkTo: linkTo,
@@ -161,11 +177,14 @@ mixin TypedStyle<S extends Style> on Style {
 
   @override
   S get inherit => super.inherit as S;
+
+  @override
+  StyleOfContext<S>? inheritFrom;
 }
 
 mixin InheritStyle<S extends Style> on TypedStyle<S> {
   @override
-  StyleOf<S, ContextTheme<S, dynamic>> get inheritFrom;
+  StyleOfContext<S> get inheritFrom;
 }
 
 class StyleNullException implements Exception {

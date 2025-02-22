@@ -11,7 +11,7 @@ class OutlinedButtonStyle extends TextButtonStyle {
   @override
   BorderSide get side {
     if (context.isDisabled) {
-      return BorderSide(color: context.colorScheme.onSurface.withOpacity(0.12));
+      return BorderSide(color: context.colorScheme.onSurface.withValues(alpha: 0.12));
     }
     return BorderSide(color: context.colorScheme.outline);
   }

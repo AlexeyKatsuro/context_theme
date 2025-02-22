@@ -1,14 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-class MaterialStateScope extends InheritedModel<MaterialState> {
+class MaterialStateScope extends InheritedModel<WidgetState> {
   const MaterialStateScope({
     super.key,
     required super.child,
     required this.states,
   });
 
-  static Widget merge({required Widget child, required Set<MaterialState> states}) {
+  static Widget merge({required Widget child, required Set<WidgetState> states}) {
     return Builder(
       builder: (context) {
         final parentStates =
@@ -24,7 +24,7 @@ class MaterialStateScope extends InheritedModel<MaterialState> {
   static Widget controller({
     bool? inherit,
     required Widget child,
-    required MaterialStatesController controller,
+    required WidgetStatesController controller,
   }) {
     return ValueListenableBuilder(
       valueListenable: controller,
@@ -45,17 +45,17 @@ class MaterialStateScope extends InheritedModel<MaterialState> {
     );
   }
 
-  final Set<MaterialState> states;
+  final Set<WidgetState> states;
 
   @override
   bool updateShouldNotify(covariant MaterialStateScope oldWidget) {
-    return !const SetEquality<MaterialState>().equals(states, oldWidget.states);
+    return !const SetEquality<WidgetState>().equals(states, oldWidget.states);
   }
 
   @override
   bool updateShouldNotifyDependent(
     covariant MaterialStateScope oldWidget,
-    Set<MaterialState> dependencies,
+    Set<WidgetState> dependencies,
   ) {
     for (final dependency in dependencies) {
       if (states.contains(dependency) != oldWidget.states.contains(dependency)) {
@@ -65,7 +65,7 @@ class MaterialStateScope extends InheritedModel<MaterialState> {
     return false;
   }
 
-  static bool contains(BuildContext context, MaterialState state) {
+  static bool contains(BuildContext context, WidgetState state) {
     return InheritedModel.inheritFrom<MaterialStateScope>(context, aspect: state)
             ?.states
             .contains(state) ??
@@ -76,17 +76,17 @@ class MaterialStateScope extends InheritedModel<MaterialState> {
 extension MaterialStateScopeExt on BuildContext {
   bool get isInteractive => !isDisabled;
 
-  bool get isDisabled => MaterialStateScope.contains(this, MaterialState.disabled);
+  bool get isDisabled => MaterialStateScope.contains(this, WidgetState.disabled);
 
-  bool get isDragged => MaterialStateScope.contains(this, MaterialState.dragged);
+  bool get isDragged => MaterialStateScope.contains(this, WidgetState.dragged);
 
-  bool get isError => MaterialStateScope.contains(this, MaterialState.error);
+  bool get isError => MaterialStateScope.contains(this, WidgetState.error);
 
-  bool get isFocused => MaterialStateScope.contains(this, MaterialState.focused);
+  bool get isFocused => MaterialStateScope.contains(this, WidgetState.focused);
 
-  bool get isHovered => MaterialStateScope.contains(this, MaterialState.hovered);
+  bool get isHovered => MaterialStateScope.contains(this, WidgetState.hovered);
 
-  bool get isPressed => MaterialStateScope.contains(this, MaterialState.pressed);
+  bool get isPressed => MaterialStateScope.contains(this, WidgetState.pressed);
 
-  bool get isSelected => MaterialStateScope.contains(this, MaterialState.selected);
+  bool get isSelected => MaterialStateScope.contains(this, WidgetState.selected);
 }
