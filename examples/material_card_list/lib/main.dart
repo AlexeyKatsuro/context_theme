@@ -295,7 +295,6 @@ class PrimaryContainerColorsStyle extends InheritColorsStyle {
 
   @override
   Color get onSurface => link.onPrimaryContainer;
-
 }
 
 class ErrorContainerColorsStyle extends InheritColorsStyle {
@@ -310,7 +309,6 @@ class ErrorContainerColorsStyle extends InheritColorsStyle {
 
   @override
   Color get onSurface => link.onErrorContainer;
-
 }
 
 class DisabledCardStyle extends InheritCardStyle {
