@@ -4,16 +4,61 @@ import 'package:flutter/widgets.dart';
 import 'single_inherited_widget.dart';
 
 part 'context_theme_element.dart';
-
 part 'default_theme_scope.dart';
-
 part 'default_theme_scope_element.dart';
 
 typedef CreateStyle<S extends Style> = S Function();
 
-typedef StyleOf<S extends Style> = S Function(BuildContext context, [StyleOwnerContext? parent]);
+mixin StyleOfContext<S extends Style> {
+  S call(BuildContext context, {StyleOwnerContext? inheritFrom});
+}
 
-typedef StyleOfContext<S extends Style> = S Function(BuildContext context);
+@immutable
+class StyleOf<S extends Style, T extends ContextTheme<S, T>> with StyleOfContext<S> {
+  const StyleOf({required this.defaultStyle});
+
+  final CreateStyle<S> defaultStyle;
+
+  Type get themeType => T;
+
+  Type get styleType => S;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StyleOf && runtimeType == other.runtimeType && defaultStyle == other.defaultStyle;
+
+  @override
+  int get hashCode => defaultStyle.hashCode;
+
+  @override
+  S call(
+    BuildContext context, {
+    StyleOwnerContext? inheritFrom,
+    StyleOf<S, ContextTheme<S, dynamic>>? linkTo,
+  }) {
+    {
+      StyleOwnerContext? styleOwner;
+
+      if (inheritFrom != null) {
+        styleOwner = inheritFrom.getParentStyleOwner<S, T>();
+      } else {
+        styleOwner = context.getElementForInheritedWidgetOfExactType<T>() as StyleOwnerContext?;
+      }
+      styleOwner ??= context.getElementForInheritedWidgetOfExactType<DefaultThemeScope>()
+          as StyleOwnerContext?;
+
+      if (styleOwner == null) {
+        throw StyleNullException(T, context.widget.runtimeType, S);
+      }
+
+      final aspect = _ThemeAspect<S, T>(styleOf: this, linkTo: linkTo);
+      context.dependOnInheritedElement(styleOwner, aspect: aspect);
+
+      return styleOwner._getStyle<S, T>(context, aspect);
+    }
+  }
+}
 
 abstract class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
     extends SingleChildInheritedWidget {
@@ -21,50 +66,8 @@ abstract class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
     super.key,
     required S Function() style,
     super.child,
-    required StyleOf<S> styleOf,
-  })  : _createStyle = style,
-        _styleOf = styleOf;
+  })  : _createStyle = style;
 
-  final StyleOf<S> _styleOf;
-
-  static S styleOf<S extends Style, T extends ContextTheme<S, T>>(
-    BuildContext context, {
-    StyleOwnerContext? inheritFrom,
-    required CreateStyle<S> defaultStyle,
-  }) {
-    StyleOwnerContext? styleOwner;
-
-    if (inheritFrom != null) {
-      styleOwner = inheritFrom.getParentStyleOwner<S, T>();
-    } else {
-      styleOwner = context.getElementForInheritedWidgetOfExactType<T>() as StyleOwnerContext?;
-    }
-    styleOwner ??=
-        context.getElementForInheritedWidgetOfExactType<DefaultThemeScope>() as StyleOwnerContext?;
-
-    if (styleOwner == null) {
-      throw StyleNullException(T, context.widget.runtimeType, S);
-    }
-
-    if (!styleOwner.doesHasDepended<S, T>(context)) {
-      S styleOf(BuildContext context, [StyleOwnerContext? inheritFrom]) {
-        return ContextTheme.styleOf<S, T>(
-          context,
-          inheritFrom: inheritFrom,
-          defaultStyle: defaultStyle,
-        );
-      }
-
-      context.dependOnInheritedElement(
-        styleOwner,
-        aspect: _DefaultThemeAspect<S, T>(
-          defaultStyle,
-          styleOf: styleOf,
-        ),
-      );
-    }
-    return styleOwner._getStyle<S, T>(context);
-  }
 
   @override
   ContextThemeElement createElement() => ContextThemeElement(this);
@@ -75,10 +78,6 @@ abstract class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
   @override
   bool updateShouldNotify(covariant ContextTheme oldWidget) =>
       oldWidget._createStyle != _createStyle;
-
-  S _link(S style) => _styleOf.call(style.context);
-
-  S _inherit(S style) => _styleOf(style.context, style.parent);
 }
 
 @optionalTypeArgs
@@ -87,17 +86,28 @@ abstract class Style with Diagnosticable {
   ContextTheme? _widget;
 
   StyleOf? _styleOf;
+  StyleOf? _linkTo;
+
+  StyleOf? get inheritFrom => null;
 
   @protected
   Style get link {
     _assetMounted();
-    return _widget?._link(this) ?? _styleOf!.call(context);
+    return _linkTo?.call(context) ?? this;
   }
 
   @protected
   Style get inherit {
     _assetMounted();
-    return _widget!._inherit(this);
+    final inheritFrom = _widget != null ? _styleOf : this.inheritFrom;
+    assert(inheritFrom != null, "TODO");
+
+    final linkTo = (_linkTo ?? _styleOf)!;
+    return inheritFrom!(
+      context,
+      inheritFrom: _widget != null ? parent : null,
+      linkTo: linkTo,
+    );
   }
 
   BuildContext get context {
@@ -114,11 +124,6 @@ abstract class Style with Diagnosticable {
   StyleOwnerContext get parent {
     _assetMounted();
     return _hostElement!;
-  }
-
-  void _mound(Element dependent, StyleOwnerContext hostElement) {
-    _dependentElement = dependent;
-    _hostElement = hostElement;
   }
 
   void _dispose() {
@@ -148,6 +153,19 @@ abstract class Style with Diagnosticable {
     properties
         .add(ObjectFlagProperty<Element>('_hostElement', _hostElement, ifNull: 'Has not parent'));
   }
+}
+
+mixin TypedStyle<S extends Style> on Style {
+  @override
+  S get link => super.link as S;
+
+  @override
+  S get inherit => super.inherit as S;
+}
+
+mixin InheritStyle<S extends Style> on TypedStyle<S> {
+  @override
+  StyleOf<S, ContextTheme<S, dynamic>> get inheritFrom;
 }
 
 class StyleNullException implements Exception {

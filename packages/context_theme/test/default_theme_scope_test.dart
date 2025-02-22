@@ -57,6 +57,56 @@ void main() {
     expect(fontStyle, isA<DefaultFontStyle>());
   });
 
+  testWidgets('should returns the same instance for multiple theme accesses in the same context',
+      (tester) async {
+    CardStyle? cardStyle1;
+    CardStyle? cardStyle2;
+    await tester.pumpWidget(
+      DefaultThemeScope(
+        child: Builder(
+          builder: (context) {
+            cardStyle1 = context.cardTheme;
+            cardStyle2 = context.cardTheme;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    expect(identical(cardStyle1, cardStyle2), isTrue);
+  });
+
+  testWidgets('should retains the same theme instance after rebuilding DefaultThemeScope',
+      (tester) async {
+    CardStyle? cardStyle1;
+    CardStyle? cardStyle2;
+    await tester.pumpWidget(
+      DefaultThemeScope(
+        child: Builder(
+          builder: (context) {
+            cardStyle1 = context.cardTheme;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    await tester.pump();
+
+    await tester.pumpWidget(
+      DefaultThemeScope(
+        child: Builder(
+          builder: (context) {
+            cardStyle2 = context.cardTheme;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    expect(identical(cardStyle1, cardStyle2), isTrue);
+  });
+
   testWidgets('links should use bottom style', (tester) async {
     TextStyle? textStyle;
     await tester.pumpWidget(

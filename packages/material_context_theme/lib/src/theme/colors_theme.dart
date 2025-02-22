@@ -6,15 +6,11 @@ class ColorsTheme extends ContextTheme<ColorsStyle, ColorsTheme> {
     super.key,
     required super.style,
     super.child,
-  }) : super(styleOf: of);
+  });
 
-  static ColorsStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<ColorsStyle, ColorsTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: MaterialColorsStyle.new,
-    );
-  }
+  static const of = StyleOf<ColorsStyle, ColorsTheme>(
+    defaultStyle: MaterialColorsStyle.new,
+  );
 }
 
 extension ColorsThemeExt on BuildContext {

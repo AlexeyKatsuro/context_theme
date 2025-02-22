@@ -7,15 +7,11 @@ class IconButtonTheme extends ContextTheme<ButtonStyle, IconButtonTheme> {
     super.key,
     super.child,
     required super.style,
-  }) : super(styleOf: of);
+  });
 
-  static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<ButtonStyle, IconButtonTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: DefaultIconButton.new,
-    );
-  }
+  static const of = StyleOf<ButtonStyle, IconButtonTheme>(
+    defaultStyle: DefaultIconButton.new,
+  );
 }
 
 extension IconButtonThemeExt on BuildContext {
@@ -23,9 +19,6 @@ extension IconButtonThemeExt on BuildContext {
 }
 
 class DefaultIconButton extends InheritButtonStyle {
-  @override
-  ButtonStyle get inherit => context.buttonStyle;
-
   @override
   OutlinedBorder get shape => const RoundedRectangleBorder();
 }

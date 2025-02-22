@@ -6,25 +6,16 @@ class CardTheme extends ContextTheme<CardStyle, CardTheme> {
     super.key,
     super.child,
     required super.style,
-  }) : super(styleOf: of);
+  });
 
-  static CardStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<CardStyle, CardTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: DefaultCardStyle.new,
-    );
-  }
+  static const of = StyleOf<CardStyle, CardTheme>(defaultStyle: DefaultCardStyle.new);
 }
 
 extension TestThemeExt on BuildContext {
   CardStyle get cardTheme => CardTheme.of(this);
 }
 
-abstract class CardStyle extends Style {
-  @override
-  CardStyle get link => super.link as CardStyle;
-
+abstract class CardStyle extends Style with TypedStyle<CardStyle> {
   Color get background;
 
   Color get foreground;
@@ -32,9 +23,10 @@ abstract class CardStyle extends Style {
   TextStyle? get textStyle;
 }
 
-class InheritCardStyle extends CardStyle {
+class InheritCardStyle = CardStyle with InheritCardStyleMixin;
+mixin InheritCardStyleMixin on CardStyle {
   @override
-  CardStyle get inherit => super.inherit as CardStyle;
+  final inheritFrom = CardTheme.of;
 
   @override
   Color get background => inherit.background;
@@ -47,8 +39,8 @@ class InheritCardStyle extends CardStyle {
 }
 
 class DefaultCardStyle extends CardStyle {
-  @override
-  CardStyle get inherit => CardTheme.of(context, parent);
+  static const kBackground = Colors.white;
+  static const kForeground = Colors.black;
 
   @override
   Color get background => Colors.white;
@@ -60,12 +52,18 @@ class DefaultCardStyle extends CardStyle {
   TextStyle? get textStyle => TextStyle(fontSize: 14, color: link.foreground);
 }
 
-class RedBackgroundCardStyle extends InheritCardStyle {
+class RedBackgroundCardStyle = InheritCardStyle with RedBackgroundCardStyleMixin;
+mixin RedBackgroundCardStyleMixin on CardStyle {
+  static const kBackground = Colors.red;
+
   @override
-  Color get background => Colors.red;
+  Color get background => kBackground;
 }
 
-class RedForegroundCardStyle extends InheritCardStyle {
+class RedForegroundCardStyle = InheritCardStyle with RedForegroundCardStyleMixin;
+mixin RedForegroundCardStyleMixin on CardStyle {
+  static const kForeground = Colors.red;
+
   @override
-  Color get foreground => Colors.red;
+  Color get foreground => kForeground;
 }

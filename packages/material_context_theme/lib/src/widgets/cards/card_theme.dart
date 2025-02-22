@@ -9,26 +9,18 @@ class CardTheme extends ContextTheme<CardStyle, CardTheme> {
     super.key,
     super.child,
     required super.style,
-  }) : super(styleOf: of);
+  });
 
-  static CardStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<CardStyle, CardTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: DefaultCardStyle.new,
-    );
-  }
+  static const of = StyleOf<CardStyle, CardTheme>(
+    defaultStyle: DefaultCardStyle.new,
+  );
 }
 
 extension CardStyleExt on BuildContext {
   CardStyle get cardStyle => CardTheme.of(this);
 }
 
-abstract class CardStyle extends Style {
-  @protected
-  @override
-  CardStyle get link => super.link as CardStyle;
-
+abstract class CardStyle extends Style with TypedStyle<CardStyle> {
   Clip get clipBehavior;
 
   Color? get color;
@@ -57,9 +49,8 @@ abstract class CardStyle extends Style {
 }
 
 class InheritCardStyle extends CardStyle {
-  @protected
   @override
-  CardStyle get inherit => super.inherit as CardStyle;
+  final inheritFrom = CardTheme.of;
 
   @override
   Clip get clipBehavior => inherit.clipBehavior;
