@@ -6,25 +6,18 @@ class TypographyTheme extends ContextTheme<TypographyStyle, TypographyTheme> {
     super.key,
     super.child,
     required super.style,
-  }) : super(styleOf: of);
+  });
 
-  static TypographyStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<TypographyStyle, TypographyTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: MaterialTypographyStyle.new,
-    );
-  }
+  static const of = StyleOf<TypographyStyle, TypographyTheme>(
+    defaultStyle: MaterialTypographyStyle.new,
+  );
 }
 
 extension TypographyStyleExt on BuildContext {
   TypographyStyle get textTheme => TypographyTheme.of(this);
 }
 
-abstract class TypographyStyle extends Style {
-  @override
-  TypographyStyle get link => super.link as TypographyStyle;
-
+abstract class TypographyStyle extends Style with TypedStyle<TypographyStyle> {
   TextStyle get displayLarge;
 
   TextStyle get displayMedium;
@@ -56,9 +49,9 @@ abstract class TypographyStyle extends Style {
   TextStyle get labelSmall;
 }
 
-class InheritTypographyStyle extends TypographyStyle {
+class InheritTypographyStyle extends TypographyStyle with InheritStyle {
   @override
-  TypographyStyle get inherit => super.inherit as TypographyStyle;
+  final inheritFrom = TypographyTheme.of;
 
   @override
   TextStyle get displayLarge => inherit.displayLarge;

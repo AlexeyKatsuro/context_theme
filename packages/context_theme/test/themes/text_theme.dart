@@ -6,15 +6,9 @@ class FontTheme extends ContextTheme<FontStyle, FontTheme> {
     super.key,
     super.child,
     required super.style,
-  }) : super(styleOf: of);
+  });
 
-  static FontStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<FontStyle, FontTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: DefaultFontStyle.new,
-    );
-  }
+  static const of = StyleOf<FontStyle, FontTheme>(defaultStyle: DefaultFontStyle.new);
 }
 
 extension FontThemeExt on BuildContext {

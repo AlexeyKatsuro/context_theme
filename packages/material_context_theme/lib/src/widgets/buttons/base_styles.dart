@@ -16,15 +16,11 @@ class ButtonTheme extends ContextTheme<ButtonStyle, ButtonTheme> with MaterialBu
     super.key,
     super.child,
     required super.style,
-  }) : super(styleOf: of);
+  });
 
-  static ButtonStyle of(BuildContext context, [StyleOwnerContext? parent]) {
-    return ContextTheme.styleOf<ButtonStyle, ButtonTheme>(
-      context,
-      inheritFrom: parent,
-      defaultStyle: DefaultButtonStyle.new,
-    );
-  }
+  static const of = StyleOf<ButtonStyle, ButtonTheme>(
+    defaultStyle: DefaultButtonStyle.new,
+  );
 }
 
 extension ButtonStyleExt on BuildContext {

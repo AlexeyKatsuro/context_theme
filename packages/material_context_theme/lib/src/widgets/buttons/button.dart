@@ -8,8 +8,6 @@ import 'base_styles.dart';
 
 mixin MaterialButtonBuilder on Widget {}
 
-typedef StyleOfContext<S extends Style> = S Function(BuildContext);
-
 class MaterialButton extends StatefulWidget with MaterialButtonBuilder {
   const MaterialButton({
     super.key,

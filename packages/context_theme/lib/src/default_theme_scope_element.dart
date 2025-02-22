@@ -1,75 +1,48 @@
 part of 'context_theme.dart';
 
-class _DefaultThemeDependencies {
-  _DefaultThemeDependencies() : styles = {};
-  final Map<Type, Style> styles;
+class _ThemeDependencies {
+  _ThemeDependencies() : styles = {};
+  final Map<_ThemeAspect, Style> styles;
 }
 
-class _DefaultThemeAspect<S extends Style, T extends ContextTheme<S, T>> {
-  _DefaultThemeAspect(this.createStyle, { required this.styleOf});
+@immutable
+class _ThemeAspect<S extends Style, T extends ContextTheme<S, T>> {
+  const _ThemeAspect({required this.styleOf, required this.linkTo});
 
-  Type get themeType => T;
-  final CreateStyle<S> createStyle;
-  final StyleOf<S> styleOf;
+  final StyleOf<S, T> styleOf;
+  final StyleOf<S, ContextTheme<S, dynamic>>? linkTo;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ThemeAspect &&
+          runtimeType == other.runtimeType &&
+          styleOf == other.styleOf &&
+          linkTo == other.linkTo;
+
+  @override
+  int get hashCode => styleOf.hashCode ^ linkTo.hashCode;
+
+  @override
+  String toString() {
+    return '_DefaultThemeAspect{styleOf: $styleOf, linkTo: $linkTo}';
+  }
 }
 
 class DefaultThemeScopeElement extends SingleChildInheritedElement with StyleOwnerContext {
   DefaultThemeScopeElement(super.widget);
 
-  @override
-  void updateDependencies(Element dependent, Object? aspect) {
-    if (aspect is! _DefaultThemeAspect) {
-      throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary('Aspect of DefaultThemeScope must be not null and DefaultThemeAspect type'),
-      ]);
-    }
-    final dependencies =
-        getDependencies(dependent) as _DefaultThemeDependencies? ?? _DefaultThemeDependencies();
-    if (!dependencies.styles.containsKey(aspect.themeType)) {
-      final newStyle = _initStyle(dependent, aspect.createStyle);
-      newStyle._styleOf = aspect.styleOf;
-      dependencies.styles[aspect.themeType] = newStyle;
-      setDependencies(dependent, dependencies);
-    }
+  Style _initStyle(Element dependent, _ThemeAspect aspect) {
+    final style = aspect.styleOf.defaultStyle();
+    style._dependentElement = dependent;
+    style._hostElement = this;
+    style._styleOf = aspect.styleOf;
+    style._linkTo = aspect.linkTo;
+    return style;
   }
-
-  @override
-  StyleOwnerContext? get hostElement => null;
 
   @override
   StyleOwnerContext? getParentStyleOwner<S extends Style, T extends ContextTheme<S, T>>() {
     return null;
-  }
-
-  @override
-  bool doesHasDepended<S extends Style, T extends ContextTheme<S, T>>(BuildContext dependent) {
-    final dependencies = getDependencies(dependent as Element) as _DefaultThemeDependencies?;
-    final style = dependencies?.styles[T];
-    assert(style is S?);
-    return style != null;
-  }
-
-  @override
-  S _getStyle<S extends Style, T extends ContextTheme<S, T>>(BuildContext context) {
-    final dependencies = getDependencies(context as Element);
-    if (dependencies == null) {
-      throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary('_getStyle was called before dependOnInheritedElement.'),
-      ]);
-    }
-    if (dependencies is! _DefaultThemeDependencies) {
-      throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary(
-          'DefaultThemeScope must have only _DefaultThemeDependencies type as Dependencies',
-        ),
-      ]);
-    }
-    final style = dependencies.styles[T];
-    if (style == null) {
-      throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary("StyleType wasn't registered as dependency"),
-      ]);
-    }
-    return style as S;
   }
 }
