@@ -67,3 +67,18 @@ mixin RedForegroundCardStyleMixin on CardStyle {
   @override
   Color get foreground => kForeground;
 }
+
+class MixinOverlayCardStyle extends CardStyle
+    with RedForegroundCardStyleMixin, RedBackgroundCardStyleMixin, SmallTextCardStyleMixin {
+  static const kForeground = Colors.black;
+
+  @override
+  Color get foreground => kForeground;
+}
+
+class SmallTextCardStyle = InheritCardStyle with SmallTextCardStyleMixin;
+mixin SmallTextCardStyleMixin on CardStyle {
+  static const kFontSize = 12.0;
+  @override
+  TextStyle get textStyle => TextStyle(fontSize: kFontSize, color: link.foreground);
+}
