@@ -6,122 +6,139 @@ import 'themes/card_theme.dart';
 import 'themes/text_theme.dart';
 
 void main() {
-  testWidgets('should provider default style if no theme ancestors', (tester) async {
-    CardStyle? cardStyle;
-    await tester.pumpWidget(
-      DefaultThemeScope(
-        child: Builder(
-          builder: (context) {
-            cardStyle = context.cardTheme;
-            return const SizedBox();
-          },
-        ),
-      ),
-    );
+  group('ContextTheme with DefaultThemeScope', () {
+    group('Default style behavior', () {
+      testWidgets('provides default style if no theme ancestors are present', (tester) async {
+        CardStyle? cardStyle;
 
-    expect(cardStyle, isA<DefaultCardStyle>());
-  });
+        await tester.pumpWidget(
+          DefaultThemeScope(
+            child: Builder(
+              builder: (context) {
+                cardStyle = context.cardTheme;
+                return const SizedBox();
+              },
+            ),
+          ),
+        );
 
-  testWidgets('should throw execution if no theme ancestors and no DefaultThemeScope',
-      (tester) async {
-    await tester.pumpWidget(
-      Builder(
-        builder: (context) {
-          return const SizedBox();
-        },
-      ),
-    );
-    expect(
-      () => tester.element(find.byType(SizedBox)).cardTheme,
-      throwsA(isA<StyleNullException>()),
-    );
-  });
+        expect(cardStyle, isA<DefaultCardStyle>());
+      });
 
-  testWidgets('should provider default style for different themes for the same context',
-      (tester) async {
-    CardStyle? cardStyle;
-    FontStyle? fontStyle;
-    await tester.pumpWidget(
-      DefaultThemeScope(
-        child: Builder(
-          builder: (context) {
-            cardStyle = context.cardTheme;
-            fontStyle = context.fontTheme;
-            return const SizedBox();
-          },
-        ),
-      ),
-    );
+      testWidgets('provides default style for different themes within the same context',
+          (tester) async {
+        CardStyle? cardStyle;
+        FontStyle? fontStyle;
 
-    expect(cardStyle, isA<DefaultCardStyle>());
-    expect(fontStyle, isA<DefaultFontStyle>());
-  });
+        await tester.pumpWidget(
+          DefaultThemeScope(
+            child: Builder(
+              builder: (context) {
+                cardStyle = context.cardTheme;
+                fontStyle = context.fontTheme;
+                return const SizedBox();
+              },
+            ),
+          ),
+        );
 
-  testWidgets('should returns the same instance for multiple theme accesses in the same context',
-      (tester) async {
-    CardStyle? cardStyle1;
-    CardStyle? cardStyle2;
-    await tester.pumpWidget(
-      DefaultThemeScope(
-        child: Builder(
-          builder: (context) {
-            cardStyle1 = context.cardTheme;
-            cardStyle2 = context.cardTheme;
-            return const SizedBox();
-          },
-        ),
-      ),
-    );
+        expect(cardStyle, isA<DefaultCardStyle>());
+        expect(fontStyle, isA<DefaultFontStyle>());
+      });
+    });
 
-    expect(identical(cardStyle1, cardStyle2), isTrue);
-  });
+    group('Theme instance behavior', () {
+      testWidgets('returns the same instance for multiple theme accesses in the same context',
+          (tester) async {
+        CardStyle? cardStyle1;
+        CardStyle? cardStyle2;
 
-  testWidgets('should retains the same theme instance after rebuilding DefaultThemeScope',
-      (tester) async {
-    CardStyle? cardStyle1;
-    CardStyle? cardStyle2;
-    await tester.pumpWidget(
-      DefaultThemeScope(
-        child: Builder(
-          builder: (context) {
-            cardStyle1 = context.cardTheme;
-            return const SizedBox();
-          },
-        ),
-      ),
-    );
+        await tester.pumpWidget(
+          DefaultThemeScope(
+            child: Builder(
+              builder: (context) {
+                cardStyle1 = context.cardTheme;
+                cardStyle2 = context.cardTheme;
+                return const SizedBox();
+              },
+            ),
+          ),
+        );
 
-    await tester.pump();
+        expect(cardStyle1, same(cardStyle2));
+      });
 
-    await tester.pumpWidget(
-      DefaultThemeScope(
-        child: Builder(
-          builder: (context) {
-            cardStyle2 = context.cardTheme;
-            return const SizedBox();
-          },
-        ),
-      ),
-    );
+      testWidgets('retains the same theme instance after rebuilding DefaultThemeScope',
+          (tester) async {
+        CardStyle? cardStyle1;
+        CardStyle? cardStyle2;
 
-    expect(identical(cardStyle1, cardStyle2), isTrue);
-  });
+        await tester.pumpWidget(
+          DefaultThemeScope(
+            child: Builder(
+              builder: (context) {
+                cardStyle1 = context.cardTheme;
+                return const SizedBox();
+              },
+            ),
+          ),
+        );
 
-  testWidgets('links should use bottom style', (tester) async {
-    TextStyle? textStyle;
-    await tester.pumpWidget(
-      DefaultThemeScope(
-        child: CardTheme(
-          style: RedForegroundCardStyle.new,
-          child: Builder(
+        await tester.pump(); // Force a frame rebuild
+
+        await tester.pumpWidget(
+          DefaultThemeScope(
+            child: Builder(
+              builder: (context) {
+                cardStyle2 = context.cardTheme;
+                return const SizedBox();
+              },
+            ),
+          ),
+        );
+
+        expect(cardStyle1, same(cardStyle2));
+      });
+    });
+
+    group('Exception handling', () {
+      testWidgets('throws exception if accessed without theme ancestor or DefaultThemeScope',
+          (tester) async {
+        await tester.pumpWidget(
+          Builder(
             builder: (context) {
-              textStyle = context.cardTheme.textStyle;
               return const SizedBox();
             },
           ),
-        ),
-      ),
-    );
-    expect(textStyle?.color, Colors.red);
+        );
+
+        expect(
+          () => tester.element(find.byType(SizedBox)).cardTheme,
+          throwsA(isA<StyleNullException>()),
+        );
+      });
+    });
+
+    group('Style inheritance', () {
+      testWidgets('applies style from the nearest theme ancestor', (tester) async {
+        TextStyle? textStyle;
+
+        await tester.pumpWidget(
+          DefaultThemeScope(
+            child: CardTheme(
+              style: RedForegroundCardStyle.new,
+              child: Builder(
+                builder: (context) {
+                  textStyle = context.cardTheme.textStyle;
+                  return const SizedBox();
+                },
+              ),
+            ),
+          ),
+        );
+
+        expect(textStyle?.color, Colors.red);
+      });
+    });
   });
 }
