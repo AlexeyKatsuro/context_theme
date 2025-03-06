@@ -179,7 +179,7 @@ mixin TypedStyle<S extends Style> on Style {
   S get inherit => super.inherit as S;
 
   @override
-  StyleOfContext<S>? inheritFrom;
+  StyleOfContext<S>? get inheritFrom => null;
 }
 
 mixin InheritStyle<S extends Style> on TypedStyle<S> {

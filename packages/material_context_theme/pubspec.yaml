@@ -1,6 +1,6 @@
 name: material_context_theme
 description: A new Flutter package project.
-version: 0.1.2
+version: 0.2.0
 publish_to: none
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
     git:
       url: https://github.com/AlexeyKatsuro/context_theme.git
       path: packages/context_theme
-      ref: v0.1.2
+      ref: v0.2.0
 
   collection: ^1.17.2
 
