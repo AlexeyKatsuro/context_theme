@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import 'single_inherited_theme.dart';
 import 'single_inherited_widget.dart';
 
 part 'context_theme_element.dart';
@@ -8,6 +9,11 @@ part 'default_theme_scope.dart';
 part 'default_theme_scope_element.dart';
 
 typedef CreateStyle<S extends Style> = S Function();
+typedef CreateTheme<S extends Style, T extends ContextTheme<S, T>> = T Function({
+  Key? key,
+  required CreateStyle<S> style,
+  Widget? child,
+});
 
 mixin StyleOfContext<S extends Style> {
   S call(
@@ -64,23 +70,34 @@ class StyleOf<S extends Style, T extends ContextTheme<S, T>> with StyleOfContext
   }
 }
 
-class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
-    extends SingleChildInheritedWidget {
+abstract class ContextTheme<S extends Style, T extends ContextTheme<S, T>>
+    extends SingleChildInheritedTheme {
   const ContextTheme({
     super.key,
     required S Function() style,
+    required CreateTheme<S, T> copy,
     super.child,
-  }) : _createStyle = style;
+  })  : _createStyle = style,
+        _copy = copy;
 
   @override
   ContextThemeElement createElement() => ContextThemeElement(this);
 
   @protected
   final CreateStyle<S> _createStyle;
+  final CreateTheme<S, T> _copy;
 
   @override
   bool updateShouldNotify(covariant ContextTheme oldWidget) =>
       oldWidget._createStyle != _createStyle;
+
+  @override
+  Widget wrap(BuildContext context, Widget child) {
+    return _copy(
+      style: _createStyle,
+      child: child,
+    );
+  }
 }
 
 @optionalTypeArgs

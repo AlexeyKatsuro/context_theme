@@ -8,7 +8,7 @@ class ExtendedCardTheme extends ContextTheme<ExtendedCardStyle, ExtendedCardThem
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(copy: ExtendedCardTheme.new);
 
   static const of = StyleOf<ExtendedCardStyle, ExtendedCardTheme>(
     defaultStyle: DefaultExtendedCardStyle.new,

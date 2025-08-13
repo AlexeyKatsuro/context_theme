@@ -16,7 +16,7 @@ class ButtonTheme extends ContextTheme<ButtonStyle, ButtonTheme> with MaterialBu
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(copy: ButtonTheme.new);
 
   static const of = StyleOf<ButtonStyle, ButtonTheme>(
     defaultStyle: DefaultButtonStyle.new,

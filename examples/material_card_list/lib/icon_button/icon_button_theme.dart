@@ -7,7 +7,7 @@ class IconButtonTheme extends ContextTheme<ButtonStyle, IconButtonTheme> {
     super.key,
     super.child,
     required super.style,
-  });
+  }): super(copy: IconButtonTheme.new);
 
   static const of = StyleOf<ButtonStyle, IconButtonTheme>(
     defaultStyle: DefaultIconButton.new,

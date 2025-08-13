@@ -6,7 +6,7 @@ class FontTheme extends ContextTheme<FontStyle, FontTheme> {
     super.key,
     super.child,
     required super.style,
-  });
+  }): super(copy: FontTheme.new);
 
   static const of = StyleOf<FontStyle, FontTheme>(defaultStyle: DefaultFontStyle.new);
 }

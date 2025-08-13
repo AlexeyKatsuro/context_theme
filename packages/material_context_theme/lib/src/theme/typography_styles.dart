@@ -6,7 +6,7 @@ class TypographyTheme extends ContextTheme<TypographyStyle, TypographyTheme> {
     super.key,
     super.child,
     required super.style,
-  });
+  }) : super(copy: TypographyTheme.new);
 
   static const of = StyleOf<TypographyStyle, TypographyTheme>(
     defaultStyle: MaterialTypographyStyle.new,

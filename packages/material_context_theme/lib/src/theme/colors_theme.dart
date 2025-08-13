@@ -6,7 +6,7 @@ class ColorsTheme extends ContextTheme<ColorsStyle, ColorsTheme> {
     super.key,
     required super.style,
     super.child,
-  });
+  }) : super(copy: ColorsTheme.new);
 
   static const of = StyleOf<ColorsStyle, ColorsTheme>(
     defaultStyle: MaterialColorsStyle.new,

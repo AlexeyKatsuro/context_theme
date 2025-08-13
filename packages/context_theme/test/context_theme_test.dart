@@ -9,7 +9,6 @@ void main() {
       testWidgets('provides the correct style from the closest theme ancestor', (tester) async {
         CardStyle? styleDeep1;
         CardStyle? styleDeep2;
-
         await tester.pumpWidget(
           CardTheme(
             style: RedForegroundCardStyle.new,

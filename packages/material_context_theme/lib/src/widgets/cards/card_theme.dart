@@ -9,7 +9,7 @@ class CardTheme extends ContextTheme<CardStyle, CardTheme> {
     super.key,
     super.child,
     required super.style,
-  });
+  }): super(copy: CardTheme.new);
 
   static const of = StyleOf<CardStyle, CardTheme>(
     defaultStyle: DefaultCardStyle.new,

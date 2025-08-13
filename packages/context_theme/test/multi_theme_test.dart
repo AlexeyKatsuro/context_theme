@@ -15,8 +15,11 @@ void main() {
         await tester.pumpWidget(
           MultiTheme(
             themes: const [
-              CardTheme(style: RedBackgroundCardStyle.new),
-              CardTheme(style: RedForegroundCardStyle.new),
+              CardTheme(
+                style: RedBackgroundCardStyle.new,
+                child: SizedBox(),
+              ),
+              CardTheme(style: RedForegroundCardStyle.new)
             ],
             child: Builder(
               builder: (context) {
